@@ -21,20 +21,21 @@ def createFile(fileName):
 def create1DVar(f):
     f.createDimension('time', DIM)
     time = f.createVariable('time', 'd', ('time', ))
-    time.scale_factor = 1.0
+    time.scale_factor = 2.5
     time.add_offset = 0.0
     time.extrapolation = 'periodic'
 
     test = f.createVariable('test1D', 'd', ('time', ))
-    test.scale_factor = 1.0
-    test.add_offset = 0.0
+    test.scale_factor = 2.0
+    test.add_offset = 3.0
     test.interpolation = 'akima'
     test.smoothing = 500.0
 
+    step = 2.0 * pi / (DIM - 1.0)
     for i in range(DIM):
-        x = pi + i * 2.0 * pi / (DIM - 1.0)
+        x = pi + i*step + 0.3*random()*step
         time[i] = x
-        test[i] = sin(x)
+        test[i] = sin(x) + 0.1*random()
 
 def create2DVar(f):
     f.createDimension('npoints', NPOINTS)

@@ -42,7 +42,7 @@ void create1DVar(int ncF) {
     char c[100];
     int ncD, ncV, ncT;
     size_t i;
-    double d;
+    double d, step;
     nc_redef(ncF);
     handle_error(nc_def_dim(ncF, "time", DIM, &ncD));
     handle_error(nc_def_var(ncF, "time", NC_DOUBLE, 1, &ncD, &ncT));
@@ -62,8 +62,9 @@ void create1DVar(int ncF) {
     d = 500.0; 
     handle_error(nc_put_att_double(ncF, ncV, NCATT_SMOOTHING, NC_DOUBLE, 1, &d));
     handle_error(nc_enddef(ncF));
+    step = 2.0 * M_PI / (DIM-1);
     for (i = 0; i < DIM; i ++) {
-        d = M_PI + i * 2.0 * M_PI / (DIM-1);
+        d = M_PI + i*step + 0.3*RAND01()*step;
         handle_error(nc_put_var1_double(ncF, ncT, &i, &d));
         d = sin(d) + 0.1*RAND01();
         handle_error(nc_put_var1_double(ncF, ncV, &i, &d));
