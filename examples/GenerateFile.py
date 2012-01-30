@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 # This does exactly the same as GenerateFile.c .
 # There are several netCDF interfaces for python available,
-# this script uses pupynere (http://pypi.python.org/pypi/pupynere/).
+# this script will try use the one from scipy and fall back to pupynere.
+# (http://pypi.python.org/pypi/pupynere/).
 
-from pupynere import *
+try:
+    from scipy.io import *
+except:
+    from pupynere import *
+    
 from math import pi, sin, tanh
 from random import random
 
