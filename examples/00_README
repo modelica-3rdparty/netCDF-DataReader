@@ -1,25 +1,30 @@
 Test the library:
 
-- GenerateFile produces a small netCDF file
+- GenerateFile produces a small netCDF file (needed for most tests).
 
-- GenerateBigFile produces a big netCDF file
+- GenerateBigFile produces a big netCDF file (needed for Read1DChunk).
 
-- PrintVersion prints out the version and tests
-the error handler
+- PrintVersion prints out the version and tests the error handler
 
-- Read1D interpolates the 1D data in the small file 
-with different interpolation and extrapolation types
+- Read1D interpolates the 1D data in the small file with different interpolation
+  and extrapolation types
 
-- Read1DEasyAPI interpolates the 1D data in the small file 
-using the easy API
+- Read1DEasyAPI interpolates the 1D data in the small file using the easy API
 
 - Read2D interpolates the 2D data in the small file 
 
-- Read2DEasyAPI interpolates the 2D data in the small file 
-using the easy API
+- Read2DEasyAPI interpolates the 2D data in the small file using the easy API
 
 - CacheTests tests performance with different cache sizes with the small file
 
 - Read1DChunk interpolates some data in the big file using chunk loading
 
 The results may be viewed with gnuplot.
+
+
+GenerateFile.py is a python script that writes the same file as GenerateFile. 
+You need scipy or pupynere installed (available at http://pypi.python.org/).
+
+
+GenerateFile.m is an Octave port of this script. You need octcdf installed (look
+at http://octave.sourceforge.net/octcdf/).
