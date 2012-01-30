@@ -12,7 +12,7 @@ NPOINTS = 1000
 
 def createFile(fileName):
     f = netcdf_file(fileName, 'w')
-    f.doc = 'test file for ncdataReader2'
+    f.doc = 'test file for ncdataReader2, created by GenerateFile.py'
     f.version = '2.2.0'
     f.foo = 42.42
     f.bar = 1234
