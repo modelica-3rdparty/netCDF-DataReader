@@ -1,3 +1,53 @@
-This package uses CMAKE to configure itself.
+This package uses CMake (http://www.cmake.org/) to configure the sources and 
+generate the needed files.
 
-documentation may follow...
+Linux
+=====
+Configuration and compilation
+-----------------------------
+Install CMake using the package manager of your distribution or download and 
+install the program yourself. In this folder start one of:
+    $ cmake .
+or
+    $ ccmake .
+or
+    $ cmake-gui .
+    
+Configure the sources as indicated by the program and generate the Makefiles. 
+You may need to install additional packages. Then type:
+    $ make
+
+Installation
+------------
+Type
+    $ make install
+
+If you did not change the destination folders in CMake, this will install the
+required files to /usr/local/lib and /usr/local/include .
+
+
+Windows
+=======
+
+For most cases it may be sufficient to install the precompiled files.
+
+Installation of the precompiled binary package
+----------------------------------------------
+...
+
+
+Configuration and compilation
+-----------------------------
+You need a C compiler, either MinGW or MS Visual C++. Applications like 
+OpenModelica or jmodelica may ship with their own copy of the MinGW compiler.
+
+Install and start CMake.
+
+MinGW
+~~~~~
+...
+
+MS Visual C++
+~~~~~~~~~~~~~
+...
+
