@@ -4,7 +4,7 @@ DIM = 100;
 NPOINTS = 1000;
 
 f = netcdf('testfile.nc','c');
-f.doc = 'test file for ncdataReader2, created by GenerateFile.m';
+f.doc = 'test file for ncDataReader2, created by GenerateFile.m';
 f.version = '2.2.0';
 f.foo = 42.42;
 f.bar = 1234;
