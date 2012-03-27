@@ -1,6 +1,6 @@
 within NcDataReader2.Examples;
 
-model TestBig "Test model for ncDataReader2 with large data sets"
+model BigFile "Test model for ncDataReader2 with large data sets"
     import nc = NcDataReader2.Functions;
     Real y "dummy variable to integrate";
     Real x "dummy variable";
@@ -15,4 +15,4 @@ model TestBig "Test model for ncDataReader2 with large data sets"
     t1 = nc.ncEasyGet1D(dataFile, "big_var_00", time);
     t2 = nc.ncEasyGet1D(dataFile, "big_var_01", time);
     annotation(uses(Modelica(version = "3.1")), experiment(StartTime = 1000, StopTime = 1100, NumberOfIntervals = 500000), experimentSetupOutput);
-end TestBig;
+end BigFile;

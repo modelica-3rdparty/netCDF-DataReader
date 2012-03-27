@@ -1,6 +1,6 @@
 within NcDataReader2.Examples;
 
-model TestSimple "Very simple test model for ncDataReader2"
+model Simple "Simple test model for ncDataReader2"
     import nc = NcDataReader2.Functions;
     parameter String fileName = "/var/tmp/testfile.nc";
     Real x "dummy variable to integrate";
@@ -13,4 +13,4 @@ model TestSimple "Very simple test model for ncDataReader2"
     der(x) = t;
     t = nc.ncEasyGet1D(fileName, "test1D", time / 1000);
     annotation(uses(Modelica(version = "3.1")), experiment(StartTime = 0, StopTime = 10000, NumberOfIntervals = 5000), experimentSetupOutput);
-end TestSimple;
+end Simple;
