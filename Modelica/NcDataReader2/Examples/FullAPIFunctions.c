@@ -2,9 +2,11 @@
 
 #define FILENAME "/var/tmp/testfilebig.nc"
 
+/* dataset and variable information */
 static NcDataSet1D *dset = NULL;
 static NcVar1D *v1, *v2;
 
+/* initialization function */
 static void myInit() {
     dset = ncDataSet1DNew(FILENAME, "time", EpPeriodic, LtFull, 10);
     
@@ -17,6 +19,9 @@ static void myInit() {
     ncVar1DSetOption(v2, OpVarChunkSize, 100);
 }
 
+/* functions to return the interpolated values -
+ * myInit() is executed at the first call to one of the functions */
+
 double getV1(double x){
     if (dset == NULL)
         myInit();
@@ -28,6 +33,10 @@ double getV2(double x){
         myInit();
     return ncVar1DGet(v2, x);
 };
+
+
+/* just a simple main routine to test the functions standalone,
+ * not needed for Modelica */
 
 #ifdef TEST_ME
 #include <stdio.h>
