@@ -12,7 +12,7 @@ void testChunk(void) {
     FILE *outf = fopen("data_1D_chunk.dat", "w");
     fprintf(outf, "# you may plot this file with gnuplot\n");
     
-    dset = ncDataSet1DNew(NCFILE, "time", EpAuto, LtFull, 0);
+    dset = ncDataSet1DNew(NCFILE, "time", EpAuto, LtFull, 4);
 
     v = ncVar1DNew(dset, "big_var_00", IpAkima, LtAuto);
     
@@ -30,6 +30,8 @@ void testChunk(void) {
         fprintf(outf, "\n");
     }
     fclose(outf);
+    ncDataSet1DDumpStatistics(dset);
+    ncVar1DDumpStatistics(v);
     ncVar1DFree(v);
     ncDataSet1DFree(dset);
 }

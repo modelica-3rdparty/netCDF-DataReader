@@ -133,6 +133,7 @@ typedef struct {
     size_t cacheIndex[2];  /* start and end index of cache */
     void *lookupCache;     /* lookup ring-cache for interval search */  
     size_t lCacheStat[2];  /* lookup cache success statistics */
+    size_t loadCount;      /* count of loading data/chunks */
 } NcDataSet1D;
 
 NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName, Extrapolation extra, LoadType loadType, int lookupCacheSize);
@@ -140,6 +141,7 @@ size_t      DLL_EXPORT  ncDataSet1DSearch(NcDataSet1D *dataSet, double *x);
 double      DLL_EXPORT  ncDataSet1DGetItem(NcDataSet1D *dataSet, size_t i);
 void        DLL_EXPORT  ncDataSet1DFree(NcDataSet1D *dataSet);
 int         DLL_EXPORT  ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, ...);
+void        DLL_EXPORT  ncDataSet1DDumpStatistics(NcDataSet1D *dataSet);
 
 /* a 1D variable */
 typedef struct {
@@ -157,6 +159,7 @@ typedef struct {
     void *parameterCache;  /* ring-cache for some parameters */
     size_t vCacheStat[2];  /* value cache success statistics */
     size_t pCacheStat[2];  /* parameter cache success statistics */
+    size_t loadCount;      /* count of loading data/chunks */
 } NcVar1D;
 
 /* variable options */
@@ -167,6 +170,7 @@ double  DLL_EXPORT  ncVar1DGet(NcVar1D *var, double x);
 double  DLL_EXPORT  ncVar1DGetItem(NcVar1D *var, size_t i);
 void    DLL_EXPORT  ncVar1DFree(NcVar1D *var);
 int     DLL_EXPORT  ncVar1DSetOption(NcVar1D *var, VarOption option, ...);
+void    DLL_EXPORT  ncVar1DDumpStatistics(NcVar1D *var);
 
 /* * * *       2D functions       * * * */
 

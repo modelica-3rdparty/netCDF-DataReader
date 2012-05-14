@@ -22,6 +22,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include "netcdf.h"
 #include "ncDataReader2.h"
 #include "../config.h"
@@ -67,6 +68,7 @@ NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName
     }
     dataSet->extra = extra;
     dataSet->cache = NULL;
+    dataSet->loadCount = 0;
     switch (dataSet->loadType) {
         case LtFull:
             dataSet->cache = (double *)malloc(dataSet->dim * sizeof(double));
@@ -74,6 +76,7 @@ NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName
                 nc_get_var_double(ncF, ncV, dataSet->cache);
                 dataSet->cacheIndex[0] = 0;
                 dataSet->cacheIndex[1] = dataSet->dim;
+                dataSet->loadCount++;
             } else {
                 ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
                 dataSet->loadType = LtNone; /* fall back */
@@ -146,6 +149,7 @@ static void loadChunk(NcDataSet1D *dataSet, size_t start) {
     if ((start + dataSet->chunkSize) > dataSet->dim) /* adjust start */
         start = dataSet->dim - dataSet->chunkSize;
     nc_get_vara_double(dataSet->fileId, dataSet->varId, &start, &(dataSet->chunkSize), dataSet->cache);
+    dataSet->loadCount++;
     dataSet->cacheIndex[0] = start;
     dataSet->cacheIndex[1] = start + dataSet->chunkSize - 1;
 }
@@ -161,6 +165,7 @@ double DLL_EXPORT ncDataSet1DGetItem(NcDataSet1D *dataSet, size_t i) {
             break;
         case LtNone:
             ncError(nc_get_var1_double(dataSet->fileId, dataSet->varId, &i, &d));
+            dataSet->loadCount++;
             break;
         case LtChunk:
             if ((! dataSet->cache) || (i < dataSet->cacheIndex[0]) || (i > dataSet->cacheIndex[1])) {
@@ -220,3 +225,32 @@ int DLL_EXPORT ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, 
     return res;
 }
 
+
+void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet) {
+    char ctmp[1024];
+    nc_inq_varname(dataSet->fileId, dataSet->varId, ctmp);
+    fprintf(stdout, "DataSet1D: %s\n", ctmp);
+    fprintf(stdout, "  Size:          %li\n", dataSet->dim);
+    fprintf(stdout, "  LoadType:      ");
+    switch (dataSet->loadType) {
+        case LtFull:
+            fprintf(stdout, "full (at initialization time)\n");
+            break;
+        case LtNone:
+            fprintf(stdout, "none (every value on demand)\n");
+            break;
+        case LtChunk:
+            fprintf(stdout, "chunks (%li values on demand)\n", dataSet->chunkSize);
+    }
+    fprintf(stdout, "  Extrapolation: ");
+    switch (dataSet->extra) {
+        case EpPeriodic:
+            fprintf(stdout, "periodic\n");
+            break;
+        case EpDefault:
+            fprintf(stdout, "default (depends on interpolation)\n");
+            break;
+    }
+    fprintf(stdout, "  LoadCount:     %li\n", dataSet->loadCount);
+    fprintf(stdout, "  Lookups/Cache: %li/%li\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
+}

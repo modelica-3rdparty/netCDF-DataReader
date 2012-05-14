@@ -125,6 +125,7 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
     }
     var->loadType = loadType;
     var->cache = NULL;
+    var->loadCount = 0;
     switch (var->loadType) {
         case LtFull:
             var->cache = (double *)malloc(dataSet->dim * sizeof(double));
@@ -132,6 +133,7 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
                 nc_get_var_double(dataSet->fileId, ncV, var->cache);
                 var->cacheIndex[0] = 0;
                 var->cacheIndex[1] = dataSet->dim;
+                var->loadCount++;
             } else {
                 ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
                 var->loadType = LtNone; /* fall back */
@@ -259,6 +261,7 @@ static void loadChunk(NcVar1D *var, size_t start) {
     if ((start + var->chunkSize) > d) /* adjust start */
         start = d - var->chunkSize;
     nc_get_vara_double(var->dataSet->fileId, var->varId, &start, &(var->chunkSize), var->cache);
+    var->loadCount++;
     var->cacheIndex[0] = start;
     var->cacheIndex[1] = start + var->chunkSize - 1;
 }
@@ -286,6 +289,7 @@ double DLL_EXPORT ncVar1DGetItem(NcVar1D *var, size_t i) {
             break;
         case LtNone:
             ncError(nc_get_var1_double(var->dataSet->fileId, var->varId, &i, &d));
+            var->loadCount++;
             break;
     }
     return var->scale[0]* d + var->scale[1];
@@ -379,3 +383,40 @@ int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
     return res;
 }
 
+
+void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var) {
+    char ctmp[1024];
+    nc_inq_varname(var->dataSet->fileId, var->varId, ctmp);
+    fprintf(stdout, "Var1D: %s\n", ctmp);
+    nc_inq_varname(var->dataSet->fileId, var->dataSet->varId, ctmp);
+    fprintf(stdout, "  DataSet:              %s\n", ctmp);
+    fprintf(stdout, "  LoadType:             ");
+    switch (var->loadType) {
+        case LtFull:
+            fprintf(stdout, "full (at initialization time)\n");
+            break;
+        case LtNone:
+            fprintf(stdout, "none (every value on demand)\n");
+            break;
+        case LtChunk:
+            fprintf(stdout, "chunks (%li values on demand)\n", var->chunkSize);
+    }
+    fprintf(stdout, "  Interpolation:        ");
+    switch (var->inter) {
+        case IpDiscrete:
+            fprintf(stdout, "discrete\n");
+            break;
+        case IpLinear:
+            fprintf(stdout, "linear\n");
+            break;
+        case IpSinSteps:
+            fprintf(stdout, "sinsteps\n");
+            break;
+        case IpAkima:
+            fprintf(stdout, "akima\n");
+            break;
+    }
+    fprintf(stdout, "  LoadCount:            %li\n", var->loadCount);
+    fprintf(stdout, "  ValueCalc./Cache:     %li/%li\n", var->vCacheStat[1], var->vCacheStat[0]);
+    fprintf(stdout, "  ParameterCalc./Cache: %li/%li\n\n", var->pCacheStat[1], var->pCacheStat[0]);
+}

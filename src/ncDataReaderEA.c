@@ -37,8 +37,8 @@ static SHT_Table *easyFiles1D = NULL;
 
 /* ************ 1D ************ */
 
-static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName, const char
-*varName) {
+static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName, 
+                                const char *varName) {
     NcDataSet1D *dataSet = NULL;
     NcVar1D     *var = NULL;
     int ncF, ncV, ncD;
