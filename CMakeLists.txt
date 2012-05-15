@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(ncDataReader2)
 
-set(NCDR_VERSION "2.2.4")
+set(NCDR_VERSION "2.2.5")
 
 option(BUILD_SHARED_LIB "build a shared library" OFF)
 
