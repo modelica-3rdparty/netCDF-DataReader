@@ -10,6 +10,10 @@ void testAuto(void) {
     NcVar1D *v;
     double x, start, end, step;
     FILE *outf = fopen("data_1D_auto.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return;
+    }
     fprintf(outf, "# you may plot this file with gnuplot\n");
     dset = ncDataSet1DNew(NCFILE, "time", EpAuto, LtAuto, 0);
     v    = ncVar1DNew(dset, "test1D", IpAuto, LtAuto);
@@ -31,6 +35,10 @@ void testDefaultEP(void) {
     NcVar1D *vdis, *vlin, *vsin, *vaki;
     double x, start, end, step;
     FILE *outf = fopen("data_1D_default.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return;
+    }
     fprintf(outf, "# you may plot this file with gnuplot\n");
     dset = ncDataSet1DNew(NCFILE, "time", EpDefault, LtFull, 10);
     vdis = ncVar1DNew(dset, "test1D", IpDiscrete, LtFull);
@@ -62,6 +70,10 @@ void testPeriodicEP(void) {
     NcVar1D *vdis, *vlin, *vsin, *vaki;
     double x, start, end, step;
     FILE *outf = fopen("data_1D_periodic.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return;
+    }
     fprintf(outf, "# you may plot this file with gnuplot\n");
     dset = ncDataSet1DNew(NCFILE, "time", EpPeriodic, LtFull, 10);
     vdis = ncVar1DNew(dset, "test1D", IpDiscrete, LtFull);

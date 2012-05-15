@@ -221,6 +221,10 @@ static void dumpFile1DStatistics(char *key, SHT_val val, const void *tmp) {
 
 int DLL_EXPORT ncEasyDumpStatistics(const char *fileName) {
     FILE *f = fopen(fileName, "w");
+    if (!f) {
+        ncdrError(NCDR_EFILEW, NCDR_EFILEW_TXT);
+        return 1;
+    }
     fprintf(f, ">>> Access statistics for ncDataReader2/EA <<<\n");
     shtIterate(easyFiles1D, dumpFile1DStatistics, (void *)f);
     fflush(f);

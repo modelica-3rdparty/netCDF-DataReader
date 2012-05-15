@@ -10,6 +10,10 @@ void testChunk(void) {
     NcVar1D *v;
     double ix, istart, iend, istep;
     FILE *outf = fopen("data_1D_chunk.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return;
+    }
     fprintf(outf, "# you may plot this file with gnuplot\n");
     
     dset = ncDataSet1DNew(NCFILE, "time", EpAuto, LtFull, -1);

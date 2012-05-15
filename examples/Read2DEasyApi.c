@@ -5,6 +5,10 @@
 int main(void) {
     double x, y;
     FILE *outf = fopen("data_2D_EA.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return 10;
+    }
     fprintf(outf, "# you may plot this file with gnuplot using splot\n");
     
     for (x = -4.9; x <  4.9; x += 0.2) {

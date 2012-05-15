@@ -11,6 +11,10 @@ int main(void) {
     ncScattered2DSetOption(data, OpScattered2DPointsPerCell, 20);
     ncScattered2DInit(data);
     outf = fopen("data_2D.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return 10;
+    }
     
     fprintf(outf, "# you may plot this file with gnuplot using splot\n");
     fprintf(outf, "# x-range %g - %g\n", data->xRange[0], data->xRange[1]);

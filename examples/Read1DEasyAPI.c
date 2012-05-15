@@ -7,6 +7,10 @@
 int main(void) {
     double x, start, step, end;
     FILE *outf = fopen("data_1D_EA.dat", "w");
+    if (!outf) {
+        printf("error: could not open output file for writing\n");
+        return 10;
+    }
     start = 0.0;
     end   = 100.0;
     step  = 0.00001 *(end - start);
