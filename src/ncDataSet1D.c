@@ -226,31 +226,32 @@ int DLL_EXPORT ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, 
 }
 
 
-void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet) {
+void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
     char ctmp[1024];
+    if (f == NULL) f=stdout;
     nc_inq_varname(dataSet->fileId, dataSet->varId, ctmp);
-    fprintf(stdout, "DataSet1D: %s\n", ctmp);
-    fprintf(stdout, "  Size:          %li\n", dataSet->dim);
-    fprintf(stdout, "  LoadType:      ");
+    fprintf(f, "DataSet1D: %s\n", ctmp);
+    fprintf(f, "  Size:          %li\n", dataSet->dim);
+    fprintf(f, "  LoadType:      ");
     switch (dataSet->loadType) {
         case LtFull:
-            fprintf(stdout, "full (at initialization time)\n");
+            fprintf(f, "full (at initialization time)\n");
             break;
         case LtNone:
-            fprintf(stdout, "none (every value on demand)\n");
+            fprintf(f, "none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(stdout, "chunks (%li values on demand)\n", dataSet->chunkSize);
+            fprintf(f, "chunks (%li values on demand)\n", dataSet->chunkSize);
     }
-    fprintf(stdout, "  Extrapolation: ");
+    fprintf(f, "  Extrapolation: ");
     switch (dataSet->extra) {
         case EpPeriodic:
-            fprintf(stdout, "periodic\n");
+            fprintf(f, "periodic\n");
             break;
         case EpDefault:
-            fprintf(stdout, "default (depends on interpolation)\n");
+            fprintf(f, "default (depends on interpolation)\n");
             break;
     }
-    fprintf(stdout, "  LoadCount:     %li\n", dataSet->loadCount);
-    fprintf(stdout, "  Lookups/Cache: %li/%li\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
+    fprintf(f, "  LoadCount:     %li\n", dataSet->loadCount);
+    fprintf(f, "  Lookups/Cache: %li/%li\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
 }

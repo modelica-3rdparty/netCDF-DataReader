@@ -384,39 +384,40 @@ int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
 }
 
 
-void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var) {
+void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var, FILE *f) {
     char ctmp[1024];
+    if (f==NULL) f=stdout;
     nc_inq_varname(var->dataSet->fileId, var->varId, ctmp);
-    fprintf(stdout, "Var1D: %s\n", ctmp);
+    fprintf(f, "Var1D: %s\n", ctmp);
     nc_inq_varname(var->dataSet->fileId, var->dataSet->varId, ctmp);
-    fprintf(stdout, "  DataSet:              %s\n", ctmp);
-    fprintf(stdout, "  LoadType:             ");
+    fprintf(f, "  DataSet:              %s\n", ctmp);
+    fprintf(f, "  LoadType:             ");
     switch (var->loadType) {
         case LtFull:
-            fprintf(stdout, "full (at initialization time)\n");
+            fprintf(f, "full (at initialization time)\n");
             break;
         case LtNone:
-            fprintf(stdout, "none (every value on demand)\n");
+            fprintf(f, "none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(stdout, "chunks (%li values on demand)\n", var->chunkSize);
+            fprintf(f, "chunks (%li values on demand)\n", var->chunkSize);
     }
-    fprintf(stdout, "  Interpolation:        ");
+    fprintf(f, "  Interpolation:        ");
     switch (var->inter) {
         case IpDiscrete:
-            fprintf(stdout, "discrete\n");
+            fprintf(f, "discrete\n");
             break;
         case IpLinear:
-            fprintf(stdout, "linear\n");
+            fprintf(f, "linear\n");
             break;
         case IpSinSteps:
-            fprintf(stdout, "sinsteps\n");
+            fprintf(f, "sinsteps\n");
             break;
         case IpAkima:
-            fprintf(stdout, "akima\n");
+            fprintf(f, "akima\n");
             break;
     }
-    fprintf(stdout, "  LoadCount:            %li\n", var->loadCount);
-    fprintf(stdout, "  ValueCalc./Cache:     %li/%li\n", var->vCacheStat[1], var->vCacheStat[0]);
-    fprintf(stdout, "  ParameterCalc./Cache: %li/%li\n\n", var->pCacheStat[1], var->pCacheStat[0]);
+    fprintf(f, "  LoadCount:            %li\n", var->loadCount);
+    fprintf(f, "  ValueCalc./Cache:     %li/%li\n", var->vCacheStat[1], var->vCacheStat[0]);
+    fprintf(f, "  ParameterCalc./Cache: %li/%li\n\n", var->pCacheStat[1], var->pCacheStat[0]);
 }

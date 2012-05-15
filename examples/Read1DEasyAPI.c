@@ -14,6 +14,7 @@ int main(void) {
     for (x = start; x < end; x+= step)
         fprintf(outf, "%g\t%g\n", x, ncEasyGet1D(NCFILE, "test1D", x));
     fclose(outf);
+    ncEasyDumpStatistics("Read1DEasyAPI.log");
     ncEasyFree();
     printf("attributes:\n");
     printf("                 doc: %s\n", ncEasyGetAttributeString(NCFILE, "", "doc"));

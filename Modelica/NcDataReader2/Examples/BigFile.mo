@@ -7,9 +7,15 @@ model BigFile "Test model for ncDataReader2 with large data sets"
     Real t1 "temperature 1";
     Real t2 "temperature 2";
     String dataFile = "/var/tmp/testfilebig.nc";
+    Integer a;
     // String dataFile = "http://192.168.56.100/test/testfilebig.nc";
 
     equation 
+    
+    when terminal() then
+        a = nc.ncEasyDumpStatistics(String(time)+"_ncdr.log");
+    end when;
+
     y = x;
     der(x) = t1 + t2;
     t1 = nc.ncEasyGet1D(dataFile, "big_var_00", time);

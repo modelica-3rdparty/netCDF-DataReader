@@ -39,4 +39,6 @@ double DLL_EXPORT  ncEasyGetAttributeDouble(const char *fileName, const char *va
 long   DLL_EXPORT  ncEasyGetAttributeLong  (const char *fileName, const char *varName, const char *attName);
 char   DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName, const char *attName);
 
+int    DLL_EXPORT  ncEasyDumpStatistics(const char *fileName);
+
 #endif /* NCDATAREADEREA_H */

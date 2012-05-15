@@ -26,6 +26,7 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #define DLL_EXPORT @DLL_EXPORT@
 
@@ -141,7 +142,7 @@ size_t      DLL_EXPORT  ncDataSet1DSearch(NcDataSet1D *dataSet, double *x);
 double      DLL_EXPORT  ncDataSet1DGetItem(NcDataSet1D *dataSet, size_t i);
 void        DLL_EXPORT  ncDataSet1DFree(NcDataSet1D *dataSet);
 int         DLL_EXPORT  ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, ...);
-void        DLL_EXPORT  ncDataSet1DDumpStatistics(NcDataSet1D *dataSet);
+void        DLL_EXPORT  ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f);
 
 /* a 1D variable */
 typedef struct {
@@ -170,7 +171,7 @@ double  DLL_EXPORT  ncVar1DGet(NcVar1D *var, double x);
 double  DLL_EXPORT  ncVar1DGetItem(NcVar1D *var, size_t i);
 void    DLL_EXPORT  ncVar1DFree(NcVar1D *var);
 int     DLL_EXPORT  ncVar1DSetOption(NcVar1D *var, VarOption option, ...);
-void    DLL_EXPORT  ncVar1DDumpStatistics(NcVar1D *var);
+void    DLL_EXPORT  ncVar1DDumpStatistics(NcVar1D *var, FILE *f);
 
 /* * * *       2D functions       * * * */
 

@@ -20,6 +20,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "netcdf.h"
 #include "../config.h"
@@ -143,10 +144,8 @@ double DLL_EXPORT ncEasyGetAttributeDouble(const char *fileName, const char *var
     } else 
         ncV = NC_GLOBAL;
     if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) return NC_DOUBLE_NOVAL;
-    if (n != 1)
-        return NC_DOUBLE_NOVAL;
-    if (ncError(nc_get_att_double(ncF, ncV, attName, &d))) return
-NC_DOUBLE_NOVAL;
+    if (n != 1) return NC_DOUBLE_NOVAL;
+    if (ncError(nc_get_att_double(ncF, ncV, attName, &d))) return NC_DOUBLE_NOVAL;
     ncError(nc_close(ncF));
     return d;
 }
@@ -164,8 +163,7 @@ long DLL_EXPORT ncEasyGetAttributeLong(const char *fileName, const char *varName
     } else 
         ncV = NC_GLOBAL;
     if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) return NC_LONG_NOVAL;
-    if (n != 1)
-        return NC_LONG_NOVAL;
+    if (n != 1) return NC_LONG_NOVAL;
     if (ncError(nc_get_att_long(ncF, ncV, attName, &l))) return NC_LONG_NOVAL;
     ncError(nc_close(ncF));
     return l;
@@ -204,5 +202,29 @@ char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varN
     ncError(nc_close(ncF));
     c[n] = '\0';
     return c;
+}
+
+static void dumpDataSet1DStatistics(char *key, SHT_val val, const void *tmp) {
+    ncDataSet1DDumpStatistics((NcDataSet1D *)val, (FILE *)tmp);
+}
+
+static void dumpVar1DStatistics(char *key, SHT_val val, const void *tmp) {
+    ncVar1DDumpStatistics((NcVar1D *)val, (FILE *)tmp);
+}
+
+static void dumpFile1DStatistics(char *key, SHT_val val, const void *tmp) {
+    EasyFileData1D *data = (EasyFileData1D *)val;
+    fprintf((FILE *)tmp, ">>> File: %s\n", key);
+    shtIterate(data->dataSets, dumpDataSet1DStatistics, (void *)tmp);
+    shtIterate(data->vars, dumpVar1DStatistics, (void *)tmp);
+}
+
+int DLL_EXPORT ncEasyDumpStatistics(const char *fileName) {
+    FILE *f = fopen(fileName, "w");
+    fprintf(f, ">>> Access statistics for ncDataReader2/EA <<<\n");
+    shtIterate(easyFiles1D, dumpFile1DStatistics, (void *)f);
+    fflush(f);
+    fclose(f);
+    return 0;
 }
 
