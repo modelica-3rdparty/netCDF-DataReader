@@ -42,6 +42,7 @@ char DLL_EXPORT *ncDataReader2Version() {
 /* default error handler, will print message and exit */
 void _defaultHandler(int n, char *msg) {
     fprintf(stderr, "ERROR | %d | %s\n", n, msg);
+    fflush(stderr);
     exit(1);
 }
 
