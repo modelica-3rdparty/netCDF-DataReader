@@ -1,6 +1,4 @@
-/*  $Id: ncScattered2D.c 175 2010-12-02 20:36:31Z jraedler $
-
-    ncDataReader2 - interpolating reading of data sets
+/*  ncDataReader2 - interpolating reading of data sets
     Copyright (C) 2004  Joerg Raedler <joerg@dezentral.de>
 
     This library is free software; you can redistribute it and/or

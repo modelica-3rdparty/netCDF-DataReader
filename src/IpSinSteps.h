@@ -1,6 +1,4 @@
-/*  $Id: IpSinSteps.h 90 2010-05-21 12:53:05Z jraedler $
-
-    ncDataReader2 - interpolating reading of 1D data sets
+/*  ncDataReader2 - interpolating reading of 1D data sets
     Copyright (C) 2004  Joerg Raedler <joerg@dezentral.de>
 
     This library is free software; you can redistribute it and/or

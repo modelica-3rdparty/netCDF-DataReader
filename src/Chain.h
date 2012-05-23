@@ -1,7 +1,4 @@
 /*
-
-$Id: Chain.h 160 2010-11-29 11:26:32Z jraedler $
-
 # Copyright (c) 2010, Joerg Raedler <joerg@j-raedler.de>
 # All rights reserved.
 # Redistribution and use in source and binary forms, with or without

@@ -1,7 +1,4 @@
 /*
-
-$Id: StringHashTable.h 90 2010-05-21 12:53:05Z jraedler $
-
 # Copyright (c) 2010, Joerg Raedler <joerg@j-raedler.de>
 # All rights reserved.
 # Redistribution and use in source and binary forms, with or without
