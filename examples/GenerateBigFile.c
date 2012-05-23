@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 #include "ncDataReader2.h"
 #include "netcdf.h"
 #include "../config.h"
@@ -21,7 +22,10 @@ void createBigFile(char *fileName) {
     int ncF, ncD, ncV[VARS], ncT;
     char c[101];
     size_t i, j;
-    double d;
+    double t, *tBuf, *vBuf;
+    
+    printf("Starting: "); fflush(stdout);
+
     handle_error(nc_create(fileName, NC_CLOBBER, &ncF));
     ncSetAttributeText(ncF, NC_GLOBAL, "doc", "big test file for ncdataReader2");
 
@@ -40,33 +44,41 @@ void createBigFile(char *fileName) {
     }
     
     handle_error(nc_enddef(ncF));
-    for (i = 0; i < DIM; i ++) {
-        /* give some visual feedback on progress */
-        if (i % (DIM/100) == 0) {
-            printf(".");
-            fflush(stdout);
-        }
-        d = 0.01 * (i - 0.5 + 0.4 * RAND01());
-        handle_error(nc_put_var1_double(ncF, ncT, &i, &d));
-        for (j = 0; j < VARS; j++) {
-            d = 100 * sin(d/100) + 10 * RAND01()*sin(d/10) + RAND01()*sin(d);
-            handle_error(nc_put_var1_double(ncF, ncV[j], &i, &d));
-        }
+    printf("N"); fflush(stdout);
+
+    tBuf = malloc(DIM*sizeof(double));
+    vBuf = malloc(DIM*sizeof(double));
+    
+    if ((tBuf == NULL) || (vBuf == NULL)) {
+        printf("Out of memory!\n");
+        return;
     }
+    
+    for (i = 0; i < DIM; i ++)
+        tBuf[i] = 0.01 * (i - 0.5 + 0.4 * RAND01());
+    printf("T"); fflush(stdout);
+    handle_error(nc_put_var_double(ncF, ncT, tBuf));
+    printf("t"); fflush(stdout);
+    for (j = 0; j < VARS; j++) {
+        for (i = 0; i < DIM; i ++) {
+            t = tBuf[i];
+            vBuf[i] = 100 * sin(t/100) + 10 * RAND01()*sin(t/10) + RAND01()*sin(t);
+        }
+        printf("V"); fflush(stdout);
+        handle_error(nc_put_var_double(ncF, ncV[j], vBuf));
+        printf("v"); fflush(stdout);
+    }
+    
     handle_error(nc_sync(ncF));
     handle_error(nc_close(ncF));
     printf("\n");
 }
 
-
-
 int main(void) {
-    printf("This generates a very big file with %d data values.\n", DIM*(VARS+1));
+    printf("This generates a big file with %d data values.\n", DIM*(VARS+1));
     printf("Make sure you have enough disk space and some time.\n");
     printf("Enter 'y' to proceed, any other to stop now: ");
-    if (getchar() == 'y') {
-        printf("Starting: ");
+    if (getchar() == 'y')
         createBigFile("testfilebig.nc");
-    }
     return 0;
 }
