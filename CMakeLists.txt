@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 2.6)
 project(ncDataReader2)
 
-set(NCDR_VERSION "2.2.5")
+set(NCDR_VERSION "2.2.6")
 
 option(BUILD_SHARED_LIB "build a shared library" OFF)
 
 option(NC_NOCHECK "disable error handling functions (not recommended!)" OFF)
+
+if(WIN32)
+  option(WIN32_MSGBOX "show errors with a MessageBox on windows" ON)
+endif(WIN32)
 
 if(BUILD_SHARED_LIB)
   set(LIB_BUILD_TYPE "SHARED")
@@ -25,6 +29,9 @@ endif(NC_NOCHECK)
 
 if(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+  if(WIN32_MSGBOX)
+    add_definitions(-DWIN32_MSGBOX)
+  endif(WIN32_MSGBOX)
 endif(WIN32)
 
 configure_file("config.h.in" "config.h")
