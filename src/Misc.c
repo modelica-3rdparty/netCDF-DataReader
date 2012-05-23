@@ -38,12 +38,23 @@ char DLL_EXPORT *ncDataReader2Version() {
 
 #ifndef NC_NOCHECK
 #include <stdio.h>
+#ifdef _WIN32
+#include <Windows.h>
+#endif /* _WIN32 */
 
-/* default error handler, will print message and exit */
+/* default error handler
+   Windows: show message dialog box and exit
+   other systems: write msg to stderr and exit */
 void _defaultHandler(int n, char *msg) {
-    fprintf(stderr, "ERROR | %d | %s\n", n, msg);
+#ifdef _WIN32
+    char TMP[101];
+    snprintf(TMP, 100, "ERROR | %d | %s\n", n, msg);
+    MessageBox(NULL, TMP, "Fatal exception in ncDataReader2", MB_OK | MB_ICONSTOP | MB_TASKMODAL);
+#else /* not _WIN32 */
+    fprintf(stderr, "ncDataReader2 | ERROR | %d | %s\n", n, msg);
     fflush(stderr);
-    exit(1);
+#endif /* _WIN32 */
+    exit(n);
 }
 
 static NcErrorHandler error_handler = _defaultHandler;
@@ -54,7 +65,7 @@ NcErrorHandler DLL_EXPORT ncSetErrorHandler(NcErrorHandler newHandler) {
     return tmp;
 }
 
-/* catch and handle netcdf's return values */
+/* catch and handle netCDF's return values */
 int DLL_EXPORT ncError(int status) {
     if (status == NC_NOERR) return 0;
     if (error_handler) {
