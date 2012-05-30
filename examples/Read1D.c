@@ -32,7 +32,7 @@ void testAuto(void) {
 
 void testDefaultEP(void) {
     NcDataSet1D *dset;
-    NcVar1D *vdis, *vlin, *vsin, *vaki;
+    NcVar1D *vdis, *vlin, *vsin, *vcos, *vaki;
     double x, start, end, step;
     FILE *outf = fopen("data_1D_default.dat", "w");
     if (!outf) {
@@ -44,22 +44,26 @@ void testDefaultEP(void) {
     vdis = ncVar1DNew(dset, "test1D", IpDiscrete, LtFull);
     vlin = ncVar1DNew(dset, "test1D", IpLinear, LtFull);
     vsin = ncVar1DNew(dset, "test1D", IpSinSteps, LtFull);
+    vcos = ncVar1DNew(dset, "test1D", IpCosWin, LtFull);
     vaki = ncVar1DNew(dset, "test1D", IpAkima, LtFull);
 
     ncVar1DSetOption(vsin, OpVarSmoothing, 0.01);
+    ncVar1DSetOption(vcos, OpVarWindowSize, 0.2);
     ncVar1DSetOption(vaki, OpVarParameterCacheSize, 10);
 
     start = dset->min - 0.3 * (dset->max - dset->min);
     end   = dset->max + 0.3 * (dset->max - dset->min);
     step  = 0.0001 *(end - start);
     for (x = start; x < end; x+= step) {
-        fprintf(outf, "%g\t%g\t%g\t%g\t%g\n", x, ncVar1DGet(vdis, x), 
-               ncVar1DGet(vlin, x), ncVar1DGet(vsin, x), ncVar1DGet(vaki, x));
+        fprintf(outf, "%g\t%g\t%g\t%g\t%g\t%g\n", x, ncVar1DGet(vdis, x), 
+               ncVar1DGet(vlin, x), ncVar1DGet(vsin, x), ncVar1DGet(vcos, x),
+               ncVar1DGet(vaki, x));
     }
     fclose(outf);
     ncVar1DFree(vdis);
     ncVar1DFree(vlin);
     ncVar1DFree(vsin);
+    ncVar1DFree(vcos);
     ncVar1DFree(vaki);
     ncDataSet1DFree(dset);
 }
@@ -67,7 +71,7 @@ void testDefaultEP(void) {
 
 void testPeriodicEP(void) {
     NcDataSet1D *dset;
-    NcVar1D *vdis, *vlin, *vsin, *vaki;
+    NcVar1D *vdis, *vlin, *vsin, *vcos, *vaki;
     double x, start, end, step;
     FILE *outf = fopen("data_1D_periodic.dat", "w");
     if (!outf) {
@@ -79,22 +83,26 @@ void testPeriodicEP(void) {
     vdis = ncVar1DNew(dset, "test1D", IpDiscrete, LtFull);
     vlin = ncVar1DNew(dset, "test1D", IpLinear, LtFull);
     vsin = ncVar1DNew(dset, "test1D", IpSinSteps, LtFull);
+    vcos = ncVar1DNew(dset, "test1D", IpCosWin, LtFull);
     vaki = ncVar1DNew(dset, "test1D", IpAkima, LtFull);
 
     ncVar1DSetOption(vsin, OpVarSmoothing, 0.01);
+    ncVar1DSetOption(vcos, OpVarWindowSize, 0.2);
     ncVar1DSetOption(vaki, OpVarParameterCacheSize, 10);
 
     start = dset->min - 3.0 * (dset->max - dset->min);
     end   = dset->max + 3.0 * (dset->max - dset->min);
     step  = 0.0001 *(end - start);
     for (x = start; x < end; x+= step) {
-        fprintf(outf, "%g\t%g\t%g\t%g\t%g\n", x, ncVar1DGet(vdis, x), 
-               ncVar1DGet(vlin, x), ncVar1DGet(vsin, x), ncVar1DGet(vaki, x));
+        fprintf(outf, "%g\t%g\t%g\t%g\t%g\t%g\n", x, ncVar1DGet(vdis, x), 
+               ncVar1DGet(vlin, x), ncVar1DGet(vsin, x), ncVar1DGet(vcos, x),
+               ncVar1DGet(vaki, x));
     }
     fclose(outf);
     ncVar1DFree(vdis);
     ncVar1DFree(vlin);
     ncVar1DFree(vsin);
+    ncVar1DFree(vcos);
     ncVar1DFree(vaki);
     ncDataSet1DFree(dset);
 }

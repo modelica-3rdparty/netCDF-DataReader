@@ -1,7 +1,8 @@
 # ncDataReader2 library - the main target
 add_library(ncDataReader2 ${LIB_BUILD_TYPE}
   Misc.c Lookup.c Chain.c ncVar1D.c ncDataSet1D.c
-  IpLinear.c IpSinSteps.c IpAkima.c ncScattered2D.c csa.c svd.c
+  IpLinear.c IpSinSteps.c IpAkima.c IpCosWin.c 
+  ncScattered2D.c csa.c svd.c
   ncDataReaderEA.c StringHashTable.c
 )
 target_link_libraries(ncDataReader2 ${NC_LIB})

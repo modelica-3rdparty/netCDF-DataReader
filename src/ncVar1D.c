@@ -26,6 +26,7 @@
 #include "IpLinear.h"
 #include "IpSinSteps.h"
 #include "IpAkima.h"
+#include "IpCosWin.h"
 
 struct _valueCacheData {
     bool valid;
@@ -156,6 +157,8 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
             inter = IpLinear;
         else if (strcmp(i, NCATT_IP_SINSTEPS) == 0)
             inter = IpSinSteps;
+        else if (strcmp(i, NCATT_IP_COSWIN) == 0)
+            inter = IpCosWin;
         else
             inter = IpAkima;
         free(i);
@@ -165,6 +168,7 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
     var->scale[0]  = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_SCALE_FACTOR, 1.0);
     var->scale[1]  = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_ADD_OFFSET, 0.0);
     var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_SMOOTHING, 0.0);
+    var->windowSize= ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_WINDOW_SIZE, 1.0);
     /* initialize value cache */
     var->valueCache = NULL;
     if ((l = ncGetAttributeLongDefault(dataSet->fileId, ncV, NCATT_VALUE_CACHE, 0)) > 0)
@@ -237,6 +241,8 @@ double DLL_EXPORT ncVar1DGet(NcVar1D *var, double x) {
                 y = ncVar1DGetAkima(var, x); break;
             case IpSinSteps:
                 y = ncVar1DGetSinSteps(var, x); break;
+            case IpCosWin:
+                y = ncVar1DGetCosWin(var, x); break;
             default:
                 /* should never happen! */
                 y = x;
@@ -340,6 +346,12 @@ int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
                 res = 1;
             }
             break;
+        case OpVarWindowSize:
+            if (var->inter == IpCosWin) {
+                var->windowSize = va_arg(ap, double);
+                res = 1;
+            }
+            break;
         case OpVarScaling:
             var->scale[0] = va_arg(ap, double);
             var->scale[1] = va_arg(ap, double);
@@ -410,6 +422,9 @@ void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var, FILE *f) {
             break;
         case IpSinSteps:
             fprintf(f, "sinsteps\n");
+            break;
+        case IpCosWin:
+            fprintf(f, "coswin\n");
             break;
         case IpAkima:
             fprintf(f, "akima\n");

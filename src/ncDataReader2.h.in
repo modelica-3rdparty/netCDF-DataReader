@@ -83,6 +83,7 @@ typedef enum {false=0, true=1} bool;
 #define NCATT_IP_LINEAR       "linear"
 #define NCATT_IP_DISCRETE     "discrete"
 #define NCATT_IP_SINSTEPS     "sinsteps"
+#define NCATT_IP_COSWIN       "coswin"
 
 #define NCATT_LOAD_TYPE       "load_type"
 #define NCATT_LT_AUTO         "auto"
@@ -96,6 +97,7 @@ typedef enum {false=0, true=1} bool;
 #define NCATT_PARAMETER_CACHE "parameter_cache"
 #define NCATT_VALUE_CACHE     "value_cache"
 #define NCATT_SMOOTHING       "smoothing"
+#define NCATT_WINDOW_SIZE     "window_size"
 
 #define NCATT_CSA_NPMIN       "csa_npmin"
 #define NCATT_CSA_NPMAX       "csa_npmax"
@@ -110,7 +112,7 @@ typedef enum {false=0, true=1} bool;
 typedef enum {EpAuto, EpDefault, EpPeriodic} Extrapolation;
 
 /* interpolation types */
-typedef enum {IpAuto, IpAkima, IpLinear, IpDiscrete, IpSinSteps} Interpolation;
+typedef enum {IpAuto, IpAkima, IpLinear, IpDiscrete, IpSinSteps, IpCosWin} Interpolation;
 
 /* load types */
 typedef enum {LtAuto, LtFull, LtChunk, LtNone} LoadType;
@@ -149,6 +151,7 @@ typedef struct {
     NcDataSet1D *dataSet;  /* dataset we depend on */
     int varId;             /* netcdf variable id */
     double smoothing;      /* smoothing value */
+    double windowSize;     /* window size for coswin */
     double scale[2];       /* scale values */
     double transition;     /* first value cached, may be needed by EpPeriodic */
     Interpolation inter;   /* interpolation type */
@@ -164,7 +167,7 @@ typedef struct {
 } NcVar1D;
 
 /* variable options */
-typedef enum {OpVarChunkSize, OpVarScaling, OpVarParameterCacheSize, OpVarValueCacheSize, OpVarSmoothing} VarOption;
+typedef enum {OpVarChunkSize, OpVarScaling, OpVarParameterCacheSize, OpVarValueCacheSize, OpVarSmoothing, OpVarWindowSize} VarOption;
 
 NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interpolation inter, LoadType loadType);
 double  DLL_EXPORT  ncVar1DGet(NcVar1D *var, double x);
