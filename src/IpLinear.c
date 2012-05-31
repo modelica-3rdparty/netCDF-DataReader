@@ -87,23 +87,22 @@ static INLINE void linearCacheSet(Item **cache, size_t i, double *p) {
 }
 
 double ncVar1DGetLinear(NcVar1D *var, double x) {
-    size_t i, j;
+    size_t i;
     double xi, xj, yi, yj, par[2];
     i = ncDataSet1DSearch(var->dataSet, &x);
     if (i == var->dataSet->dim-1) i--;
-    j = i+1;
     if (! linearCacheSearch((Item *)(var->parameterCache), i, par)) {
         var->pCacheStat[1]++;
         xi = ncDataSet1DGetItem(var->dataSet, i);
-        xj = ncDataSet1DGetItem(var->dataSet, j);
         yi = ncVar1DGetItem(var, i);
-        yj = ncVar1DGetItem(var, j);
+        xj = ncDataSet1DGetItem(var->dataSet, ++i);
+        yj = ncVar1DGetItem(var, i);
         assert((xi != xj));
         par[0] = (yj-yi) / (xj-xi);
         par[1] = yi-par[0]*xi;
         if (var->parameterCache)
             /* store values in cache */
-            linearCacheSet((Item **)(&(var->parameterCache)), i, par);
+            linearCacheSet((Item **)(&(var->parameterCache)), --i, par);
     } else
         var->pCacheStat[0]++;
     return par[0]*x+par[1];

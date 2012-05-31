@@ -53,7 +53,7 @@ void testEP(Extrapolation extra, char *fileName) {
 
     start = dset->min - 0.3 * (dset->max - dset->min);
     end   = dset->max + 0.3 * (dset->max - dset->min);
-    step  = 0.0001 *(end - start);
+    step  = 0.00001 *(end - start);
     for (x = start; x < end; x+= step) {
         fprintf(outf, "%g\t%g\t%g\t%g\t%g\t%g\n", x, ncVar1DGet(vdis, x), 
                ncVar1DGet(vlin, x), ncVar1DGet(vsin, x), ncVar1DGet(vcos, x),
