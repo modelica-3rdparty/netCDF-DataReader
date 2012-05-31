@@ -168,7 +168,7 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
                 li = i - 2 + j;
                 if (li < 0) li += d;
                 if (li >= d) li = li % d;
-                AD->X[j] = ncDataSet1DGetItem(var->dataSet, li);
+                AD->X[j] = ncDataSet1DGetItem(var->dataSet, li); /* FIXME! */
                 AD->Y[j] = ncVar1DGetItem(var, li);
             }
             k = 2;
@@ -185,7 +185,7 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
                 AD->X[j] = ncDataSet1DGetItem(var->dataSet, li);
                 AD->Y[j] = ncVar1DGetItem(var, li);
             }
-            k = d-i+2;
+            k = 6 + i - d;
         }
         akimaCalc(AD);
         par[0] = AD->X[k];
