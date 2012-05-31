@@ -167,8 +167,10 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
     var->inter = inter;
     var->scale[0]  = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_SCALE_FACTOR, 1.0);
     var->scale[1]  = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_ADD_OFFSET, 0.0);
-    var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_SMOOTHING, 0.0);
-    var->windowSize= ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_WINDOW_SIZE, 1.0);
+    if (inter == IpSinSteps)
+        var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_SMOOTHING, 0.0);
+    if (inter == IpCosWin)
+        var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_WINDOW_SIZE, 0.0);
     /* initialize value cache */
     var->valueCache = NULL;
     if ((l = ncGetAttributeLongDefault(dataSet->fileId, ncV, NCATT_VALUE_CACHE, 0)) > 0)
@@ -348,7 +350,7 @@ int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
             break;
         case OpVarWindowSize:
             if (var->inter == IpCosWin) {
-                var->windowSize = va_arg(ap, double);
+                var->smoothing = va_arg(ap, double);
                 res = 1;
             }
             break;

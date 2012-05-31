@@ -77,6 +77,7 @@ typedef enum {false=0, true=1} bool;
 #define NCATT_EXTRAPOLATION   "extrapolation"
 #define NCATT_EP_DEFAULT      "default"
 #define NCATT_EP_PERIODIC     "periodic"
+#define NCATT_EP_CONSTANT     "constant"
 
 #define NCATT_INTERPOLATION   "interpolation"
 #define NCATT_IP_AKIMA        "akima"
@@ -109,7 +110,7 @@ typedef enum {false=0, true=1} bool;
 /* * * *       1D functions       * * * */
 
 /* extrapolation types */
-typedef enum {EpAuto, EpDefault, EpPeriodic} Extrapolation;
+typedef enum {EpAuto, EpDefault, EpPeriodic, EpConstant} Extrapolation;
 
 /* interpolation types */
 typedef enum {IpAuto, IpAkima, IpLinear, IpDiscrete, IpSinSteps, IpCosWin} Interpolation;
@@ -150,8 +151,7 @@ void        DLL_EXPORT  ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f)
 typedef struct {
     NcDataSet1D *dataSet;  /* dataset we depend on */
     int varId;             /* netcdf variable id */
-    double smoothing;      /* smoothing value */
-    double windowSize;     /* window size for coswin */
+    double smoothing;      /* smoothing value or window size */
     double scale[2];       /* scale values */
     double transition;     /* first value cached, may be needed by EpPeriodic */
     Interpolation inter;   /* interpolation type */

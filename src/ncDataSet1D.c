@@ -60,6 +60,8 @@ NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName
         char *e = ncGetAttributeTextDefault(ncF, ncV, NCATT_EXTRAPOLATION, NCATT_EP_DEFAULT);
         if (strcmp(e, NCATT_EP_PERIODIC) == 0)
             extra = EpPeriodic;
+        else if (strcmp(e, NCATT_EP_CONSTANT) == 0)
+            extra = EpConstant;
         else
             extra = EpDefault;
         free(e);
@@ -132,7 +134,7 @@ static INLINE double _adjustRange(double x, double s, double e) {
 size_t DLL_EXPORT ncDataSet1DSearch(NcDataSet1D *dataSet, double *x) {
     if (dataSet->extra == EpPeriodic)
         *x = _adjustPeriodic(*x, dataSet->min, dataSet->max);
-    else if (dataSet->extra == EpDefault)
+    else if (dataSet->extra == EpConstant)
         *x = _adjustRange(*x, dataSet->min, dataSet->max);
     return ncDataSet1DLookupValue(dataSet, *x);
 }
@@ -245,6 +247,9 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
     switch (dataSet->extra) {
         case EpPeriodic:
             fprintf(f, "periodic\n");
+            break;
+        case EpConstant:
+            fprintf(f, "constant\n");
             break;
         case EpDefault:
             fprintf(f, "default (depends on interpolation)\n");

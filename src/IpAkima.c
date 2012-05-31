@@ -149,7 +149,7 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
     size_t i, d, k;
     int j;
     long int li;
-    double par[5], tmp=x;
+    double par[5], tmp;
     if (! AD) {
         AD = malloc(sizeof(AkimaData));
         AD->dim = 6;
@@ -160,7 +160,6 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
         AD->D = malloc(6*sizeof(double));
     }
     i = ncDataSet1DSearch(var->dataSet, &x);
-    if (var->dataSet->extra == EpDefault) x = tmp;
     if (! akimaCacheSearch((Item *)(var->parameterCache), i, par)) {
         var->pCacheStat[1]++;
         d = var->dataSet->dim;

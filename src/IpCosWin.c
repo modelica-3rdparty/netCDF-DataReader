@@ -20,6 +20,7 @@
 #include <math.h>
 #include "../config.h"
 #include "IpSinSteps.h"
+#include <stdio.h>
 
 
 static INLINE double cosWinIntegral(double a, double b, double x) {
@@ -30,12 +31,16 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     size_t i, j, k;
     double x0, x1, xstart, xend, y, a, b, ta, tb, xk, yk, xk1, yk1, ws;
     
-    ws = var->windowSize;
+    ws = var->smoothing;
     xstart = x - 0.5*ws;
     xend   = x + 0.5*ws;
-    
+
     i = ncDataSet1DSearch(var->dataSet, &xstart);
+    if (i == var->dataSet->dim-1) i--;
     j = ncDataSet1DSearch(var->dataSet, &xend);
+    if (j >= var->dataSet->dim-1) j--;
+
+    printf(">> %g %g %g %ld %ld\n", x, xstart, xend, i, j);
     
     xk1 = ncDataSet1DGetItem(var->dataSet, i);
     yk1 = ncVar1DGetItem(var, i);
@@ -45,9 +50,9 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
         yk  = yk1;
         xk1 = ncDataSet1DGetItem(var->dataSet, k+1);
         yk1 = ncVar1DGetItem(var, k+1);
-        
         x0 = ((xstart <= xk) ? xk : xstart);
         x1 = ((xend <= xk1) ? xend : xk1);
+        printf("   %ld %ld %ld %g %g\n", i, j, k, x0, x1);
         a = ((xk == xk1) ? 0.0 : (yk1-yk) / (xk1 - xk)); 
         b  = yk - a * xk;
         ta = a * ws / (2.0 * M_PI);

@@ -23,17 +23,11 @@
 
 double ncVar1DGetSinSteps(NcVar1D *var, double x) {
     size_t i, j;
-    double xi, xj, yi, yj, dtmp=x;
+    double xi, xj, yi, yj, dtmp;
     i = ncDataSet1DSearch(var->dataSet, &x);
     j = i+1;
-    if (j >= var->dataSet->dim) {
-        if (var->dataSet->extra == EpPeriodic)
-            j = 0;
-        else {
-            j = i;
-            x = dtmp;
-        }
-    }
+    if (j >= var->dataSet->dim)
+        j = ((var->dataSet->extra == EpPeriodic) ? 0 : i);
     xi = ncDataSet1DGetItem(var->dataSet, i);
     xj = ncDataSet1DGetItem(var->dataSet, j);
     if ((x >= (xi + var->smoothing)) && (x <= (xj - var->smoothing))) {
@@ -42,14 +36,9 @@ double ncVar1DGetSinSteps(NcVar1D *var, double x) {
     else {
         if (x < xi+var->smoothing) {
             j = i; 
-            if (i == 0) {
-                if (var->dataSet->extra == EpPeriodic)
-                    i = var->dataSet->dim-2;
-                else {
-                    i = j;
-                    x = dtmp;
-                }
-            } else
+            if (i == 0)
+                i = ((var->dataSet->extra == EpPeriodic) ? var->dataSet->dim-2 : j);
+            else
                 i = i-1;
             xj = xi;
             xi = ncDataSet1DGetItem(var->dataSet, i);
