@@ -147,6 +147,7 @@ void akimaCalc(AkimaData *a) {
 
 double ncVar1DGetAkima(NcVar1D *var, double x) {
     size_t i, d, k;
+    NcDataSet1D *dataSet;
     int j;
     long int li;
     double par[5], tmp;
@@ -159,30 +160,39 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
         AD->C = malloc(6*sizeof(double));
         AD->D = malloc(6*sizeof(double));
     }
-    i = ncDataSet1DSearch(var->dataSet, &x);
+    dataSet = var->dataSet;
+    i = ncDataSet1DSearch(dataSet, &x);
     if (! akimaCacheSearch((Item *)(var->parameterCache), i, par)) {
         var->pCacheStat[1]++;
-        d = var->dataSet->dim;
-        if ((var->dataSet->extra == EpPeriodic) || ((i >= 2) && (i+4 <= d))) {
+        d = dataSet->dim;
+        if ((dataSet->extra == EpPeriodic) || ((i >= 2) && (i+4 <= d))) {
             for (j = 0; j < 6; j++) {
                 li = i - 2 + j;
-                if (li < 0) li += d;
-                if (li >= d) li = li % d;
-                AD->X[j] = ncDataSet1DGetItem(var->dataSet, li); /* FIXME! */
-                AD->Y[j] = ncVar1DGetItem(var, li);
+                if (li < 0) {
+                    li += d - 1;
+                    AD->X[j] = ncDataSet1DGetItem(dataSet, li) + dataSet->min - dataSet->max;
+                    AD->Y[j] = ncVar1DGetItem(var, li);
+                } else if (li >= d) {
+                    li = (li % d) + 1;
+                    AD->X[j] = ncDataSet1DGetItem(dataSet, li) - dataSet->min + dataSet->max;
+                    AD->Y[j] = ncVar1DGetItem(var, li);
+                } else {
+                    AD->X[j] = ncDataSet1DGetItem(dataSet, li);
+                    AD->Y[j] = ncVar1DGetItem(var, li);
+                }
             }
             k = 2;
         } else if (i < 2) {
             for (j = 0; j < 6; j++) {
                 li = j;
-                AD->X[j] = ncDataSet1DGetItem(var->dataSet, li);
+                AD->X[j] = ncDataSet1DGetItem(dataSet, li);
                 AD->Y[j] = ncVar1DGetItem(var, li);
             }
             k = i;
         } else if (i+4 > d) {
             for (j = 0; j < 6; j++) {
                 li = d - 6 + j;
-                AD->X[j] = ncDataSet1DGetItem(var->dataSet, li);
+                AD->X[j] = ncDataSet1DGetItem(dataSet, li);
                 AD->Y[j] = ncVar1DGetItem(var, li);
             }
             k = 6 + i - d;
