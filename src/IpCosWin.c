@@ -21,38 +21,195 @@
 #include "../config.h"
 #include "IpSinSteps.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
 
+static double *xBuf=NULL;
+static double *yBuf=NULL;
+static size_t bufSize=0;
 
 static INLINE double cosWinIntegral(double a, double b, double x) {
   return 0.5 * (sin(x)*(b + a*x) + a*cos(x) + 0.5*a*x*x + b*x);
 }
 
+
+static INLINE void resizeBuffer(size_t dim) {
+    if (bufSize < dim) {
+        xBuf = realloc(xBuf, dim*sizeof(double));
+        yBuf = realloc(yBuf, dim*sizeof(double));
+    }
+}
+
+
 double ncVar1DGetCosWin(NcVar1D *var, double x) {
     size_t i, j, k;
     double x0, x1, xstart, xend, y, a, b, ta, tb, xk, yk, xk1, yk1, ws;
-    
+    NcDataSet1D *dataSet;
+
+    dataSet = var->dataSet;
     ws = var->smoothing;
-    xstart = x - 0.5*ws;
-    xend   = x + 0.5*ws;
+    assert(ws < (dataSet->max - dataSet->min));
 
-    i = ncDataSet1DSearch(var->dataSet, &xstart);
-    if (i == var->dataSet->dim-1) i--;
-    j = ncDataSet1DSearch(var->dataSet, &xend);
-    if (j >= var->dataSet->dim-1) j--;
-
-    /* printf(">> %g %g %g %ld %ld\n", x, xstart, xend, i, j); */
+    a = xstart = x - 0.5*ws;
+    b = xend   = x + 0.5*ws;
     
-    xk1 = ncDataSet1DGetItem(var->dataSet, i);
-    yk1 = ncVar1DGetItem(var, i);
+    i = ncDataSet1DSearch(dataSet, &xstart);
+    if (i == dataSet->dim-1) i--;
+    j = ncDataSet1DSearch(dataSet, &xend);
+    if (j >= dataSet->dim-1) j--;
+
+    if (dataSet->extra == EpConstant) {
+        /* reset borders */
+        xstart = a;
+        xend = b;
+    }
+
+    if ((xstart >= dataSet->min) && (xend <= dataSet->max)) {
+        /* simple case: completely inside */
+        xk1 = ncDataSet1DGetItem(dataSet, i);
+        yk1 = ncVar1DGetItem(var, i);
+        y = 0.0;
+        for (k=i; k <= j; k++){
+            xk  = xk1;
+            yk  = yk1;
+            xk1 = ncDataSet1DGetItem(dataSet, k+1);
+            yk1 = ncVar1DGetItem(var, k+1);
+            x0 = ((xstart <= xk) ? xk : xstart);
+            x1 = ((xend <= xk1) ? xend : xk1);
+            a = ((xk == xk1) ? 0.0 : (yk1-yk) / (xk1 - xk)); 
+            b  = yk - a * xk;
+            ta = a * ws / (2.0 * M_PI);
+            tb = b + a * x;
+            y += cosWinIntegral(ta, tb, ((x1-x)*2.0*M_PI/ws));
+            y -= cosWinIntegral(ta, tb, ((x0-x)*2.0*M_PI/ws));
+        }
+        return y / M_PI;
+    }
+    if (xend < dataSet->min) {
+        /* completely left outside of interval */
+        switch (dataSet->extra) {
+            case EpConstant:
+                return ncVar1DGetItem(var, 0);
+            case EpDefault:
+                xk = ncDataSet1DGetItem(dataSet, 0);
+                yk = ncVar1DGetItem(var, 0);
+                xk1 = ncDataSet1DGetItem(dataSet, 1);
+                yk1 = ncVar1DGetItem(var, 1);
+                assert(xk != xk1);
+                a = (yk1-yk)/(xk1 - xk);
+                return a*x + yk-a*xk;
+        }
+    }
+    if (xstart > dataSet->max) {
+        /* completely right outside of interval */
+        switch (dataSet->extra) {
+            case EpConstant:
+                return ncVar1DGetItem(var, dataSet->dim-1);
+            case EpDefault:
+                k = dataSet->dim-2;
+                xk = ncDataSet1DGetItem(dataSet, k);
+                yk = ncVar1DGetItem(var, k);
+                k++;
+                xk1 = ncDataSet1DGetItem(dataSet, k);
+                yk1 = ncVar1DGetItem(var, k);
+                assert(xk != xk1);
+                a = (yk1-yk)/(xk1 - xk);
+                return a*x + yk-a*xk;
+        }
+    }
+    /* so we overlap the borders: use temporary buffers */
+    switch (dataSet->extra) {
+        /* FIXME! */
+        case EpPeriodic:
+            break;
+        case EpDefault:
+            break;
+        case EpConstant:
+            break;
+    }
+    return 0;
+}
+
+/*
+
+double ncVar1DGetCosWin(NcVar1D *var, double x) {
+    size_t i, j, k;
+    double x0, x1, xstart, xend, y, a, b, ta, tb, xk, yk, xk1, yk1, ws;
+    NcDataSet1D *dataSet;
+
+    dataSet = var->dataSet;
+    ws = var->smoothing;
+    assert(ws < (dataSet->max - dataSet->min));
+
+    a = xstart = x - 0.5*ws;
+    b = xend   = x + 0.5*ws;
+    
+    i = ncDataSet1DSearch(dataSet, &xstart);
+    if (i == dataSet->dim-1) i--;
+    j = ncDataSet1DSearch(dataSet, &xend);
+    if (j >= dataSet->dim-1) j--;
+
+    if (dataSet->extra != EpPeriodic) {
+        xstart = a;
+        xend = b;
+    }
+    if (xstart < dataSet->min) {
+        if (xend <= dataSet->mn) {
+            switch (dataSet->extra) {
+                case EpConstant:
+                    return ncVar1DGetItem(var, 0);
+                case EpDefault:
+                    xk = ncDataSet1DGetItem(dataSet, 0);
+                    yk = ncVar1DGetItem(var, 0);
+                    xk1 = ncDataSet1DGetItem(dataSet, 1);
+                    yk1 = ncVar1DGetItem(var, 1);
+                    assert(xk != xk1);
+                    a = (yk1-yk)/(xk1 - xk);
+                    return a*x + yk-a*xk;
+            }
+        }
+        xk1 = xstart;
+        switch (dataSet->extra) {
+            case EpConstant:
+                xk1 = ncVar1DGetItem(var, i);
+                break;
+            case EpDefault:
+                xk = ncDataSet1DGetItem(dataSet, 0);
+                yk = ncVar1DGetItem(var, 0);
+                xk1 = ncDataSet1DGetItem(dataSet, 1);
+                yk1 = ncVar1DGetItem(var, 1);
+                assert(xk != xk1);
+                a = (yk1-yk)/(xk1 - xk);
+                return a*x + yk-a*xk;
+        }
+    } else {
+        if (xstart > dataSet->max) {
+            switch (dataSet->extra) {
+                case EpConstant:
+                    return ncVar1DGetItem(var, dataSet->dim-1);
+                case EpDefault:
+                    k = dataSet->dim-2;
+                    xk = ncDataSet1DGetItem(dataSet, k);
+                    yk = ncVar1DGetItem(var, k);
+                    k++;
+                    xk1 = ncDataSet1DGetItem(dataSet, k);
+                    yk1 = ncVar1DGetItem(var, k);
+                    assert(xk != xk1);
+                    a = (yk1-yk)/(xk1 - xk);
+                    return a*x + yk-a*xk;
+        } else {
+            xk1 = ncDataSet1DGetItem(dataSet, i);
+            yk1 = ncVar1DGetItem(var, i);
+        }
+    }
     y = 0.0;
     for (k=i; k <= j; k++){
         xk  = xk1;
         yk  = yk1;
-        xk1 = ncDataSet1DGetItem(var->dataSet, k+1);
+        xk1 = ncDataSet1DGetItem(dataSet, k+1);
         yk1 = ncVar1DGetItem(var, k+1);
         x0 = ((xstart <= xk) ? xk : xstart);
         x1 = ((xend <= xk1) ? xend : xk1);
-        /* printf("   %ld %ld %ld %g %g\n", i, j, k, x0, x1); */
         a = ((xk == xk1) ? 0.0 : (yk1-yk) / (xk1 - xk)); 
         b  = yk - a * xk;
         ta = a * ws / (2.0 * M_PI);
@@ -62,3 +219,5 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     }
     return y / M_PI;
 }
+
+*/
