@@ -50,20 +50,20 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     ws = var->smoothing;
     assert(ws < (dataSet->max - dataSet->min));
 
-    a = xstart = x - 0.5*ws;
-    b = xend   = x + 0.5*ws;
+    xstart = x - 0.5*ws;
+    xend   = x + 0.5*ws;
     
     i = ncDataSet1DSearch(dataSet, &xstart);
     if (i == dataSet->dim-1) i--;
     j = ncDataSet1DSearch(dataSet, &xend);
     if (j >= dataSet->dim-1) j--;
-
+    if (dataSet->extra == EpPeriodic) x = 0.5 * (xstart+xend);
     if (dataSet->extra == EpConstant) {
-        /* reset borders */
-        xstart = a;
-        xend = b;
+        /* reset borders to original value */
+        xstart = x - 0.5*ws;
+        xend   = x + 0.5*ws;
     }
-
+    
     if ((xstart >= dataSet->min) && (xend <= dataSet->max)) {
         /* simple case: completely inside */
         xk1 = ncDataSet1DGetItem(dataSet, i);
