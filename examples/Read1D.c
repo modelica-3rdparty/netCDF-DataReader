@@ -71,9 +71,9 @@ void testEP(Extrapolation extra, char *fileName) {
 
 
 int main(void) {
-  testEPAuto();
-  testEP(EpDefault,  "data_1D_default.dat");
-  testEP(EpConstant, "data_1D_constant.dat");
-  testEP(EpPeriodic, "data_1D_periodic.dat");
-  return 0;
+    testEPAuto();
+    testEP(EpDefault,  "data_1D_default.dat");
+    testEP(EpConstant, "data_1D_constant.dat");
+    testEP(EpPeriodic, "data_1D_periodic.dat");
+    return 0;
 }
