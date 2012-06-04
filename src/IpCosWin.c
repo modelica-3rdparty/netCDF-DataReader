@@ -44,7 +44,7 @@ static INLINE void resizeBuffer(size_t dim) {
 
 
 double ncVar1DGetCosWin(NcVar1D *var, double x) {
-    size_t i, j, k, l, m;
+    size_t i, j, k, l, m, n;
     double x0, x1, xstart, xend, y, a, b, ta, tb, xk, yk, xk1, yk1, ws;
     NcDataSet1D *dataSet;
 
@@ -127,17 +127,28 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     /* still here? So we overlap the borders: use temporary buffers */
     switch (dataSet->extra) {
         case EpPeriodic:
-            l = dataSet->dim - i + j + 2;
+            l = dataSet->dim - i + j + 1;
             resizeBuffer(l);
             m = 0;
-            for (k=i; k<dataSet->dim; k++) {
+            n = ((x-dataSet->min) < (dataSet->max-x) ? 0 : 1); // x is right or left of transition
+            for (k=i; k < dataSet->dim; k++) {
                 xBuf[m] = ncDataSet1DGetItem(dataSet, k);
+                if (! n) {
+                    xBuf[m] += dataSet->min;
+                    xBuf[m] -= dataSet->max;
+                }
                 yBuf[m++] = ncVar1DGetItem(var, k);
             }
-            for (k=0; k<=j+1; k++) {
+            for (k=1; k<=j+1; k++) {
                 xBuf[m] = ncDataSet1DGetItem(dataSet, k);
+                if (n) {
+                    xBuf[m] += dataSet->max;
+                    xBuf[m] -= dataSet->min;
+                }
                 yBuf[m++] = ncVar1DGetItem(var, k);
             }
+            if (n) xend += dataSet->max - dataSet->min;
+            else xstart += dataSet->min - dataSet->max;
             break;
         case EpDefault:
             l = 0;
@@ -148,7 +159,7 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
             /* FIXME! */
             break;
     }
-    printf("%g: %ld\n", x, l);
+    printf("--- %g: [%g %g] (%ld)\n", x, xstart, xend, l);
     for (k=0; k < l; k++)
         printf(" %g ", xBuf[k]);
     printf("\n");
