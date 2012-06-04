@@ -35,14 +35,16 @@ static INLINE double cosWinIntegral(double a, double b, double x) {
 
 static INLINE void resizeBuffer(size_t dim) {
     if (bufSize < dim) {
+        printf(">>> %ld\n", dim);
         xBuf = realloc(xBuf, dim*sizeof(double));
         yBuf = realloc(yBuf, dim*sizeof(double));
+        bufSize = dim;
     }
 }
 
 
 double ncVar1DGetCosWin(NcVar1D *var, double x) {
-    size_t i, j, k;
+    size_t i, j, k, l, m;
     double x0, x1, xstart, xend, y, a, b, ta, tb, xk, yk, xk1, yk1, ws;
     NcDataSet1D *dataSet;
 
@@ -57,15 +59,17 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     if (i == dataSet->dim-1) i--;
     j = ncDataSet1DSearch(dataSet, &xend);
     if (j >= dataSet->dim-1) j--;
-    if (dataSet->extra == EpPeriodic) x = 0.5 * (xstart+xend);
     if (dataSet->extra == EpConstant) {
         /* reset borders to original value */
         xstart = x - 0.5*ws;
         xend   = x + 0.5*ws;
     }
     
-    if ((xstart >= dataSet->min) && (xend <= dataSet->max)) {
+    if ((xstart >= dataSet->min) && (xend <= dataSet->max) && (i <= j)) {
         /* simple case: completely inside */
+        if (dataSet->extra == EpPeriodic)
+            /* x has to be adjusted as well */
+            x = 0.5 * (xstart+xend);
         xk1 = ncDataSet1DGetItem(dataSet, i);
         yk1 = ncVar1DGetItem(var, i);
         y = 0.0;
@@ -85,6 +89,7 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
         }
         return y / M_PI;
     }
+    
     if (xend < dataSet->min) {
         /* completely left outside of interval */
         switch (dataSet->extra) {
@@ -100,6 +105,7 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
                 return a*x + yk-a*xk;
         }
     }
+    
     if (xstart > dataSet->max) {
         /* completely right outside of interval */
         switch (dataSet->extra) {
@@ -117,101 +123,44 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
                 return a*x + yk-a*xk;
         }
     }
-    /* so we overlap the borders: use temporary buffers */
+    
+    /* still here? So we overlap the borders: use temporary buffers */
     switch (dataSet->extra) {
-        /* FIXME! */
         case EpPeriodic:
+            l = dataSet->dim - i + j + 2;
+            resizeBuffer(l);
+            m = 0;
+            for (k=i; k<dataSet->dim; k++) {
+                xBuf[m] = ncDataSet1DGetItem(dataSet, k);
+                yBuf[m++] = ncVar1DGetItem(var, k);
+            }
+            for (k=0; k<=j+1; k++) {
+                xBuf[m] = ncDataSet1DGetItem(dataSet, k);
+                yBuf[m++] = ncVar1DGetItem(var, k);
+            }
             break;
         case EpDefault:
+            l = 0;
+            /* FIXME! */
             break;
         case EpConstant:
+            l = 0;
+            /* FIXME! */
             break;
     }
-    return 0;
-}
-
-/*
-
-double ncVar1DGetCosWin(NcVar1D *var, double x) {
-    size_t i, j, k;
-    double x0, x1, xstart, xend, y, a, b, ta, tb, xk, yk, xk1, yk1, ws;
-    NcDataSet1D *dataSet;
-
-    dataSet = var->dataSet;
-    ws = var->smoothing;
-    assert(ws < (dataSet->max - dataSet->min));
-
-    a = xstart = x - 0.5*ws;
-    b = xend   = x + 0.5*ws;
-    
-    i = ncDataSet1DSearch(dataSet, &xstart);
-    if (i == dataSet->dim-1) i--;
-    j = ncDataSet1DSearch(dataSet, &xend);
-    if (j >= dataSet->dim-1) j--;
-
-    if (dataSet->extra != EpPeriodic) {
-        xstart = a;
-        xend = b;
-    }
-    if (xstart < dataSet->min) {
-        if (xend <= dataSet->mn) {
-            switch (dataSet->extra) {
-                case EpConstant:
-                    return ncVar1DGetItem(var, 0);
-                case EpDefault:
-                    xk = ncDataSet1DGetItem(dataSet, 0);
-                    yk = ncVar1DGetItem(var, 0);
-                    xk1 = ncDataSet1DGetItem(dataSet, 1);
-                    yk1 = ncVar1DGetItem(var, 1);
-                    assert(xk != xk1);
-                    a = (yk1-yk)/(xk1 - xk);
-                    return a*x + yk-a*xk;
-            }
-        }
-        xk1 = xstart;
-        switch (dataSet->extra) {
-            case EpConstant:
-                xk1 = ncVar1DGetItem(var, i);
-                break;
-            case EpDefault:
-                xk = ncDataSet1DGetItem(dataSet, 0);
-                yk = ncVar1DGetItem(var, 0);
-                xk1 = ncDataSet1DGetItem(dataSet, 1);
-                yk1 = ncVar1DGetItem(var, 1);
-                assert(xk != xk1);
-                a = (yk1-yk)/(xk1 - xk);
-                return a*x + yk-a*xk;
-        }
-    } else {
-        if (xstart > dataSet->max) {
-            switch (dataSet->extra) {
-                case EpConstant:
-                    return ncVar1DGetItem(var, dataSet->dim-1);
-                case EpDefault:
-                    k = dataSet->dim-2;
-                    xk = ncDataSet1DGetItem(dataSet, k);
-                    yk = ncVar1DGetItem(var, k);
-                    k++;
-                    xk1 = ncDataSet1DGetItem(dataSet, k);
-                    yk1 = ncVar1DGetItem(var, k);
-                    assert(xk != xk1);
-                    a = (yk1-yk)/(xk1 - xk);
-                    return a*x + yk-a*xk;
-        } else {
-            xk1 = ncDataSet1DGetItem(dataSet, i);
-            yk1 = ncVar1DGetItem(var, i);
-        }
-    }
-    y = 0.0;
-    for (k=i; k <= j; k++){
-        xk  = xk1;
-        yk  = yk1;
-        xk1 = ncDataSet1DGetItem(dataSet, k+1);
-        yk1 = ncVar1DGetItem(var, k+1);
-        x0 = ((xstart <= xk) ? xk : xstart);
-        x1 = ((xend <= xk1) ? xend : xk1);
-        a = ((xk == xk1) ? 0.0 : (yk1-yk) / (xk1 - xk)); 
-        b  = yk - a * xk;
+    printf("%g: %ld\n", x, l);
+    for (k=0; k < l; k++)
+        printf(" %g ", xBuf[k]);
+    printf("\n");
+    for (k=0; k < l; k++)
+        printf(" %g ", yBuf[k]);
+    printf("\n");
+    y = 0;
+    for (k=0; k<l; k++){
+        x0 = ((xstart <= xBuf[k]) ? xBuf[k] : xstart);
+        x1 = ((xend <= xBuf[k+1]) ? xend : xBuf[k+1]);
+        a = ((xBuf[k] == xBuf[k+1]) ? 0.0 : (yBuf[k+1]-yBuf[k]) / (xBuf[k+1] - xBuf[k]));
+        b  = yBuf[k] - a * xBuf[k];
         ta = a * ws / (2.0 * M_PI);
         tb = b + a * x;
         y += cosWinIntegral(ta, tb, ((x1-x)*2.0*M_PI/ws));
@@ -219,5 +168,3 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     }
     return y / M_PI;
 }
-
-*/
