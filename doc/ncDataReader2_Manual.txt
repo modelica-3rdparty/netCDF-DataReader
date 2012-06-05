@@ -2,7 +2,7 @@
  ncDataReader2 - User Manual
 =============================
 -------------
-version 2.2.x
+version 2.3.x
 -------------
 
 .. Note: this text is written in the using the "reStructuredText" format. You
@@ -41,7 +41,7 @@ MacOS X.
 Author and License
 ==================
 
-ncDataReader2 was developed by Joerg Raedler (jr@j-raedler.de). The code is
+ncDataReader2 was developed by Joerg Raedler (joerg@j-raedler.de). The code is
 released under the terms of the 'GNU Lesser General License'_. The code in the
 files ``csa.c``, ``csa.h``, ``csa_config.h``, ``svd.c`` and ``svd.h`` was taken
 from the csa_ library which has its own open source license.
@@ -85,7 +85,8 @@ Examples
 
 You will find some examples in the folder ``examples``. You should run 
 ``GenerateFile(.exe)`` first to create the netCDF file the other example 
-programs will need.
+programs will need. ``GenerateBigFile(.exe)`` will create a large file that 
+is used by some of the examples.
 
 A simple example::
 
@@ -152,14 +153,26 @@ By using Akima interpolation with ncDataReader2 you can get a smooth
 interpolation of very large variables by reading only a few values of the 
 required range from the file.
 
-Sine Steps
-~~~~~~~~~~
+Sine Steps (SinSteps)
+~~~~~~~~~~~~~~~~~~~~~
 This is a variation of the discrete method where the steps are smoothed by 
 inserting parts of the sine function. In the middle of an intervall the values
 are still constant (step-like behaviour) but at the intervall boundaries a
 smooth transition is ensured. The amount of smoothing can be configured by 
 defined by an influence radius around the points. The resulting curve is 
-continous and has a continuous first derivative.
+continous and has a continuous first derivative. Strictly speaking, this is not 
+an interpolation method since the data points are usually not met.
+
+Cosine Window (CosWin)
+~~~~~~~~~~~~~~~~~~~~~~
+This is method does also more an approximation than a real interpolation. It 
+will calculate the weighted average of all points and their linear interpolation 
+inside a window. The weighting function is cos(x) (scaled and shifted). 
+
+The result is continuous and has a continuous first derivative. For small 
+windows the curve will follow the linear interpolation with some smoothing 
+around the points. Large windows lead to more smoothing of the dats set. The 
+window size should be much smaller than the data range of the abscissa.
 
 .. image:: Interpolation.png
    :width: 95%
@@ -304,6 +317,8 @@ Possible values for the extrapolation method (``Extrapolation``) are:
    If the first and last values of a NcVar1D are not equal, they will be 
    replaced with an average transition value.
 
+ * ``EpConstant`` - use the border values when outside. 
+
  * ``EpAuto`` - the extrapolation method will be read from the file annotation.
    If not set ``EpDefault`` will be used.
 
@@ -318,8 +333,8 @@ The load type (``LoadType``) can be one of the following:
    ``LARGE_DATASET`` in ``ncDataReader2.h``.
 
  * ``LtChunk`` - load chunks of data on demand. The size can be set with an 
-   option. For a NcDataSet1D this may not be faster than LtNone because of the 
-   interval search.
+   option. For a NcDataSet1D this will usually be slower than ``LtNone`` 
+   because the interval search needs the whole data range.
 
 A NcDataSet1D should be freed with the following function when no more NcVar1D
 is connected to it. This will release all used memory and close netCDF objects
@@ -369,13 +384,17 @@ variable in the file. You may choose the interpolation method
 
  * ``IpSinSteps`` - discrete steps with smoothing by a sine function. The
    smoothing radius can be defined by setting the ``smoothing`` option. If not
-   set, a value of   0.0 will be used which will lead to the same result as
+   set, a value of 0.0 will be used which will lead to the same result as
    ``IpDiscrete``.
 
  * ``IpLinear`` - piecewise linear Interpolation
 
  * ``IpAkima`` - piecewise cubic interpolation
 
+ * ``IpCosWin`` - cossine window approximation. The window size can be defined 
+   by setting the ``window_size`` option. If not set, a value of 1.0 will be 
+   used.
+   
  * ``IpAuto`` - determine the interpolation method from file annotations. If not
    set, ``IpAkima`` is used.
 
@@ -413,6 +432,10 @@ Possible options are:
    for the interpolation method ``IpSinSteps``. This value has to be smaller
    than the smallest interval length of the data set.
 
+ * ``OpVarWindowSize`` - set the following double value as the window size
+   for the interpolation method ``IpCosWin``. This value should be much smaller 
+   than the data range.
+   
  * ``OpVarValueCacheSize`` - set the capacity of the value cache to the
    following integer value.
 
@@ -462,7 +485,7 @@ options are:
    double arguments. This corresponds to the netCDF attributes ``scale_factor``
    and ``add_offset``. This call will scale and shift all three dimensions!
 
- * ``OpScattered2DScalingX``, ``OpScattered2DScalingy``,
+ * ``OpScattered2DScalingX``, ``OpScattered2DScalingY``,
    ``OpScattered2DScalingZ`` - set scaling and offset only in one dimension.
 
  * ``OpScattered2DPointsMin`` - set the npmin parameter for csa
@@ -478,8 +501,8 @@ Error handling
 --------------
 netCDF functions may return errors. Errors are represented by an integer id and
 a message string. The default error handler will print the message to ``stderr``
-and exit the program. You may replace this with your own handler function of the
-form::
+and exit the program, on Win32 systems it will open an error dialog. You may 
+replace this with your own handler function of the form::
 
   void myhandler(int id, char *message);
 
@@ -489,6 +512,17 @@ by calling the function::
 
 This will set the function ``newHandler`` to be the new error handler and return
 a pointer to the previous handler.
+
+
+Access Statistics
+-----------------
+To tune the different optimization parameters some statistics can be dumped::
+
+    void ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f);
+    void ncVar1DDumpStatistics(NcVar1D *var, FILE *f);
+
+This will write some statistics about the data set or the variable to a 
+file. ``f`` may be a writable file pointer or NULL for stdout.
 
 
 Easy API (EA)
@@ -533,6 +567,11 @@ If you want to clean all stored objects of the EA, you may call::
 
   void ncEasyFree();
 
+Access statistics for all open data sets and variables can be dumped with 
+the function::
+    
+    int ncEasyDumpStatistics(const char *fileName);
+
 There are some more functions that return attributes of the netCDF file or of
 variables::
 
@@ -549,9 +588,8 @@ attribute is returned.
 
 Modelica Interface
 ==================
-Have a look at http://www.j-raedler.de/projects/ncDataReader2/ . More 
-documentation will follow.
-
+A modelica package is included in the folder Modelica. It contains function 
+wrappers for the Easy API as well as some examples.
 
 Preparing netCDF Files
 ======================
@@ -562,6 +600,17 @@ Tips and Tricks
 ===============
 [... this gap needs to be filled ...]
 
+
+Changes
+=======
+
+2.3.0
+  * added CosWin approximation
+  * added constant extrapolation
+  * GenerateBigFile is much faster now
+  * fixed a bug with Akima and default extrapolation near the right border
+  * added functions to dump statistics
+  * added error dialog for Win32
 
 
 .. Hyperlinks
