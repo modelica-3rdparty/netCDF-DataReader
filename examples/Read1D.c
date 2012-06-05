@@ -69,7 +69,6 @@ void testEP(Extrapolation extra, char *fileName) {
 }
 
 
-
 int main(void) {
     testEPAuto();
     testEP(EpDefault,  "data_1D_default.dat");

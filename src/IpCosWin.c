@@ -24,24 +24,31 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/* reduce buffer if not needed or just enlarge on demand? */
+#define REDUCE_BUFFER 1
+
+
 static double *xBuf=NULL;
 static double *yBuf=NULL;
 static size_t bufSize=0;
 
-static INLINE double cosWinIntegral(double a, double b, double x) {
-  return 0.5 * (sin(x)*(b + a*x) + a*cos(x) + 0.5*a*x*x + b*x);
-}
-
-
 static INLINE void resizeBuffer(size_t dim) {
+#ifdef REDUCE_BUFFER
+    if (bufSize != dim) {
+#else /* REDUCE_BUFFER */
     if (bufSize < dim) {
-        printf(">>> %ld\n", dim);
+#endif /* REDUCE_BUFFER */
         xBuf = realloc(xBuf, dim*sizeof(double));
         yBuf = realloc(yBuf, dim*sizeof(double));
+        assert(xBuf != NULL);
+        assert(yBuf != NULL);
         bufSize = dim;
     }
 }
 
+static INLINE double cosWinIntegral(double a, double b, double x) {
+  return 0.5 * (sin(x)*(b + a*x) + a*cos(x) + 0.5*a*x*x + b*x);
+}
 
 double ncVar1DGetCosWin(NcVar1D *var, double x) {
     size_t i, j, k, l, m, n;
@@ -59,7 +66,7 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     if (i == dataSet->dim-1) i--;
     j = ncDataSet1DSearch(dataSet, &xend);
     if (j >= dataSet->dim-1) j--;
-    if (dataSet->extra == EpConstant) {
+    if ((dataSet->extra == EpConstant) || (dataSet->extra == EpDefault)) {
         /* reset borders to original value */
         xstart = x - 0.5*ws;
         xend   = x + 0.5*ws;
@@ -127,8 +134,8 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
     /* still here? So we overlap the borders: use temporary buffers */
     switch (dataSet->extra) {
         case EpPeriodic:
-            l = dataSet->dim - i + j + 1;
-            resizeBuffer(l);
+            l = dataSet->dim - i + j;
+            resizeBuffer(l+1);
             m = 0;
             n = ((x-dataSet->min) < (dataSet->max-x) ? 0 : 1); // x is right or left of transition
             for (k=i; k < dataSet->dim; k++) {
@@ -151,21 +158,47 @@ double ncVar1DGetCosWin(NcVar1D *var, double x) {
             else xstart += dataSet->min - dataSet->max;
             break;
         case EpDefault:
-            l = 0;
-            /* FIXME! */
+            l = j-i+1;
+            resizeBuffer(l+1);
+            m = 0;
+            for (k=i; k<=j+1; k++) {
+                xBuf[m]   = ncDataSet1DGetItem(dataSet, k);
+                yBuf[m++] = ncVar1DGetItem(var, k);
+            }
+            if (i == 0) {
+                /* at the left border */
+                a = (yBuf[1]-yBuf[0])/(xBuf[1]-xBuf[0]);
+                b = yBuf[0]-a*xBuf[0];
+                xBuf[0] = xstart;
+                yBuf[0] = a*xstart+b;
+            } else {
+                /* at the right border */
+                m--;
+                a = (yBuf[m]-yBuf[m-1])/(xBuf[m]-xBuf[m-1]);
+                b = yBuf[m]-a*xBuf[m];
+                xBuf[m] = xend;
+                yBuf[m] = a*xend+b;
+            }
             break;
         case EpConstant:
-            l = 0;
-            /* FIXME! */
+            l = j-i+2;
+            resizeBuffer(l+1);
+            m = ((i == 0) ? 1 : 0);
+            for (k=i; k<=j+1; k++) {
+                xBuf[m]   = ncDataSet1DGetItem(dataSet, k);
+                yBuf[m++] = ncVar1DGetItem(var, k);
+            }
+            if (i == 0) {
+                /* at the left border */
+                xBuf[0] = xstart;
+                yBuf[0] = yBuf[1];
+            } else {
+                /* at the right border */
+                xBuf[m] = xend;
+                yBuf[m] = yBuf[m-1];
+            }
             break;
     }
-    printf("--- %g: [%g %g] (%ld)\n", x, xstart, xend, l);
-    for (k=0; k < l; k++)
-        printf(" %g ", xBuf[k]);
-    printf("\n");
-    for (k=0; k < l; k++)
-        printf(" %g ", yBuf[k]);
-    printf("\n");
     y = 0;
     for (k=0; k<l; k++){
         x0 = ((xstart <= xBuf[k]) ? xBuf[k] : xstart);
