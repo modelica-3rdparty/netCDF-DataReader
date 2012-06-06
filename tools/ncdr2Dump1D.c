@@ -8,8 +8,8 @@
 
 
 #define OPTSTR "dgv:a:s:e:n:i:x:m:w:l:c:k:p:h:t:o:"
-#define TEMPLATE "%g;%g;\n"
-#define TEMPLATE_GP "%g\t%g\n"
+#define TEMPLATE "%e;%e;\n"
+#define TEMPLATE_GP "%e\t%e\n"
 
 #define HELPTEXT ""\
 "Dump interpolated values from a netCDF file or DAP-Server using ncDataReader2\n"\
@@ -34,10 +34,11 @@
 "       -m float    smoothing radius for sinsteps interpolation\n"\
 "       -k int      size of lookup cache\n"\
 "       -p int      size of parameter cache\n"\
-"       -h int      size of chunks for chunk loading\n"\
+"       -c int      size of chunks for chunk loading\n"\
 "       -t string   template string for output (used with printf())\n"\
-"       -g          use gnuplot-compatible output\n"\
-"       -d          dump timing information and access statistics to stderr\n"
+"       -g          use gnuplot-compatible output (default is CSV)\n"\
+"       -d          dump timing information and access statistics to stderr\n"\
+"       -h          print this help and exit\n"
 
 
 #define DDEF DBL_MAX
@@ -45,7 +46,7 @@
 int export1D(int argc, char **argv) {
     int d=0, tmp;
     double s=DDEF, e=DDEF, m=DDEF, w=DDEF, xi, step;
-    size_t n=100, k=0, p=0, h=0;
+    size_t n=100, k=0, p=0, c=0;
     char *f=NULL, *v=NULL, *a=NULL, *t=TEMPLATE, *o=NULL;
     Extrapolation x = EpDefault;
     Interpolation i = IpAuto;
@@ -66,7 +67,7 @@ int export1D(int argc, char **argv) {
             case 'n': n = atol(optarg); break;
             case 'k': k = atol(optarg); break;
             case 'p': p = atol(optarg); break;
-            case 'h': h = atol(optarg); break;
+            case 'c': c = atol(optarg); break;
             case 'v': v = optarg; break;
             case 'a': a = optarg; break;
             case 't': t = optarg; break;
@@ -94,6 +95,9 @@ int export1D(int argc, char **argv) {
                     case 'n': l = LtNone; break;
                 }
                 break;
+            case 'h':
+                fprintf(stderr, HELPTEXT);
+                return 0;                   
             default:
                 fprintf(stderr, HELPTEXT);
                 return 10;
@@ -120,9 +124,9 @@ int export1D(int argc, char **argv) {
     
     var = ncVar1DNew(dataSet, v, i, l);
     if (m != DDEF)  ncVar1DSetOption(var, OpVarSmoothing, m);
-    if (w != DDEF)  ncVar1DSetOption(var, OpVarWindowSize, m);
+    if (w != DDEF)  ncVar1DSetOption(var, OpVarWindowSize, w);
     if (p != 0)     ncVar1DSetOption(var, OpVarParameterCacheSize, p);
-    if (h != 0)     ncVar1DSetOption(var, OpVarChunkSize, h);
+    if (c != 0)     ncVar1DSetOption(var, OpVarChunkSize, c);
     
     step = (e-s)/(n-1);
     if (o == NULL)
