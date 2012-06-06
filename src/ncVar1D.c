@@ -170,7 +170,7 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
     if (inter == IpSinSteps)
         var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_SMOOTHING, 0.0);
     if (inter == IpCosWin)
-        var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_WINDOW_SIZE, 0.0);
+        var->smoothing = ncGetAttributeDoubleDefault(dataSet->fileId, ncV, NCATT_WINDOW_SIZE, 0.01);
     /* initialize value cache */
     var->valueCache = NULL;
     if ((l = ncGetAttributeLongDefault(dataSet->fileId, ncV, NCATT_VALUE_CACHE, 0)) > 0)
