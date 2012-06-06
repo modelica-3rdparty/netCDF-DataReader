@@ -1,28 +1,6 @@
-/* $Id: getopt.c,v 1.2 2007/01/07 23:19:19 mjt Exp $
- * Simple getopt() implementation.
- *
- * Standard interface:
- *  extern int getopt(int argc, char *const *argv, const char *opts);
- *  extern int optind;    current index in argv[]
- *  extern char *optarg;  argument for the current option
- *  extern int optopt;    the current option
- *  extern int opterr;    to control error printing
- *
- * Some minor extensions:
- *  ignores leading `+' sign in opts[] (unemplemented GNU extension)
- *  handles optional arguments, in form "x::" in opts[]
- *  if opts[] starts with `:', will return `:' in case of missing required
- *    argument, instead of '?'.
- *
- * Compile with -DGETOPT_NO_OPTERR to never print errors internally.
- * Compile with -DGETOPT_NO_STDIO to use write() calls instead of fprintf() for
- *  error reporting (ignored with -DGETOPT_NO_OPTERR).
- * Compile with -DGETOPT_CLASS=static to get static linkage.
- * Compile with -DGETOPT_MY to redefine all visible symbols to be prefixed
- *  with "my_", like my_getopt instead of getopt.
- * Compile with -DTEST to get a test executable.
- *
- * Written by Michael Tokarev.  Public domain.
+/*
+ * Simple getopt variant, found as public domain
+ * original written by Michael Tokarev
  */
 
 #include <string.h>
@@ -97,23 +75,3 @@ int getopt(int argc, char *const *argv, const char *opts) {
   }
   return optopt;
 }
-
-#ifdef TEST
-
-int main(int argc, char **argv) {
-  int c;
-  while((c = getopt(argc, argv, "ab:c::")) != -1) switch(c) {
-  case 'a':
-  case 'b':
-  case 'c':
-    printf("option %c %s\n", c, optarg ? optarg : "(none)");
-    break;
-  default:
-    return -1;
-  }
-  for(c = optind; c < argc; ++c)
-    printf("non-opt: %s\n", argv[c]);
-  return 0;
-}
-
-#endif
