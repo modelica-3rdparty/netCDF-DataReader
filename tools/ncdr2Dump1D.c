@@ -31,7 +31,7 @@
 "       -l char     load type:\n"\
 "                   [f]ull, [n]one, [c]hunks (see -h)\n"\
 "       -w float    window size for coswin interpolation\n"\
-"       -m float    smoothing radius for sinsteps interpolation\n"\
+"       -m float    smoothing radius for sinsteps interpolation (default is 0)\n"\
 "       -k int      size of lookup cache\n"\
 "       -p int      size of parameter cache\n"\
 "       -c int      size of chunks for chunk loading\n"\
@@ -45,7 +45,7 @@
 
 int export1D(int argc, char **argv) {
     int d=0, tmp;
-    double s=DDEF, e=DDEF, m=DDEF, w=DDEF, xi, step;
+    double s=DDEF, e=DDEF, m=0, w=DDEF, xi, step;
     size_t n=100, k=0, p=0, c=0;
     char *f=NULL, *v=NULL, *a=NULL, *t=TEMPLATE, *o=NULL;
     Extrapolation x = EpDefault;
@@ -123,7 +123,7 @@ int export1D(int argc, char **argv) {
     if (e == DDEF) e = dataSet->max;
     
     var = ncVar1DNew(dataSet, v, i, l);
-    if (m != DDEF)  ncVar1DSetOption(var, OpVarSmoothing, m);
+    if (w != 0)     ncVar1DSetOption(var, OpVarSmoothing, m);
     if (w != DDEF)  ncVar1DSetOption(var, OpVarWindowSize, w);
     if (p != 0)     ncVar1DSetOption(var, OpVarParameterCacheSize, p);
     if (c != 0)     ncVar1DSetOption(var, OpVarChunkSize, c);
