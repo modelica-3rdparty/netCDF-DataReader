@@ -7,4 +7,3 @@ foreach (T ${TOOLS})
     target_link_libraries (${T} ${LIBS})
     install(TARGETS ncdr2Dump1D RUNTIME DESTINATION bin)
 endforeach(T)
-

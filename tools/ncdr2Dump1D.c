@@ -8,8 +8,14 @@
 
 
 #define OPTSTR "dgv:a:s:e:n:i:x:m:w:l:c:k:p:h:t:o:"
+#ifdef _WIN32
+#define TEMPLATE "%e;%e;\r\n"
+#define TEMPLATE_GP "%e\t%e\r\n"
+#else /* _WIN32 */
 #define TEMPLATE "%e;%e;\n"
 #define TEMPLATE_GP "%e\t%e\n"
+#endif /* _WIN32 */
+
 
 #define HELPTEXT ""\
 "Dump interpolated values from a netCDF file or DAP-Server using ncDataReader2\n"\
