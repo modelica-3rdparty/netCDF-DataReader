@@ -163,6 +163,9 @@ defined by an influence radius around the points. The resulting curve is
 continous and has a continuous first derivative. Strictly speaking, this is not 
 an interpolation method since the data points are usually not met.
 
+.. image:: Interpolation.png
+   :width: 95%
+
 Cosine Window (CosWin)
 ~~~~~~~~~~~~~~~~~~~~~~
 This is method does also more an approximation than a real interpolation. It 
@@ -174,7 +177,7 @@ windows the curve will follow the linear interpolation with some smoothing
 around the points. Large windows lead to more smoothing of the dats set. The 
 window size should be much smaller than the data range of the abscissa.
 
-.. image:: Interpolation.png
+.. image:: CosWin.png
    :width: 95%
 
 
@@ -266,7 +269,8 @@ over annotations. The following attributes are supported for netCDF variables:
                    "none",
                    "chunk"
   chunk_size       integer value      chunk size for data loading
-  smoothing        float value        smoothing radius
+  smoothing        float value        smoothing radius for SinSteps
+  window_size      float value        window size for CosWin
   lookup_cache     integer value      capacity of lookup cache
   value_cache      integer value      capacity of value cache
   parameter_cache  integer value      capacity of parameter cache
@@ -586,20 +590,58 @@ attributes), defined as ``NC_DOUBLE_NOVAL``, ``NC_LONG_NOVAL`` and
 attribute is returned.
 
 
+Tools
+=====
+
+ncdr2Dump1D
+-----------
+This is a command line client that includes most of the functions for 1D 
+variables. It will dump interpolated values for a variable in textual form.
+CSV format is the default, but you may choose a gnuplot compatibel output or 
+provide your own template (for printf()). The usage is as following::
+    
+    Usage: ncdr2Dump1D [parameter] filename
+        filename    name of the netCDF file or DAP-URI
+    mandatory parameters:
+        -v string   name of the variable
+        -a string   name of the abscissa / data set
+    optional parameters:
+        -o string   name of output file (default: stdout)
+        -s float    start of data range
+        -e float    end of data range
+        -n int      number of points
+        -i char     interpolation:
+                    [a]kima, [l]inear, [d]iscrete, [s]insteps, [c]oswin
+        -x char     extrapolation:
+                    [d]efault, [p]eriodic, [c]onstant
+        -l char     load type:
+                    [f]ull, [n]one, [c]hunks (see -h)
+        -w float    window size for coswin interpolation
+        -m float    smoothing radius for sinsteps interpolation (default is 0)
+        -k int      size of lookup cache
+        -p int      size of parameter cache
+        -c int      size of chunks for chunk loading
+        -t string   template string for output (used with printf())
+        -g          use gnuplot-compatible output (default is CSV)
+        -d          dump timing information and access statistics to stderr
+        -h          print this help and exit
+
+        
 Modelica Interface
 ==================
 A modelica package is included in the folder Modelica. It contains function 
-wrappers for the Easy API as well as some examples.
-
-Preparing netCDF Files
-======================
-[... this gap needs to be filled ...]
+wrappers for the Easy API as well as some examples. Documentation will follow.
 
 
 Tips and Tricks
 ===============
-[... this gap needs to be filled ...]
 
+A template for ``ncdr2Dump1D`` can contain special characters like TAB or NEWLINE. 
+In C these characters are inserted using '\\t' or '\\n'. To use these characters 
+on the Linux-shell ``bash`` you can use the following syntax::
+    
+    ncdr2Dump1D -v foo -a bar -t $'%g\t%g\n' file.nc
+    
 
 Changes
 =======
@@ -608,9 +650,13 @@ Changes
   * added CosWin approximation
   * added constant extrapolation
   * GenerateBigFile is much faster now
-  * fixed a bug with Akima and default extrapolation near the right border
+  * fixed a bug with Akima and default extrapolation near the right border that
+    existed for a long time
   * added functions to dump statistics
-  * added error dialog for Win32
+  * added error dialog for Win32, useful with Dymola 
+  * added command line client ncdr2Dump1D to dump interpolated values
+  * build with netCDF 4 on Windows including DAP supported
+  
 
 
 .. Hyperlinks

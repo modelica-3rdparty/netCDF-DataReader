@@ -7,7 +7,7 @@
 #include "ncDataReader2.h"
 
 
-#define OPTSTR "dgv:a:s:e:n:i:x:m:w:l:c:k:p:h:t:o:"
+#define OPTSTR "dghv:a:s:e:n:i:x:m:w:l:c:k:p:t:o:"
 #ifdef _WIN32
 #define TEMPLATE "%e;%e;\r\n"
 #define TEMPLATE_GP "%e\t%e\r\n"
