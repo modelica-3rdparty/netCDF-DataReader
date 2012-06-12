@@ -1,9 +1,11 @@
 set (LIBS ncDataReader2 ${NC_LIB} ${MATH_LIB})
 
-set (TOOLS ncdr2Dump1D)
+set (T ncdr2Dump1D )
+add_executable (${T} ${T}.c getopt.c)
+target_link_libraries (${T} ${LIBS})
+install(TARGETS ${T} RUNTIME DESTINATION bin)
 
-foreach (T ${TOOLS})
-    add_executable (${T} ${T}.c getopt.c)
-    target_link_libraries (${T} ${LIBS})
-    install(TARGETS ncdr2Dump1D RUNTIME DESTINATION bin)
-endforeach(T)
+set (T ncdr2ImportCSV1D )
+add_executable (${T} ${T}.c getopt.c csv.c)
+target_link_libraries (${T} ${LIBS})
+install(TARGETS ${T} RUNTIME DESTINATION bin)
