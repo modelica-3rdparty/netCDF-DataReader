@@ -626,7 +626,43 @@ provide your own template (for printf()). The usage is as following::
         -d          dump timing information and access statistics to stderr
         -h          print this help and exit
 
-        
+ncdr2ImportCSV1D
+----------------
+This is a command line client that converst CSV data to netCDF files that are 
+compatible with ncDataReader2. The special attributes that ncDataReader2 
+respects can be added easily. The usage is as following::
+
+    Usage: ncdr2ImportCSV1D [parameter] filename
+       filename    name of the CSV input file
+    optional parameters:
+       -o string   name of output file
+       -t string   comment to include in file
+       -h          print this help and exit
+    the following is stored as attributes of the variables:
+       -i char     interpolation:
+                   [a]kima, [l]inear, [d]iscrete, [s]insteps, [c]oswin
+       -x char     extrapolation:
+                   [d]efault, [p]eriodic, [c]onstant
+       -l char     load type:
+                   [f]ull, [n]one, [c]hunks (see -h)
+       -w float    window size for coswin interpolation
+       -m float    smoothing radius for sinsteps interpolation
+       -k int      size of lookup cache
+       -p int      size of parameter cache
+       -v int      size of value cache
+       -c int      size of chunks for chunk loading
+
+The input file is a simple CSV file with the following structure:
+
+ * fields delimited by comma ','
+ * every row has the same number of fields
+ * optional header row with the variable names
+ * all other fields contain just numbers
+ * the decimal separator for numbers is a point '.'
+ * every column contains one variable
+ * first column is used as the abscissa for all variables
+     
+
 Modelica Interface
 ==================
 A modelica package is included in the folder Modelica. It contains function 
@@ -636,26 +672,43 @@ wrappers for the Easy API as well as some examples. Documentation will follow.
 Tips and Tricks
 ===============
 
-A template for ``ncdr2Dump1D`` can contain special characters like TAB or NEWLINE. 
-In C these characters are inserted using '\\t' or '\\n'. To use these characters 
-on the Linux-shell ``bash`` you can use the following syntax::
-    
-    ncdr2Dump1D -v foo -a bar -t $'%g\t%g\n' file.nc
-    
+1. A template for ``ncdr2Dump1D`` can contain special characters like TAB or NEWLINE. 
+   In C these characters are inserted using '\\t' or '\\n'. To use these characters 
+   on the Linux-shell ``bash`` you can use the following syntax::
+        
+        ncdr2Dump1D -v foo -a bar -t $'%g\t%g\n' file.nc
+
+2. CSV files generated with software in some languages (like german) will use a 
+   comma as decimal separator. To use such files with ncdr2ImportCSV1D you can do 
+   the following:
+
+   1. export to CSV with field separator set to semicolon ';'
+   2. replace every comma ',' with a point '.'
+   3. replace every semicolon ';' with a comma ','
+
+   The steps 2 and 3 can be done in a text editor or with the following command 
+   line (UNIX only)::
+        
+        tr ',;' '.,' <data.csv >data_corrected.csv
+
 
 Changes
 =======
 
+Recent
+  * added command line client ncdr2ImportCSV1D to import CSV data
+
+
 2.3.0
-  * added CosWin approximation
-  * added constant extrapolation
-  * GenerateBigFile is much faster now
-  * fixed a bug with Akima and default extrapolation near the right border that
-    existed for a long time
-  * added functions to dump statistics
-  * added error dialog for Win32, useful with Dymola 
-  * added command line client ncdr2Dump1D to dump interpolated values
-  * build with netCDF 4 on Windows including DAP supported
+ * added CosWin approximation
+ * added constant extrapolation
+ * GenerateBigFile is much faster now
+ * fixed a bug with Akima and default extrapolation near the right border that
+   existed for a long time
+ * added functions to dump statistics
+ * added error dialog for Win32, useful with Dymola 
+ * added command line client ncdr2Dump1D to dump interpolated values
+ * build with netCDF 4 on Windows including DAP supported
   
 
 
