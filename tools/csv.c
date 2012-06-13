@@ -31,6 +31,10 @@
 
 #include "csv.h"
 
+/* field delimiter */
+#define FD ','
+#define NL '\n'
+
 static int hasheader(char ***data, int width, int height);
 static int getcoltype(char ***data, int col, int width, int height);
 static int gettype(const char *str);
@@ -499,7 +503,7 @@ static char **loadline(FILE *fp, int *N)
     answer[i] = loadfield(fp);
     i++;
   }
-  while(fgetc(fp) == ',');
+  while(fgetc(fp) == FD);
 
   if(i==1 && answer[0] == 0)
   {
@@ -525,7 +529,7 @@ static char *loadfield(FILE *fp)
 
   while( (ch = fgetc(fp)) != EOF)
   {
-    if(ch == ',' || ch == '\n')
+    if(ch == FD || ch == NL)
       break;
     if(isspace(ch))
       continue;
@@ -561,7 +565,7 @@ static char *loadraw(FILE *fp)
 
   while( (ch = fgetc(fp)) != EOF)
   {
-    if(ch == ',' || ch == '\n')
+    if(ch == FD || ch == NL)
       break;
     answer[N++] = (char) ch;
     if(N == len -1)
@@ -707,12 +711,13 @@ static int myisnan(double x)
   return (x == x) ? 0 : 1;
 }
 
+#ifdef CSV_MAIN
 /*
   test function
   Loads a csv file and prints out header.
  */
-int csvmain(int argc, char **argv)
-{
+
+int main(int argc, char **argv) {
   CSV *csv = 0;
   int width;
   int height;
@@ -722,16 +727,14 @@ int csvmain(int argc, char **argv)
 
   if(argc == 2)
     csv = loadcsv(argv[1]);
-  if(!csv)
-  {
+  if(!csv) {
     printf("Failed\n");
     exit(EXIT_FAILURE);
   }
   csv_getsize(csv, &width, &height);
   printf("width %d height %d\n", width, height);
 
-  for(i=0;i<width;i++)
-  {
+  for(i=0;i<width;i++) {
     name = csv_column(csv, i, &type);
     printf("%s %s\n", name, type == CSV_STRING ? "string" : "real");
   }
@@ -740,3 +743,5 @@ int csvmain(int argc, char **argv)
 
   return 0;
 }
+
+#endif /* CSV_MAIN */
