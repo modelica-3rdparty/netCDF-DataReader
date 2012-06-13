@@ -32,7 +32,7 @@
 "       -m float    smoothing radius for sinsteps interpolation\n"\
 "       -k int      size of lookup cache\n"\
 "       -p int      size of parameter cache\n"\
-"       -k int      size of value cache\n"\
+"       -v int      size of value cache\n"\
 "       -c int      size of chunks for chunk loading\n"\
 "   the input file is a simple CSV file with the following structure:\n"\
 "       - fields delimited by comma ','\n"\
@@ -44,6 +44,7 @@
 "       - first column is used as the abscissa for all variables\n"
 
 #define DDEF DBL_MAX
+
 
 void handle_error(int status) {
 if (status != NC_NOERR) {
