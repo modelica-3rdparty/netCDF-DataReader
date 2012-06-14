@@ -48,6 +48,6 @@ endif(UNIX)
 include_directories("${NC_INC}" "${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory(src)
-add_subdirectory(examples)
 add_subdirectory(tools)
+add_subdirectory(examples)
 add_subdirectory(doc)
