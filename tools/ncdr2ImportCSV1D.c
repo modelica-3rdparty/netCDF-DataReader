@@ -13,7 +13,7 @@
 
 
 #define HELPTEXT ""\
-"Generate a ncDatareader2-compatible netCDF file from CSV input\n"\
+"Generate a ncDataReader2-compatible netCDF file from CSV input\n"\
 "Version: "NCDR_VERSION"\n"\
 "Usage: ncdr2ImportCSV1D [parameter] filename\n"\
 "       filename    name of the CSV input file\n"\
