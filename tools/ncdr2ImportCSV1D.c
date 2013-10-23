@@ -188,7 +188,7 @@ int importCSV1D(int argc, char **argv) {
             name = ctmp;
         }
         if (type != CSV_REAL) {
-            fprintf(stderr, "warning: wrong data type in column 0, skipping!\n", tmp);
+            fprintf(stderr, "warning: wrong data type in column %d, skipping!\n", tmp);
         } else {
             handle_error(nc_redef(ncFile));
             handle_error(nc_def_var(ncFile, name, NC_DOUBLE, 1, &ncDim, &ncVar));
