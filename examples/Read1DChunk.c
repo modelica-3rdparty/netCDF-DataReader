@@ -3,7 +3,7 @@
 #include <math.h>
 #include <ncDataReader2.h>
 
-#define NCFILE "testfilebig.nc"
+char *ncFileName;
 
 void testChunk(void) {
     NcDataSet1D *dset;
@@ -16,7 +16,7 @@ void testChunk(void) {
     }
     fprintf(outf, "# you may plot this file with gnuplot\n");
     
-    dset = ncDataSet1DNew(NCFILE, "time", EpAuto, LtFull, -1);
+    dset = ncDataSet1DNew(ncFileName, "time", EpAuto, LtFull, -1);
 
     v = ncVar1DNew(dset, "big_var_00", IpAkima, LtAuto);
     
@@ -41,7 +41,10 @@ void testChunk(void) {
 }
 
 
-int main(void) {
-  testChunk();
-  return 0;
+int main(int argc, char *argv[]) {
+    if (argc > 1) ncFileName = argv[1];
+    else          ncFileName = "testfilebig.nc";
+
+    testChunk();
+    return 0;
 }

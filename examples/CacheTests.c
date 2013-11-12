@@ -4,10 +4,10 @@
 #include <math.h>
 #include <ncDataReader2.h>
 
-#define NCFILE "testfile.nc"
-
 #define RAND6() ceil((double)rand()/RAND_MAX * 6.0)
 #define RAND01() (rand()/(double)RAND_MAX)
+
+char *ncFileName;
 
 void lookupCacheTest(void) {
     NcDataSet1D *dset;
@@ -17,7 +17,7 @@ void lookupCacheTest(void) {
     clock_t cstart;
     long int ch, cf;
 
-    dset = ncDataSet1DNew(NCFILE, "time", EpPeriodic, LtFull, 0);
+    dset = ncDataSet1DNew(ncFileName, "time", EpPeriodic, LtFull, 0);
     vaki = ncVar1DNew(dset, "test1D", IpDiscrete, LtFull);
     ncVar1DSetOption(vaki, OpVarParameterCacheSize, 0);
     ncVar1DSetOption(vaki, OpVarValueCacheSize, 0);
@@ -53,7 +53,7 @@ void parameterCacheTest(void) {
     double x, y, start, end, step, noise;
     clock_t cstart;
     long int ch, cf;
-    dset = ncDataSet1DNew(NCFILE, "time", EpDefault, LtFull, 0);
+    dset = ncDataSet1DNew(ncFileName, "time", EpDefault, LtFull, 0);
     vaki = ncVar1DNew(dset, "test1D", IpAkima, LtFull);
 
     start = dset->min - 0.3 * (dset->max - dset->min);
@@ -96,7 +96,7 @@ void valueCacheTest(void) {
     double x, y, start, end, step, noise;
     clock_t cstart;
     long int ch, cf;
-    dset = ncDataSet1DNew(NCFILE, "time", EpDefault, LtFull, 0);
+    dset = ncDataSet1DNew(ncFileName, "time", EpDefault, LtFull, 0);
     vaki = ncVar1DNew(dset, "test1D", IpAkima, LtFull);
     ncVar1DSetOption(vaki, OpVarParameterCacheSize, 0);
 
@@ -125,7 +125,10 @@ void valueCacheTest(void) {
 }
 
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    if (argc > 1) ncFileName = argv[1];
+    else          ncFileName = "testfile.nc";
+
     lookupCacheTest();
     parameterCacheTest();
     valueCacheTest();

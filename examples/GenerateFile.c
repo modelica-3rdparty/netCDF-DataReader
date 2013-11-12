@@ -97,9 +97,11 @@ void create2DVar(int ncF) {
 }
 
 
-int main(void) {
+int main(int argc, char *argv[]) {
     int ncFile;
-    ncFile = createFile("testfile.nc");
+    if (argc > 1) ncFile = createFile(argv[1]);
+    else          ncFile = createFile("testfile.nc");
+    
     create1DVar(ncFile);
     create2DVar(ncFile);
     handle_error(nc_sync(ncFile));

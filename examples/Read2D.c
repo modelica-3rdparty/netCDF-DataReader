@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <ncDataReader2.h>
 
-int main(void) {
+int main(int argc, char *argv[]) {
     NcScattered2D *data;
     double x, y, xstep, ystep;
     FILE *outf;
+
+    if (argc > 1) data = ncScattered2DNew(argv[1], "points");
+    else          data = ncScattered2DNew("testfile.nc", "points");
     
-    data = ncScattered2DNew("testfile.nc", "points");
     ncScattered2DSetOption(data, OpScattered2DPointsPerCell, 20);
     ncScattered2DInit(data);
     outf = fopen("data_2D.dat", "w");

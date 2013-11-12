@@ -3,7 +3,7 @@
 #include <math.h>
 #include <ncDataReader2.h>
 
-#define NCFILE "testfile.nc"
+char *ncFileName;
 
 void testEPAuto(void) {
     NcDataSet1D *dset;
@@ -15,7 +15,7 @@ void testEPAuto(void) {
         return;
     }
     fprintf(outf, "# you may plot this file with gnuplot\n");
-    dset = ncDataSet1DNew(NCFILE, "time", EpAuto, LtAuto, 0);
+    dset = ncDataSet1DNew(ncFileName, "time", EpAuto, LtAuto, 0);
     v    = ncVar1DNew(dset, "test1D", IpAuto, LtAuto);
 
     start = dset->min - 0.3 * (dset->max - dset->min);
@@ -40,7 +40,7 @@ void testEP(Extrapolation extra, char *fileName) {
         return;
     }
     fprintf(outf, "# you may plot this file with gnuplot\n");
-    dset = ncDataSet1DNew(NCFILE, "time", extra, LtFull, 10);
+    dset = ncDataSet1DNew(ncFileName, "time", extra, LtFull, 10);
     vdis = ncVar1DNew(dset, "test1D", IpDiscrete, LtFull);
     vlin = ncVar1DNew(dset, "test1D", IpLinear, LtFull);
     vsin = ncVar1DNew(dset, "test1D", IpSinSteps, LtFull);
@@ -69,7 +69,10 @@ void testEP(Extrapolation extra, char *fileName) {
 }
 
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    if (argc > 1) ncFileName = argv[1];
+    else          ncFileName = "testfile.nc";
+    
     testEPAuto();
     testEP(EpDefault,  "data_1D_default.dat");
     testEP(EpConstant, "data_1D_constant.dat");

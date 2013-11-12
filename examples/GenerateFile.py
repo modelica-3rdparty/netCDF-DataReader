@@ -26,15 +26,15 @@ def createFile(fileName):
 def create1DVar(f):
     f.createDimension('time', DIM)
     time = f.createVariable('time', 'd', ('time', ))
-    time.scale_factor = 2.5
-    time.add_offset = 0.0
+    #time.scale_factor = 2.5
+    #time.add_offset = 0.0
     time.extrapolation = 'periodic'
 
-    test = f.createVariable('test1D', 'd', ('time', ))
-    test.scale_factor = 2.0
-    test.add_offset = 3.0
-    test.interpolation = 'akima'
-    test.smoothing = 500.0
+    test = f.createVariable('blafasel', 'd', ('time', ))
+    #test.scale_factor = 2.0
+    #test.add_offset = 3.0
+    #test.interpolation = 'akima'
+    #test.smoothing = 500.0
 
     step = 2.0 * pi / (DIM - 1.0)
     for i in range(DIM):
