@@ -18,7 +18,7 @@ NPOINTS = 1000
 def createFile(fileName):
     f = netcdf_file(fileName, 'w')
     f.doc = 'test file for ncDataReader2, created by GenerateFile.py'
-    f.version = '2.2.0'
+    f.version = '2.3.0'
     f.foo = 42.42
     f.bar = 1234
     return f
@@ -26,15 +26,15 @@ def createFile(fileName):
 def create1DVar(f):
     f.createDimension('time', DIM)
     time = f.createVariable('time', 'd', ('time', ))
-    #time.scale_factor = 2.5
-    #time.add_offset = 0.0
+    time.scale_factor = 2.5
+    time.add_offset = 0.0
     time.extrapolation = 'periodic'
 
-    test = f.createVariable('blafasel', 'd', ('time', ))
-    #test.scale_factor = 2.0
-    #test.add_offset = 3.0
-    #test.interpolation = 'akima'
-    #test.smoothing = 500.0
+    test = f.createVariable('test1D', 'd', ('time', ))
+    test.scale_factor = 2.0
+    test.add_offset = 3.0
+    test.interpolation = 'akima'
+    test.smoothing = 500.0
 
     step = 2.0 * pi / (DIM - 1.0)
     for i in range(DIM):
@@ -52,7 +52,11 @@ def create2DVar(f):
         points[i] = (x, y, tanh(x*y))
 
 if __name__ == '__main__':
-    f = createFile('testfile.nc')
+    import sys
+    if len(sys.argv) > 1:
+        f = createFile(sys.argv[1])
+    else:
+        f = createFile('testfile.nc')
     create1DVar(f)
     create2DVar(f)
     f.sync()
