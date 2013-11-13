@@ -70,9 +70,11 @@ ncDataReader2 you need a library file and the header file(s). Library files are:
  - Linux:
      * ``libncDataReader2.a`` (static) or 
      * ``libncDataReader2.so`` (dynamic)
- - Windows: 
+ - Windows (Visual Studio):
+     * ``ncDataReader2.dll`` and ``ncDataReader2.lib`` (dynamic) or
+     * ``ncDataReader2.lib`` (static)
+ - Windows (MinGW or cygwin):
      * ``libncDataReader2.a`` (cygwin or MinGW)
-     * ``ncDataReader2.dll`` and ``ncDataReader2.lib`` (Visual Studio)
  - MacOS X:
      * ???
 
@@ -88,18 +90,21 @@ You will find some examples in the folder ``examples``. You should run
 programs will need. ``GenerateBigFile(.exe)`` will create a large file that 
 is used by some of the examples.
 
-A simple example::
+Another very simple example::
 
     #include "ncDataReader2.h"
-
-    NcDataSet1D *x = ncDataSet1DNew("daten.nc", "time", EpPeriodic, LtFull, 10);
-    NcVar1D     *y = ncVar1DNew(x, "var1", IpAkima, LtFull);
-
-    double tmp = ncVar1DGet(y, 42.0);
+    #include <stdio.h> 
+    int main(void) {
+        NcDataSet1D *t; 
+        NcVar1D     *y;
+        t = ncDataSet1DNew("data.nc", "time", EpPeriodic, LtFull, 10);
+        y = ncVar1DNew(t, "y", IpAkima, LtFull);
+        printf("The value of y for time=42.0 is %g.\n", ncVar1DGet(y, 42.0));
+    }
 
 This will open the independant variable ``time`` and the dependant variable 
-``var1`` in a file ``daten.nc``, calculate the interpolated value of ``var1``
-for ``time=42.0``. The variable ``time`` will be used periodic, ``var1`` will be
+``y`` in a file ``data.nc``, calculate the interpolated value of ``y``
+for ``time=42.0``. The variable ``time`` will be used periodic, ``y`` will be
 interpolated by the Akima method. All data will be fully loaded.
 
 
@@ -695,9 +700,10 @@ Tips and Tricks
 Changes
 =======
 
-Recent
+2.3.1
   * added command line client ncdr2ImportCSV1D to import CSV data
-
+  * changed all examples to work with optional file names
+  * changed Modelica files to use Modelica 3.2
 
 2.3.0
  * added CosWin approximation

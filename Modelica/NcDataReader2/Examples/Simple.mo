@@ -12,5 +12,5 @@ model Simple "Simple test model for ncDataReader2"
     y = x * a;
     der(x) = t;
     t = nc.ncEasyGet1D(fileName, "test1D", time / 1000);
-    annotation(uses(Modelica(version = "3.1")), experiment(StartTime = 0, StopTime = 10000, NumberOfIntervals = 5000), experimentSetupOutput);
+    annotation(uses(Modelica(version = "3.2")), experiment(StartTime = 0, StopTime = 10000, NumberOfIntervals = 5000), experimentSetupOutput);
 end Simple;

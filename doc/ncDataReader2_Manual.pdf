@@ -143,7 +143,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 765.0236
+ 729.0236
  0 ]
  /Rect [ 62.69291
  603.7736
@@ -161,7 +161,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 765.0236
+ 729.0236
  0 ]
  /Rect [ 527.0227
  603.7736
@@ -179,7 +179,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 534.8236
+ 462.8236
  0 ]
  /Rect [ 62.69291
  585.7736
@@ -197,7 +197,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 534.8236
+ 462.8236
  0 ]
  /Rect [ 527.0227
  585.7736
@@ -215,7 +215,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 327.8236
+ 255.8236
  0 ]
  /Rect [ 82.69291
  567.7736
@@ -233,7 +233,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 327.8236
+ 255.8236
  0 ]
  /Rect [ 527.0227
  567.7736
@@ -251,7 +251,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 297.8236
+ 225.8236
  0 ]
  /Rect [ 102.6929
  549.7736
@@ -269,7 +269,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 297.8236
+ 225.8236
  0 ]
  /Rect [ 527.0227
  549.7736
@@ -287,7 +287,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 228.8236
+ 156.8236
  0 ]
  /Rect [ 102.6929
  531.7736
@@ -305,7 +305,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 228.8236
+ 156.8236
  0 ]
  /Rect [ 527.0227
  531.7736
@@ -320,10 +320,10 @@ endobj
  0
  0 ]
  /Contents ()
- /Dest [ 82 0 R
+ /Dest [ 84 0 R
  /XYZ
  62.69291
- 171.8236
+ 765.0236
  0 ]
  /Rect [ 102.6929
  513.7736
@@ -338,10 +338,10 @@ endobj
  0
  0 ]
  /Contents ()
- /Dest [ 82 0 R
+ /Dest [ 84 0 R
  /XYZ
  62.69291
- 171.8236
+ 765.0236
  0 ]
  /Rect [ 527.0227
  513.7736
@@ -359,7 +359,7 @@ endobj
  /Dest [ 84 0 R
  /XYZ
  62.69291
- 729.0236
+ 642.0236
  0 ]
  /Rect [ 102.6929
  495.7736
@@ -377,7 +377,7 @@ endobj
  /Dest [ 84 0 R
  /XYZ
  62.69291
- 729.0236
+ 642.0236
  0 ]
  /Rect [ 527.0227
  495.7736
@@ -395,7 +395,7 @@ endobj
  /Dest [ 84 0 R
  /XYZ
  62.69291
- 293.9732
+ 206.9732
  0 ]
  /Rect [ 102.6929
  477.7736
@@ -413,7 +413,7 @@ endobj
  /Dest [ 84 0 R
  /XYZ
  62.69291
- 293.9732
+ 206.9732
  0 ]
  /Rect [ 527.0227
  477.7736
@@ -1709,7 +1709,7 @@ endobj
 % 'R96': class PDFInfo 
 96 0 obj
 << /Author ()
- /CreationDate (D:20120613145959-01'00')
+ /CreationDate (D:20131113134549-01'00')
  /Creator (\(unspecified\))
  /Keywords ()
  /Producer (ReportLab PDF Library - www.reportlab.com)
@@ -1763,7 +1763,7 @@ endobj
 << /Dest [ 82 0 R
  /XYZ
  62.69291
- 765.0236
+ 729.0236
  0 ]
  /Next 102 0 R
  /Parent 97 0 R
@@ -1776,7 +1776,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 534.8236
+ 462.8236
  0 ]
  /First 103 0 R
  /Last 116 0 R
@@ -1791,7 +1791,7 @@ endobj
  /Dest [ 82 0 R
  /XYZ
  62.69291
- 327.8236
+ 255.8236
  0 ]
  /First 104 0 R
  /Last 108 0 R
@@ -1804,7 +1804,7 @@ endobj
 << /Dest [ 82 0 R
  /XYZ
  62.69291
- 297.8236
+ 225.8236
  0 ]
  /Next 105 0 R
  /Parent 103 0 R
@@ -1815,7 +1815,7 @@ endobj
 << /Dest [ 82 0 R
  /XYZ
  62.69291
- 228.8236
+ 156.8236
  0 ]
  /Next 106 0 R
  /Parent 103 0 R
@@ -1824,10 +1824,10 @@ endobj
 endobj
 % 'Outline.34.2': class OutlineEntryObject 
 106 0 obj
-<< /Dest [ 82 0 R
+<< /Dest [ 84 0 R
  /XYZ
  62.69291
- 171.8236
+ 765.0236
  0 ]
  /Next 107 0 R
  /Parent 103 0 R
@@ -1839,7 +1839,7 @@ endobj
 << /Dest [ 84 0 R
  /XYZ
  62.69291
- 729.0236
+ 642.0236
  0 ]
  /Next 108 0 R
  /Parent 103 0 R
@@ -1851,7 +1851,7 @@ endobj
 << /Dest [ 84 0 R
  /XYZ
  62.69291
- 293.9732
+ 206.9732
  0 ]
  /Parent 103 0 R
  /Prev 107 0 R
@@ -2281,7 +2281,7 @@ q
 q
 0 0 .501961 rg
 0 0 .501961 RG
-BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 66.44 0 Td (3) Tj T* -66.44 0 Td ET
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 66.44 0 Td (4) Tj T* -66.44 0 Td ET
 Q
 Q
 q
@@ -2615,7 +2615,7 @@ endobj
 % 'R132': class PDFStream 
 132 0 obj
 % page stream
-<< /Length 8978 >>
+<< /Length 9485 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 q
@@ -2788,18 +2788,18 @@ q
 1 0 0 1 62.69291 270.0236 cm
 Q
 q
-1 0 0 1 62.69291 117.0236 cm
+1 0 0 1 62.69291 78.02362 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 BT 1 0 0 1 0 2 Tm  T* ET
 q
-1 0 0 1 20 147 cm
+1 0 0 1 20 186 cm
 Q
 q
-1 0 0 1 20 147 cm
+1 0 0 1 20 186 cm
 Q
 q
-1 0 0 1 20 96 cm
+1 0 0 1 20 135 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -2880,10 +2880,10 @@ q
 Q
 Q
 q
-1 0 0 1 20 90 cm
+1 0 0 1 20 129 cm
 Q
 q
-1 0 0 1 20 39 cm
+1 0 0 1 20 78 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -2897,7 +2897,7 @@ q
 1 0 0 1 23 36 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (Windows:) Tj T* ET
+BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (Windows \(Visual Studio\):) Tj T* ET
 Q
 Q
 q
@@ -2925,7 +2925,7 @@ Q
 q
 1 0 0 1 23 -3 cm
 q
-BT 1 0 0 1 0 2 Tm 12 TL /F3 10 Tf 0 0 0 rg (libncDataReader2.a ) Tj /F1 10 Tf (\(cygwin or MinGW\)) Tj T* ET
+BT 1 0 0 1 0 2 Tm 12 TL /F3 10 Tf 0 0 0 rg (ncDataReader2.dll ) Tj /F1 10 Tf (and ) Tj /F3 10 Tf (ncDataReader2.lib ) Tj /F1 10 Tf (\(dynamic\) or) Tj T* ET
 Q
 Q
 q
@@ -2948,7 +2948,68 @@ Q
 q
 1 0 0 1 23 -3 cm
 q
-BT 1 0 0 1 0 2 Tm 12 TL /F3 10 Tf 0 0 0 rg (ncDataReader2.dll ) Tj /F1 10 Tf (and ) Tj /F3 10 Tf (ncDataReader2.lib ) Tj /F1 10 Tf (\(Visual Studio\)) Tj T* ET
+BT 1 0 0 1 0 2 Tm 12 TL /F3 10 Tf 0 0 0 rg (ncDataReader2.lib ) Tj /F1 10 Tf (\(static\)) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 20 0 cm
+Q
+q
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 20 72 cm
+Q
+q
+1 0 0 1 20 39 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 18 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 18 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (Windows \(MinGW or cygwin\):) Tj T* ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 8 Tm  T* ET
+q
+1 0 0 1 20 12 cm
+Q
+q
+1 0 0 1 20 12 cm
+Q
+q
+1 0 0 1 20 0 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F3 10 Tf 0 0 0 rg (libncDataReader2.a ) Tj /F1 10 Tf (\(cygwin or MinGW\)) Tj T* ET
 Q
 Q
 q
@@ -3032,13 +3093,7 @@ q
 Q
 Q
 q
-1 0 0 1 62.69291 117.0236 cm
-Q
-q
-1 0 0 1 62.69291 87.02362 cm
-q
-BT 1 0 0 1 0 14 Tm .40284 Tw 12 TL /F1 10 Tf 0 0 0 rg (The header file is called ) Tj /F3 10 Tf (ncDataReader2.h ) Tj /F1 10 Tf (for the general API and ) Tj /F3 10 Tf (ncDataReaderEA.h ) Tj /F1 10 Tf (for the easy) Tj T* 0 Tw (API.) Tj T* ET
-Q
+1 0 0 1 62.69291 78.02362 cm
 Q
  
 endstream
@@ -3046,30 +3101,36 @@ endobj
 % 'R133': class PDFStream 
 133 0 obj
 % page stream
-<< /Length 5423 >>
+<< /Length 5132 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 q
-1 0 0 1 62.69291 744.0236 cm
+1 0 0 1 62.69291 741.0236 cm
+q
+BT 1 0 0 1 0 14 Tm .40284 Tw 12 TL /F1 10 Tf 0 0 0 rg (The header file is called ) Tj /F3 10 Tf (ncDataReader2.h ) Tj /F1 10 Tf (for the general API and ) Tj /F3 10 Tf (ncDataReaderEA.h ) Tj /F1 10 Tf (for the easy) Tj T* 0 Tw (API.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 708.0236 cm
 q
 BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (4   Examples) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 702.0236 cm
+1 0 0 1 62.69291 666.0236 cm
 q
 BT 1 0 0 1 0 26 Tm 1.507126 Tw 12 TL /F1 10 Tf 0 0 0 rg (You will find some examples in the folder ) Tj /F3 10 Tf (examples) Tj /F1 10 Tf (. You should run ) Tj /F3 10 Tf (GenerateFile\(.exe\) ) Tj /F1 10 Tf (first to) Tj T* 0 Tw .98229 Tw (create the netCDF file the other example programs will need. ) Tj /F3 10 Tf (GenerateBigFile\(.exe\) ) Tj /F1 10 Tf (will create a) Tj T* 0 Tw (large file that is used by some of the examples.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 684.0236 cm
+1 0 0 1 62.69291 648.0236 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (A simple example:) Tj T* ET
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Another very simple example:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 590.8236 cm
+1 0 0 1 62.69291 518.8236 cm
 q
 q
 1 0 0 1 0 0 cm
@@ -3079,92 +3140,78 @@ q
 .662745 .662745 .662745 RG
 .5 w
 .960784 .960784 .862745 rg
-n -6 -6 468.6898 84 re B*
+n -6 -6 468.6898 120 re B*
 Q
 q
-0 0 0 rg
-BT 1 0 0 1 0 62 Tm /F3 10 Tf 12 TL (#include "ncDataReader2.h") Tj T*  T* (NcDataSet1D *x = ncDataSet1DNew\("daten.nc", "time", EpPeriodic, LtFull, 10\);) Tj T* (NcVar1D     *y = ncVar1DNew\(x, "var1", IpAkima, LtFull\);) Tj T*  T* (double tmp = ncVar1DGet\(y, 42.0\);) Tj T* ET
+BT 1 0 0 1 0 98 Tm 12 TL /F3 10 Tf 0 0 0 rg (#include "ncDataReader2.h") Tj T* (#include ) Tj (<) Tj (stdio.h) Tj (>) Tj  T* (int main\(void\) {) Tj T* (    NcDataSet1D *t;) Tj T* (    NcVar1D     *y;) Tj T* (    t = ncDataSet1DNew\("data.nc", "time", EpPeriodic, LtFull, 10\);) Tj T* (    y = ncVar1DNew\(t, "y", IpAkima, LtFull\);) Tj T* (    printf\("The value of y for time=42.0 is %g.\\n", ncVar1DGet\(y, 42.0\)\);) Tj T* (}) Tj T* ET
 Q
 Q
 Q
-Q
-Q
-q
-1 0 0 1 62.69291 546.8236 cm
-q
-BT 1 0 0 1 0 26 Tm 1.669318 Tw 12 TL /F1 10 Tf 0 0 0 rg (This will open the independant variable ) Tj /F3 10 Tf (time ) Tj /F1 10 Tf (and the dependant variable ) Tj /F3 10 Tf (var1 ) Tj /F1 10 Tf (in a file ) Tj /F3 10 Tf (daten.nc) Tj /F1 10 Tf (,) Tj T* 0 Tw .234651 Tw (calculate the interpolated value of ) Tj /F3 10 Tf (var1 ) Tj /F1 10 Tf (for ) Tj /F3 10 Tf (time=42.0) Tj /F1 10 Tf (. The variable ) Tj /F3 10 Tf (time ) Tj /F1 10 Tf (will be used periodic, ) Tj /F3 10 Tf (var1) Tj T* 0 Tw /F1 10 Tf (will be interpolated by the Akima method. All data will be fully loaded.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 513.8236 cm
+1 0 0 1 62.69291 474.8236 cm
+q
+BT 1 0 0 1 0 26 Tm .424985 Tw 12 TL /F1 10 Tf 0 0 0 rg (This will open the independant variable ) Tj /F3 10 Tf (time ) Tj /F1 10 Tf (and the dependant variable ) Tj /F3 10 Tf (y ) Tj /F1 10 Tf (in a file ) Tj /F3 10 Tf (data.nc) Tj /F1 10 Tf (, calculate) Tj T* 0 Tw 3.199985 Tw (the interpolated value of ) Tj /F3 10 Tf (y ) Tj /F1 10 Tf (for ) Tj /F3 10 Tf (time=42.0) Tj /F1 10 Tf (. The variable ) Tj /F3 10 Tf (time ) Tj /F1 10 Tf (will be used periodic, ) Tj /F3 10 Tf (y ) Tj /F1 10 Tf (will be) Tj T* 0 Tw (interpolated by the Akima method. All data will be fully loaded.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 441.8236 cm
 q
 BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (5   Concept) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 447.8236 cm
+1 0 0 1 62.69291 375.8236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 50 Tm /F1 10 Tf 12 TL .199984 Tw (A one dimensional data set \(NcDataSet1D\) is the representation of one independant variable in a netCDF) Tj T* 0 Tw .431098 Tw (file. This data can be equally spaced, but it doesn't need to. A one dimensional variable \(NcVar1D\) is the) Tj T* 0 Tw .382651 Tw (representation of a dependant variable that has a dependency to exactly one NcDataSet1D. The value of) Tj T* 0 Tw .681984 Tw (a NcVar1D at a certain point can be evaluated \(usually interpolated\). A NcDataSet1D can be referenced) Tj T* 0 Tw (by more than one NcVar1D.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 369.8236 cm
+1 0 0 1 62.69291 297.8236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 62 Tm /F1 10 Tf 12 TL .95436 Tw (Example: a file contains weathr data as time rows \(e.g. hourly values\). One variable \(time\) contains the) Tj T* 0 Tw 2.885366 Tw (time values at which other quantities were measured. The other time rows \(temperature, humidity,) Tj T* 0 Tw 5.214147 Tw (radiation\) contain the measured values. With ncDataReader2 we would reference 'time' as a) Tj T* 0 Tw 2.59816 Tw (NcDataSet1D. 'temperature', 'humidity' and 'radiation' are referenced as single NcVar1D's which are) Tj T* 0 Tw .910542 Tw (connected to the this set. For every possible value of 'time' we can now evaluate the quantities and get) Tj T* 0 Tw (\(possibly interpolated\) values.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 339.8236 cm
+1 0 0 1 62.69291 267.8236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL 2.536651 Tw (You can reference the same variables in a file multiple times with different parameters as different) Tj T* 0 Tw (NcDataSet1D or NcVar1D.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 309.8236 cm
+1 0 0 1 62.69291 237.8236 cm
 q
 BT 1 0 0 1 0 3 Tm 18 TL /F2 15 Tf 0 0 0 rg (5.1   Interpolation) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 282.8236 cm
+1 0 0 1 62.69291 210.8236 cm
 q
 BT 1 0 0 1 0 2.5 Tm 15 TL /F4 12.5 Tf 0 0 0 rg (5.1.1   Discrete) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 240.8236 cm
+1 0 0 1 62.69291 168.8236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 26 Tm /F1 10 Tf 12 TL .009989 Tw (This is the simplest but fastest method. The value of a variable is the value of the last data point where the) Tj T* 0 Tw .104987 Tw (value of the independant variable is smaller or exactly equal to the demanded point. This will lead to steps) Tj T* 0 Tw (at the intervall boundaries. Neither the function nor the derivatives are continuous.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 213.8236 cm
+1 0 0 1 62.69291 141.8236 cm
 q
 BT 1 0 0 1 0 2.5 Tm 15 TL /F4 12.5 Tf 0 0 0 rg (5.1.2   Linear) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 183.8236 cm
+1 0 0 1 62.69291 111.8236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .100751 Tw (Linear interpolation between the points leads to a continuous function with non-continuous derivatives and) Tj T* 0 Tw (is very fast.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 62.69291 156.8236 cm
-q
-BT 1 0 0 1 0 2.5 Tm 15 TL /F4 12.5 Tf 0 0 0 rg (5.1.3   Akima) Tj T* ET
-Q
-Q
-q
-1 0 0 1 62.69291 90.82362 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 50 Tm /F1 10 Tf 12 TL 1.059986 Tw (Akima interpolation is a cubic spline interpolation method. The calculation is not fast, but the result is a) Tj T* 0 Tw 2.369982 Tw (very smooth function \(continuous curve and derivative\). The continuity of the second derivative was) Tj T* 0 Tw 1.05436 Tw (abandoned to get only local dependencies of the parameters. This is a big advantage in comparison to) Tj T* 0 Tw .917882 Tw (normal cubic splines wheree all values of a data set have to be taken into account to calculate a single) Tj T* 0 Tw (value.) Tj T* ET
 Q
 Q
  
@@ -3173,51 +3220,64 @@ endobj
 % 'R134': class PDFStream 
 134 0 obj
 % page stream
-<< /Length 2272 >>
+<< /Length 3008 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 q
-1 0 0 1 62.69291 741.0236 cm
+1 0 0 1 62.69291 750.0236 cm
+q
+BT 1 0 0 1 0 2.5 Tm 15 TL /F4 12.5 Tf 0 0 0 rg (5.1.3   Akima) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 684.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 50 Tm /F1 10 Tf 12 TL 1.059986 Tw (Akima interpolation is a cubic spline interpolation method. The calculation is not fast, but the result is a) Tj T* 0 Tw 2.369982 Tw (very smooth function \(continuous curve and derivative\). The continuity of the second derivative was) Tj T* 0 Tw 1.05436 Tw (abandoned to get only local dependencies of the parameters. This is a big advantage in comparison to) Tj T* 0 Tw .917882 Tw (normal cubic splines wheree all values of a data set have to be taken into account to calculate a single) Tj T* 0 Tw (value.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 654.0236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL 2.637126 Tw (By using Akima interpolation with ncDataReader2 you can get a smooth interpolation of very large) Tj T* 0 Tw (variables by reading only a few values of the required range from the file.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 714.0236 cm
+1 0 0 1 62.69291 627.0236 cm
 q
 BT 1 0 0 1 0 2.5 Tm 15 TL /F4 12.5 Tf 0 0 0 rg (5.1.4   Sine Steps \(SinSteps\)) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 648.0236 cm
+1 0 0 1 62.69291 561.0236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 50 Tm /F1 10 Tf 12 TL 1.402209 Tw (This is a variation of the discrete method where the steps are smoothed by inserting parts of the sine) Tj T* 0 Tw .667633 Tw (function. In the middle of an intervall the values are still constant \(step-like behaviour\) but at the intervall) Tj T* 0 Tw .42936 Tw (boundaries a smooth transition is ensured. The amount of smoothing can be configured by defined by an) Tj T* 0 Tw .570651 Tw (influence radius around the points. The resulting curve is continous and has a continuous first derivative.) Tj T* 0 Tw (Strictly speaking, this is not an interpolation method since the data points are usually not met.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 74.44016 305.9732 cm
+1 0 0 1 74.44016 218.9732 cm
 q
 446.3953 0 0 342.0504 0 0 cm
 /FormXob.60f50829ede2cea70228f46681ecc12c Do
 Q
 Q
 q
-1 0 0 1 62.69291 278.9732 cm
+1 0 0 1 62.69291 191.9732 cm
 q
 BT 1 0 0 1 0 2.5 Tm 15 TL /F4 12.5 Tf 0 0 0 rg (5.1.5   Cosine Window \(CosWin\)) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 236.9732 cm
+1 0 0 1 62.69291 149.9732 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 26 Tm /F1 10 Tf 12 TL 1.09186 Tw (This is method does also more an approximation than a real interpolation. It will calculate the weighted) Tj T* 0 Tw .01561 Tw (average of all points and their linear interpolation inside a window. The weighting function is cos\(x\) \(scaled) Tj T* 0 Tw (and shifted\).) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 194.9732 cm
+1 0 0 1 62.69291 107.9732 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 26 Tm /F1 10 Tf 12 TL .506457 Tw (The result is continuous and has a continuous first derivative. For small windows the curve will follow the) Tj T* 0 Tw .274651 Tw (linear interpolation with some smoothing around the points. Large windows lead to more smoothing of the) Tj T* 0 Tw (dats set. The window size should be much smaller than the data range of the abscissa.) Tj T* ET
@@ -5728,7 +5788,7 @@ endobj
 % 'R143': class PDFStream 
 143 0 obj
 % page stream
-<< /Length 7256 >>
+<< /Length 7921 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 q
@@ -5939,22 +5999,22 @@ q
 1 0 0 1 62.69291 413.6236 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (Recent) Tj T* ET
+BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (2.3.1) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 392.6236 cm
+1 0 0 1 62.69291 356.6236 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 0 8 Tm  T* ET
+BT 1 0 0 1 0 44 Tm  T* ET
 q
-1 0 0 1 20 12 cm
+1 0 0 1 20 48 cm
 Q
 q
-1 0 0 1 20 12 cm
+1 0 0 1 20 48 cm
 Q
 q
-1 0 0 1 20 0 cm
+1 0 0 1 20 36 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -5975,20 +6035,68 @@ q
 Q
 Q
 q
+1 0 0 1 20 30 cm
+Q
+q
+1 0 0 1 20 18 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (changed all examples to work with optional file names) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 20 12 cm
+Q
+q
+1 0 0 1 20 0 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (changed Modelica files to use Modelica 3.2) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
 1 0 0 1 20 0 cm
 Q
 q
 Q
 Q
 q
-1 0 0 1 62.69291 376.6236 cm
+1 0 0 1 62.69291 340.6236 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (2.3.0) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 229.6236 cm
+1 0 0 1 62.69291 193.6236 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 BT 1 0 0 1 0 134 Tm  T* ET
@@ -6439,39 +6547,39 @@ xref
 0000224219 00000 n
 0000224438 00000 n
 0000233132 00000 n
-0000242211 00000 n
-0000247735 00000 n
-0000250108 00000 n
-0000253130 00000 n
-0000263326 00000 n
-0000271395 00000 n
-0000279590 00000 n
-0000287100 00000 n
-0000294415 00000 n
-0000300452 00000 n
-0000306100 00000 n
-0000313461 00000 n
-0000313728 00000 n
-0000313807 00000 n
-0000313886 00000 n
-0000313965 00000 n
-0000314044 00000 n
-0000314123 00000 n
-0000314202 00000 n
-0000314281 00000 n
-0000314360 00000 n
-0000314439 00000 n
-0000314519 00000 n
-0000314599 00000 n
-0000314679 00000 n
+0000242718 00000 n
+0000247951 00000 n
+0000251060 00000 n
+0000254082 00000 n
+0000264278 00000 n
+0000272347 00000 n
+0000280542 00000 n
+0000288052 00000 n
+0000295367 00000 n
+0000301404 00000 n
+0000307052 00000 n
+0000315078 00000 n
+0000315345 00000 n
+0000315424 00000 n
+0000315503 00000 n
+0000315582 00000 n
+0000315661 00000 n
+0000315740 00000 n
+0000315819 00000 n
+0000315898 00000 n
+0000315977 00000 n
+0000316056 00000 n
+0000316136 00000 n
+0000316216 00000 n
+0000316296 00000 n
 trailer
 << /ID 
  % ReportLab generated PDF document -- digest (http://www.reportlab.com) 
- [(k\025\210\371\257\320\206\357|\322\273\216\011u\274w) (k\025\210\371\257\320\206\357|\322\273\216\011u\274w)] 
+ [(\025\177\321*t\300:\244\270\336\277\354|\322k\322) (\025\177\321*t\300:\244\270\336\277\354|\322k\322)] 
 
  /Info 96 0 R
  /Root 95 0 R
  /Size 158 >>
 startxref
-314728
+316345
 %%EOF
