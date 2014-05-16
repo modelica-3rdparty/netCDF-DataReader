@@ -78,8 +78,9 @@ int main(int argc, char *argv[]) {
     printf("This generates a big file with %d data values.\n", DIM*(VARS+1));
     printf("Make sure you have enough disk space and some time.\n");
     printf("Enter 'y' to proceed, any other to stop now: ");
-    if (getchar() == 'y')
+    if (getchar() == 'y') {
         if (argc > 1) createBigFile(argv[1]);
         else          createBigFile("testfilebig.nc");
+    }
     return 0;
 }
