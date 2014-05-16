@@ -21,18 +21,18 @@
 
 #define NCDR_VERSION "@NCDR_VERSION@"
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 
+#define SIZET_FMT "%Iu"
 #define INLINE __inline
-
 #define snprintf _snprintf
-
 #define M_PI 3.14159265358979323846
 
-#else /* not _WIN32 */
+#else /* not MS VC */
 
+#define SIZET_FMT "%zu"
 #define INLINE inline
 
-#endif /* _WIN32 */
+#endif /* _MSC_VER */
 
 #endif /* NCDR_CONFIG_H */

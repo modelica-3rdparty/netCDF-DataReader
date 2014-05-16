@@ -22,8 +22,9 @@ void createBigFile(char *fileName) {
     int ncF, ncD, ncV[VARS], ncT;
     char c[101];
     size_t i, j;
+    int v;
     double t, *tBuf, *vBuf;
-    
+
     printf("Starting: "); fflush(stdout);
 
     handle_error(nc_create(fileName, NC_CLOBBER, &ncF));
@@ -34,26 +35,26 @@ void createBigFile(char *fileName) {
     handle_error(nc_def_var(ncF, "time", NC_DOUBLE, 1, &ncD, &ncT));
     ncSetAttributeText(ncF, ncT, NCATT_LOAD_TYPE, NCATT_LT_FULL);
     ncSetAttributeLong(ncF, ncT, NCATT_LOOKUP_CACHE, 16);
-    for (j = 0; j < VARS; j++) {
-        snprintf(c, 100, "big_var_%02zu", j);
-        handle_error(nc_def_var(ncF, c, NC_DOUBLE, 1, &ncD, ncV+j));
-        ncSetAttributeText(ncF, ncV[j], NCATT_LOAD_TYPE, NCATT_LT_CHUNK);
-        ncSetAttributeText(ncF, ncV[j], NCATT_INTERPOLATION, NCATT_IP_AKIMA);
-        ncSetAttributeLong(ncF, ncV[j], NCATT_CHUNK_SIZE, 1024);
-        ncSetAttributeLong(ncF, ncV[j], NCATT_PARAMETER_CACHE, 16);
+    for (v = 0; v < VARS; v++) {
+        snprintf(c, 100, "big_var_%02d", v);
+        handle_error(nc_def_var(ncF, c, NC_DOUBLE, 1, &ncD, ncV+v));
+        ncSetAttributeText(ncF, ncV[v], NCATT_LOAD_TYPE, NCATT_LT_CHUNK);
+        ncSetAttributeText(ncF, ncV[v], NCATT_INTERPOLATION, NCATT_IP_AKIMA);
+        ncSetAttributeLong(ncF, ncV[v], NCATT_CHUNK_SIZE, 1024);
+        ncSetAttributeLong(ncF, ncV[v], NCATT_PARAMETER_CACHE, 16);
     }
-    
+
     handle_error(nc_enddef(ncF));
     printf("N"); fflush(stdout);
 
     tBuf = malloc(DIM*sizeof(double));
     vBuf = malloc(DIM*sizeof(double));
-    
+
     if ((tBuf == NULL) || (vBuf == NULL)) {
         printf("Out of memory!\n");
         return;
     }
-    
+
     for (i = 0; i < DIM; i ++)
         tBuf[i] = 0.01 * (i - 0.5 + 0.4 * RAND01());
     printf("T"); fflush(stdout);
@@ -68,7 +69,7 @@ void createBigFile(char *fileName) {
         handle_error(nc_put_var_double(ncF, ncV[j], vBuf));
         printf("v"); fflush(stdout);
     }
-    
+
     handle_error(nc_sync(ncF));
     handle_error(nc_close(ncF));
     printf("\n");

@@ -412,7 +412,7 @@ void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var, FILE *f) {
             fprintf(f, "none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(f, "chunks (%zu values on demand)\n", var->chunkSize);
+            fprintf(f, "chunks ("SIZET_FMT" values on demand)\n", var->chunkSize);
     }
     fprintf(f, "  Interpolation:        ");
     switch (var->inter) {
@@ -432,7 +432,7 @@ void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var, FILE *f) {
             fprintf(f, "akima\n");
             break;
     }
-    fprintf(f, "  LoadCount:            %zu\n", var->loadCount);
-    fprintf(f, "  ValueCalc./Cache:     %zu/%zu\n", var->vCacheStat[1], var->vCacheStat[0]);
-    fprintf(f, "  ParameterCalc./Cache: %zu/%zu\n\n", var->pCacheStat[1], var->pCacheStat[0]);
+    fprintf(f, "  LoadCount:            "SIZET_FMT"\n", var->loadCount);
+    fprintf(f, "  ValueCalc./Cache:     "SIZET_FMT"/"SIZET_FMT"\n", var->vCacheStat[1], var->vCacheStat[0]);
+    fprintf(f, "  ParameterCalc./Cache: "SIZET_FMT"/"SIZET_FMT"\n\n", var->pCacheStat[1], var->pCacheStat[0]);
 }

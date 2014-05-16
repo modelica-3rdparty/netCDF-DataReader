@@ -26,6 +26,7 @@
 #include "../config.h"
 #include "Lookup.h"
 
+
 NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName, Extrapolation extra, LoadType loadType, int lookupCacheSize) {
     int ncF, ncV, ncD;
     size_t l;
@@ -231,7 +232,7 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
     if (f == NULL) f=stdout;
     nc_inq_varname(dataSet->fileId, dataSet->varId, ctmp);
     fprintf(f, "DataSet1D: %s\n", ctmp);
-    fprintf(f, "  Size:          %zu\n", dataSet->dim);
+    fprintf(f, "  Size:          "SIZET_FMT"\n", dataSet->dim);
     fprintf(f, "  LoadType:      ");
     switch (dataSet->loadType) {
         case LtFull:
@@ -241,7 +242,7 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
             fprintf(f, "none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(f, "chunks (%zu values on demand)\n", dataSet->chunkSize);
+            fprintf(f, "chunks ("SIZET_FMT" values on demand)\n", dataSet->chunkSize);
     }
     fprintf(f, "  Extrapolation: ");
     switch (dataSet->extra) {
@@ -255,6 +256,6 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
             fprintf(f, "default (depends on interpolation)\n");
             break;
     }
-    fprintf(f, "  LoadCount:     %zu\n", dataSet->loadCount);
-    fprintf(f, "  Lookups/Cache: %zu/%zu\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
+    fprintf(f, "  LoadCount:     "SIZET_FMT"\n", dataSet->loadCount);
+    fprintf(f, "  Lookups/Cache: "SIZET_FMT"/"SIZET_FMT"\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
 }

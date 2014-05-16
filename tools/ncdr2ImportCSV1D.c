@@ -59,7 +59,7 @@ int importCSV1D(int argc, char **argv) {
     const char *name;
     unsigned int k=0, p=0, v=0, c=0;
     size_t j;
-    int width, height, header, tmp, type, ncFile, ncDim, ncVar;
+    int width, height, tmp, type, ncFile, ncDim, ncVar;
     double w=DDEF, m=DDEF, dtmp;
     Extrapolation x = EpAuto;
     Interpolation i = IpAuto;
