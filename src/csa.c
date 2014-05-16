@@ -42,6 +42,11 @@
 // static const double NaN = 0.0 / 0.0;
 // #endif
 
+#ifdef _MSC_VER
+#define INFINITY (DBL_MAX+DBL_MAX)
+#define NaN (INFINITY-INFINITY)
+#endif
+
 char* csa_version = "1.16";
 int csa_verbose = 0;
 

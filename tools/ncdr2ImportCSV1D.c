@@ -57,7 +57,8 @@ if (status != NC_NOERR) {
 int importCSV1D(int argc, char **argv) {
     char *f=NULL, *o=NULL, *t=NULL, ctmp[301], *xStr, *iStr, *lStr;
     const char *name;
-    size_t k=0, p=0, v=0, c=0, j;
+    unsigned int k=0, p=0, v=0, c=0;
+    size_t j;
     int width, height, header, tmp, type, ncFile, ncDim, ncVar;
     double w=DDEF, m=DDEF, dtmp;
     Extrapolation x = EpAuto;
@@ -69,10 +70,10 @@ int importCSV1D(int argc, char **argv) {
         switch(tmp) {
             case 'm': m = atof(optarg); break;
             case 'w': w = atof(optarg); break;
-            case 'k': k = atol(optarg); break;
-            case 'p': p = atol(optarg); break;
-            case 'v': v = atol(optarg); break;
-            case 'c': c = atol(optarg); break;
+            case 'k': k = (unsigned int)atol(optarg); break;
+            case 'p': p = (unsigned int)atol(optarg); break;
+            case 'v': v = (unsigned int)atol(optarg); break;
+            case 'c': c = (unsigned int)atol(optarg); break;
             case 't': t = optarg; break;
             case 'o': o = optarg; break;
             case 'x':
@@ -174,7 +175,7 @@ int importCSV1D(int argc, char **argv) {
     if (x != EpAuto)
         handle_error(nc_put_att_text(ncFile, ncVar, NCATT_EXTRAPOLATION, strlen(xStr), xStr));
     if (k != 0)
-        handle_error(nc_put_att_long(ncFile, ncVar, NCATT_LOOKUP_CACHE, NC_LONG, 1, &k));
+        handle_error(nc_put_att_uint(ncFile, ncVar, NCATT_LOOKUP_CACHE, NC_LONG, 1, &k));
     handle_error(nc_enddef(ncFile));
     for (j = 0; j < height; j++) {
         dtmp = csv_get(csv, 0, j);
@@ -201,11 +202,11 @@ int importCSV1D(int argc, char **argv) {
             if (w != DDEF)
                 handle_error(nc_put_att_double(ncFile, ncVar, NCATT_WINDOW_SIZE, NC_DOUBLE, 1, &w));
             if (p != 0)
-                handle_error(nc_put_att_long(ncFile, ncVar, NCATT_PARAMETER_CACHE, NC_LONG, 1, &p));
+                handle_error(nc_put_att_uint(ncFile, ncVar, NCATT_PARAMETER_CACHE, NC_LONG, 1, &p));
             if (v != 0)
-                handle_error(nc_put_att_long(ncFile, ncVar, NCATT_VALUE_CACHE, NC_LONG, 1, &v));
+                handle_error(nc_put_att_uint(ncFile, ncVar, NCATT_VALUE_CACHE, NC_LONG, 1, &v));
             if (c != 0)
-                handle_error(nc_put_att_long(ncFile, ncVar, NCATT_CHUNK_SIZE, NC_LONG, 1, &c));
+                handle_error(nc_put_att_uint(ncFile, ncVar, NCATT_CHUNK_SIZE, NC_LONG, 1, &c));
             handle_error(nc_enddef(ncFile));
             for (j = 0; j < height; j++) {
                 dtmp = csv_get(csv, tmp, j);

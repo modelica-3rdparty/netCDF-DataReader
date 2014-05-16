@@ -231,7 +231,7 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
     if (f == NULL) f=stdout;
     nc_inq_varname(dataSet->fileId, dataSet->varId, ctmp);
     fprintf(f, "DataSet1D: %s\n", ctmp);
-    fprintf(f, "  Size:          %li\n", dataSet->dim);
+    fprintf(f, "  Size:          %zu\n", dataSet->dim);
     fprintf(f, "  LoadType:      ");
     switch (dataSet->loadType) {
         case LtFull:
@@ -241,7 +241,7 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
             fprintf(f, "none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(f, "chunks (%li values on demand)\n", dataSet->chunkSize);
+            fprintf(f, "chunks (%zu values on demand)\n", dataSet->chunkSize);
     }
     fprintf(f, "  Extrapolation: ");
     switch (dataSet->extra) {
@@ -255,6 +255,6 @@ void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
             fprintf(f, "default (depends on interpolation)\n");
             break;
     }
-    fprintf(f, "  LoadCount:     %li\n", dataSet->loadCount);
-    fprintf(f, "  Lookups/Cache: %li/%li\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
+    fprintf(f, "  LoadCount:     %zu\n", dataSet->loadCount);
+    fprintf(f, "  Lookups/Cache: %zu/%zu\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
 }

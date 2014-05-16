@@ -35,7 +35,7 @@ void createBigFile(char *fileName) {
     ncSetAttributeText(ncF, ncT, NCATT_LOAD_TYPE, NCATT_LT_FULL);
     ncSetAttributeLong(ncF, ncT, NCATT_LOOKUP_CACHE, 16);
     for (j = 0; j < VARS; j++) {
-        snprintf(c, 100, "big_var_%02ld", j);
+        snprintf(c, 100, "big_var_%02zu", j);
         handle_error(nc_def_var(ncF, c, NC_DOUBLE, 1, &ncD, ncV+j));
         ncSetAttributeText(ncF, ncV[j], NCATT_LOAD_TYPE, NCATT_LT_CHUNK);
         ncSetAttributeText(ncF, ncV[j], NCATT_INTERPOLATION, NCATT_IP_AKIMA);
