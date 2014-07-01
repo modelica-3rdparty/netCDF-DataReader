@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
         return 10;
     }
     if (argc > 1) ncFileName = argv[1];
-    else          ncFileName = "testfilebig.nc";
+    else          ncFileName = "testfile.nc";
 
     fprintf(outf, "# you may plot this file with gnuplot using splot\n");
     for (x = -4.9; x <  4.9; x += 0.2) {
