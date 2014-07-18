@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <ncDataReaderEA.h>
 
-#define NCFILE  "testfile.nc"
-
 int main(int argc, char *argv[]) {
     double x, start, step, end;
     char *ncFileName;
