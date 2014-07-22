@@ -15,11 +15,11 @@ void testChunk(void) {
         return;
     }
     fprintf(outf, "# you may plot this file with gnuplot\n");
-    
+
     dset = ncDataSet1DNew(ncFileName, "time", EpAuto, LtFull, -1);
 
-    v = ncVar1DNew(dset, "big_var_00", IpAkima, LtAuto);
-    
+    v = ncVar1DNew(dset, "big_var_0", IpAkima, LtAuto);
+
     istart = dset->min;
     iend   = dset->max - 0.1 * (dset->max - dset->min);
     istep  = (iend - istart) / 20;
