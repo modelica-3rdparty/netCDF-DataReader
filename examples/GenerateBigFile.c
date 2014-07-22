@@ -3,7 +3,6 @@
 #include <string.h>
 #include "ncDataReader2.h"
 #include "netcdf.h"
-#include "../config.h"
 
 #define RAND01() (rand()/(double)RAND_MAX)
 

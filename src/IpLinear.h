@@ -20,7 +20,7 @@
 #define IPLINEAR_H
 
 #include "ncDataReader2.h"
-#include "../config.h"
+#include "config.h"
 #include "Chain.h"
 
 double ncVar1DGetLinear(NcVar1D *var, double x);

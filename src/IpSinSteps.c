@@ -18,7 +18,6 @@
 
 /* #include <stdlib.h> */
 #include <math.h>
-#include "../config.h"
 #include "IpSinSteps.h"
 
 double ncVar1DGetSinSteps(NcVar1D *var, double x) {

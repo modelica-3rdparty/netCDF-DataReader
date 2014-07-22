@@ -20,6 +20,8 @@
 #define IPSINSTEPS_H
 
 #include "ncDataReader2.h"
+#include "config.h"
+
 
 double ncVar1DGetSinSteps(NcVar1D *var, double x);
 

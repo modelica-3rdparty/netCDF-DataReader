@@ -21,9 +21,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "netcdf.h"
-#include "../config.h"
 #include "ncDataReader2.h"
 #include "ncDataReaderEA.h"
+#include "config.h"
 #include "StringHashTable.h"
 
 typedef struct {

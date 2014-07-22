@@ -4,7 +4,7 @@
 #include <string.h>
 #include "getopt.h"
 #include "csv.h"
-#include "../config.h"
+#include "config.h"
 #include "ncDataReader2.h"
 #include "netcdf.h"
 

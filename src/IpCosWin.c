@@ -18,11 +18,10 @@
 
 /* #include <stdlib.h> */
 #include <math.h>
-#include "../config.h"
-#include "IpSinSteps.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "IpCosWin.h"
 
 /* reduce buffer if not needed or just enlarge on demand? */
 #define REDUCE_BUFFER 1

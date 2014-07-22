@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include "netcdf.h"
 #include "ncDataReader2.h"
-#include "../config.h"
+#include "config.h"
 #include "IpLinear.h"
 #include "IpSinSteps.h"
 #include "IpAkima.h"

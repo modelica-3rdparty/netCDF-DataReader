@@ -20,7 +20,7 @@
 #define IPAKIMA_H
 
 #include "ncDataReader2.h"
-#include "../config.h"
+#include "config.h"
 #include "Chain.h"
 
 double ncVar1DGetAkima(NcVar1D *var, double x);

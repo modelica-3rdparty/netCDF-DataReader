@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include "netcdf.h"
 #include "ncDataReader2.h"
-#include "../config.h"
+#include "config.h"
 #include "Lookup.h"
 
 

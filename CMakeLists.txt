@@ -48,7 +48,7 @@ else(UNIX)
    set(MATH_LIB)
 endif(UNIX)
 
-include_directories("${NC_INC}" "${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_BINARY_DIR}" "${NC_INC}" "${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory(src)
 add_subdirectory(tools)

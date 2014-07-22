@@ -20,8 +20,8 @@
 #include <math.h>
 #include <string.h>
 #include "netcdf.h"
-#include "../config.h"
 #include "ncDataReader2.h"
+#include "config.h"
 
 /* version string */
 char ncDataReader2_version[] = NCDR_VERSION;

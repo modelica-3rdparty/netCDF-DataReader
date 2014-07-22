@@ -32,8 +32,8 @@ extern "C" {
 #endif
 
 #include "netcdf.h"
-#include "../config.h"
 #include "ncDataReader2.h"
+#include "config.h"
 
 NcScattered2D DLL_EXPORT *ncScattered2DNew(const char *fileName, const char *varName) {
     int ncF, ncV, ncD[2];

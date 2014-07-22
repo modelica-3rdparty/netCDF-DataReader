@@ -20,6 +20,7 @@
 #define IPCOSWIN_H
 
 #include "ncDataReader2.h"
+#include "config.h"
 
 double ncVar1DGetCosWin(NcVar1D *var, double x);
 

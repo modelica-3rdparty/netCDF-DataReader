@@ -3,7 +3,7 @@
 #include <float.h>
 #include <time.h>
 #include "getopt.h"
-#include "../config.h"
+#include "config.h"
 #include "ncDataReader2.h"
 
 
