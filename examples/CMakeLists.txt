@@ -6,4 +6,11 @@ set (EXAMPLES GenerateFile GenerateBigFile CacheTests PrintVersion Read1D
 foreach (EX ${EXAMPLES})
     add_executable (${EX} ${EX}.c)
     target_link_libraries (${EX} ${LIBS})
+    if(UNIX)
+        install(FILES ${EX}.c DESTINATION share/doc/${NCDR_PACKAGE_NAME}/examples)
+    endif(UNIX)
 endforeach(EX)
+
+if(UNIX)
+    install(FILES GenerateFile.m GenerateFile.py 00_README DESTINATION share/doc/${NCDR_PACKAGE_NAME}/examples)
+endif(UNIX)
