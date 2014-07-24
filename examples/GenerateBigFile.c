@@ -4,6 +4,10 @@
 #include "ncDataReader2.h"
 #include "netcdf.h"
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 #define RAND01() (rand()/(double)RAND_MAX)
 
 void handleError(int status) {
