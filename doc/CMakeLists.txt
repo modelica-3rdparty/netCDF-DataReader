@@ -4,6 +4,7 @@ add_custom_command (OUTPUT ncDataReader2_Manual.pdf
   DEPENDS ncDataReader2_Manual.txt
 )
 
+
 set (DOCFILES ncDataReader2_Manual.pdf ncDataReader2_Manual.txt 
      CosWin_Approximation_German.pdf CosWin.png Interpolation.png 
      Logo.odg Logo.pdf Logo.png README.csa)
