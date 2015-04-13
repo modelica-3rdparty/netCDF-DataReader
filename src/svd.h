@@ -29,7 +29,7 @@ extern int svd_verbose;
  * @param A Input matrix A [0..m-1][0..n-1]; output matrix U
  * @param n Number of columns
  * @param m Number of rows
- * @param w Ouput vector [0..n-1] that presents diagonal matrix W 
+ * @param w Output vector [0..n-1] that presents diagonal matrix W 
  * @param V output matrix V [0..n-1][0..n-1] (not transposed)
  */
 void svd(double** a, int n, int m, double* w, double** v);
@@ -39,7 +39,7 @@ void svd(double** a, int n, int m, double* w, double** v);
  * @param A Input-output matrix U [0..m-1][0..n-1]
  * @param n Number of columns
  * @param m Number of rows
- * @param w Input-ouput vector [0..n-1] that presents diagonal matrix W 
+ * @param w Input-output vector [0..n-1] that presents diagonal matrix W 
  * @param V Input-output matrix V [0..n-1][0..n-1] (not transposed)
  *
  * This function does the work but has downside that it requires temporal 
