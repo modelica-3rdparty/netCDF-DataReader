@@ -102,7 +102,7 @@ Another very simple example::
         printf("The value of y for time=42.0 is %g.\n", ncVar1DGet(y, 42.0));
     }
 
-This will open the independant variable ``time`` and the dependant variable 
+This will open the independent variable ``time`` and the dependant variable 
 ``y`` in a file ``data.nc``, calculate the interpolated value of ``y``
 for ``time=42.0``. The variable ``time`` will be used periodic, ``y`` will be
 interpolated by the Akima method. All data will be fully loaded.
@@ -112,7 +112,7 @@ Concept
 =======
 
 A one dimensional data set (NcDataSet1D) is the representation of one 
-independant variable in a netCDF file. This data can be equally spaced, but it
+independent variable in a netCDF file. This data can be equally spaced, but it
 doesn't need to. A one dimensional variable (NcVar1D) is the representation of a
 dependant variable that has a dependency to exactly one NcDataSet1D. The value
 of a NcVar1D at a certain point can be evaluated (usually interpolated). A
@@ -136,7 +136,7 @@ Interpolation
 Discrete
 ~~~~~~~~
 This is the simplest but fastest method. The value of a variable is the value of
-the last data point where the value of the independant variable is smaller or 
+the last data point where the value of the independent variable is smaller or 
 exactly equal to the demanded point. This will lead to steps at the intervall 
 boundaries. Neither the function nor the derivatives are continuous.
 
@@ -217,7 +217,7 @@ effect of the caches.
 Value Cache
 ~~~~~~~~~~~
 The value cache stores the calculated values of a NcVar1D for a specific value 
-of the independant variable. DAE based simulation systems tend to call the same 
+of the independent variable. DAE based simulation systems tend to call the same 
 functions with the same arguments very often. A value cache can speed up the 
 calculations in this case.
 
@@ -252,7 +252,7 @@ be calculated.
 File annotations / netCDF Attributes
 ------------------------------------
 All the parameters like interpolation and extrapolation methods,
-transformations, cache sizes and other can be explicitely set or can be read
+transformations, cache sizes and other can be explicitly set or can be read
 from the data file. netCDF files may contain generic attributes (global and and
 variable specific). Some attributes with special names are honoured by
 ncDataReader2. Parameters set with explicit functions always have precedence
@@ -305,7 +305,7 @@ NcDataSet1D will be created with the following function::
                               LoadType loadType, 
                               size_t lookupCacheSize);
 
-``fileName`` is the name of the file, ``varName`` is the name of the independant
+``fileName`` is the name of the file, ``varName`` is the name of the independent
 variable. ``extra`` is the method of extrapolation (the behaviour when the 
 defined data range is left). The variable ``loadType`` defines the way the data 
 is loaded from file to memory. The parameter ``lookupCacheSize`` is the size of
@@ -351,7 +351,7 @@ like variables and files.::
 
   void ncDataSet1DFree(NcDataSet1D *dataSet);
 
-Intervall search for a value of the independant variable::
+Intervall search for a value of the independent variable::
 
   size_t ncDataSet1DSearch(NcDataSet1D *dataSet, double *x);
 
@@ -414,7 +414,7 @@ library) is done with the function::
 
     double ncVar1DGet(NcVar1D *var, double x);
 
-``var`` is the NcVar1D object and x the value of the independant variable at the
+``var`` is the NcVar1D object and x the value of the independent variable at the
 requested point.
 
 To get the value of the variable (without any interpolation) in one interval you
@@ -556,8 +556,8 @@ these objects. All parameters like extrapolation, interpolation, scaling, cache
 sizes and others are read from file annotations or set to default values.
 
 A strict requirement to get this initialization automatically done is to follow
-a naming convention: the independant variable in the file must have the same
-name as the dimension that is used both for the independant and the dependant
+a naming convention: the independent variable in the file must have the same
+name as the dimension that is used both for the independent and the dependant
 variable. 
 
 The functionality for 2D interpolation is also exposed via the EA::

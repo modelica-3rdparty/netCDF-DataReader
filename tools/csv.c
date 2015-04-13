@@ -128,7 +128,7 @@ CSV *loadcsv(const char *fname)
     }
   }
 
-  /* kick out strings which contian the sequence "NaN" */
+  /* kick out strings which contain the sequence "NaN" */
   for(i=0;i<N;i++)
     for(ii=0;ii<len[i];ii++)
       if(rec[i][ii] && !mystricmp(rec[i][ii], "NaN"))
