@@ -34,7 +34,7 @@ void createBigFile(char *fileName, long nVars, long nValues) {
     printf("Starting: "); fflush(stdout);
 
     ncV = malloc(nVars*sizeof(long));
-    snprintf(f, 100, "big_var_%%0%dd", numDigits(nVars-1));
+    snprintf(f, 100, "big_var_%%0%dd", numDigits(nVars));
 
     handleError(nc_create(fileName, NC_CLOBBER | NC_64BIT_OFFSET, &ncF));
     ncSetAttributeText(ncF, NC_GLOBAL, "doc", "big test file for ncdataReader2");
