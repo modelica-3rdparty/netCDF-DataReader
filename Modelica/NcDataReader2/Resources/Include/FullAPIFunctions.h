@@ -1,3 +1,6 @@
+#ifndef NCFULLAPIFUNCTIONS_H
+#define NCFULLAPIFUNCTIONS_H 
+
 #include "ncDataReader2.h"
 
 #define FILENAME "/var/tmp/testfilebig.nc"
@@ -46,4 +49,6 @@ int main(void) {
     printf("%g\t%g\t%g\n", t, getV1(t), getV2(t));
     return 0;
 }
+#endif
+
 #endif
