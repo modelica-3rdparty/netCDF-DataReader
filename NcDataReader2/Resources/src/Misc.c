@@ -22,6 +22,9 @@
 #include "netcdf.h"
 #include "ncDataReader2.h"
 #include "config.h"
+#if defined(MODELICA_ERROR_HANDLER)
+#include "ModelicaUtilities.h"
+#endif
 
 /* version string */
 char ncDataReader2_version[] = NCDR_VERSION;
@@ -44,15 +47,23 @@ char DLL_EXPORT *ncDataReader2Version() {
    WIN32_MSGBOX: show message dialog box and exit
    other systems: write msg to stderr and exit */
 void _defaultHandler(int n, char *msg) {
+#if defined(MODELICA_ERROR_HANDLER)
 #ifdef WIN32_MSGBOX
     char TMP[101];
     snprintf(TMP, 100, "ERROR | %d | %s\n", n, msg);
     MessageBox(NULL, TMP, "Fatal exception in ncDataReader2", MB_OK | MB_ICONSTOP | MB_TASKMODAL);
-#else /* no WIN32_MSGBOX */
+#endif
+    ModelicaFormatError("ncDataReader2 | ERROR | %d | %s\n", n, msg);
+#else
+#ifdef WIN32_MSGBOX
+    char TMP[101];
+    snprintf(TMP, 100, "ERROR | %d | %s\n", n, msg);
+    MessageBox(NULL, TMP, "Fatal exception in ncDataReader2", MB_OK | MB_ICONSTOP | MB_TASKMODAL);
+#endif
     fprintf(stderr, "ncDataReader2 | ERROR | %d | %s\n", n, msg);
     fflush(stderr);
-#endif /* WIN32_MSGBOX */
     exit(n);
+#endif
 }
 
 static NcErrorHandler error_handler = _defaultHandler;

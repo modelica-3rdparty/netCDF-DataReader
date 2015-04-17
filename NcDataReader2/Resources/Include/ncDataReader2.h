@@ -26,11 +26,7 @@ extern "C" {
 #include <stdlib.h>
 #include <stdio.h>
 
-#if 0
-#define DLL_EXPORT __declspec(dllexport)
-#else
 #define DLL_EXPORT
-#endif
 
 char DLL_EXPORT  *ncDataReader2Version();
 

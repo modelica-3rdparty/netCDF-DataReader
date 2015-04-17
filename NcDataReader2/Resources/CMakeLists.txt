@@ -12,6 +12,8 @@ set(NCDR_MAINTAINER "Joerg Raedler <joerg@j-raedler.de>")
 
 option(BUILD_SHARED_LIB "build a shared library" OFF)
 
+option(MODELICA_ERROR_HANDLER "enable ModelicaError functions" ON)
+
 option(NC_NOCHECK "disable error handling functions (not recommended!)" OFF)
 
 if(WIN32)
@@ -31,6 +33,10 @@ if(BUILD_SHARED_LIB)
 else(BUILD_SHARED_LIB)
   set(LIB_BUILD_TYPE "STATIC")
 endif(BUILD_SHARED_LIB)
+
+if(MODELICA_ERROR_HANDLER)
+  add_definitions(-DMODELICA_ERROR_HANDLER)
+endif(MODELICA_ERROR_HANDLER)
 
 if(NC_NOCHECK)
   add_definitions(-DNC_NOCHECK)
