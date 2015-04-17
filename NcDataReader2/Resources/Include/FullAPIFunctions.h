@@ -3,7 +3,7 @@
 
 #include "ncDataReader2.h"
 
-#define FILENAME "/var/tmp/testfilebig.nc"
+#define FILENAME "../../testfilebig.nc"
 
 /* dataset and variable information */
 static NcDataSet1D *dset = NULL;
