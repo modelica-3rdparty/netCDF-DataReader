@@ -19,7 +19,7 @@ The original repository is on [Bitbucket](https://bitbucket.org/jraedler/ncdatar
 NcDataReader2 is released under the terms of the LGPL v2.
 
 ## Development and contribution
-* [Jörg Rädler](http://www.j-raedler.de/projects/ncdatareader2)
+* [JÃ¶rg RÃ¤dler](http://www.j-raedler.de/projects/ncdatareader2)
 * [tbeu](https://github.com/tbeu)
 
 You may report any issues with using the [Issues](../../issues) button.
