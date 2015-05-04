@@ -1,6 +1,6 @@
 within NcDataReader2.Examples;
 
-model Simple "Simple test model for ncDataReader2"
+model Simple "Simple test model for NcDataReader2"
     extends Modelica.Icons.Example;
     import nc = NcDataReader2.Functions;
     parameter String fileName = Modelica.Utilities.Files.loadResource("modelica://NcDataReader2/Resources/examples/testfile.nc") "File where external data is stored"

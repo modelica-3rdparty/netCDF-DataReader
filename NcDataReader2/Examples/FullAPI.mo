@@ -1,6 +1,6 @@
 within NcDataReader2.Examples;
 
-model FullAPI "Test model for ncDataReader2 using the full API"
+model FullAPI "Test model for NcDataReader2 using the full API"
     extends Modelica.Icons.Example;
     parameter String fileName = Modelica.Utilities.Files.loadResource("modelica://NcDataReader2/Resources/examples/testfilebig.nc") "File where external data is stored"
       annotation(Dialog(

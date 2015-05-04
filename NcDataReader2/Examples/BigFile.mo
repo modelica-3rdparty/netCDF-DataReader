@@ -1,6 +1,6 @@
 within NcDataReader2.Examples;
 
-model BigFile "Test model for ncDataReader2 with large data sets"
+model BigFile "Test model for NcDataReader2 with large data sets"
     extends Modelica.Icons.Example;
     import nc = NcDataReader2.Functions;
     parameter String dataFile = Modelica.Utilities.Files.loadResource("modelica://NcDataReader2/Resources/examples/testfilebig.nc") "File where external data is stored"
