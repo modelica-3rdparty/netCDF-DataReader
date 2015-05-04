@@ -31,7 +31,7 @@ double getV1(const char* fileName, double x){
     return ncVar1DGet(v1, x);
 };
 
-double getV2((const char* fileName, double x){
+double getV2(const char* fileName, double x){
     if (dset == NULL)
         myInit(fileName);
     return ncVar1DGet(v2, x);
