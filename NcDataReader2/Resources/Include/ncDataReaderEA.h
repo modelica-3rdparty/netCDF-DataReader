@@ -19,15 +19,19 @@
 #ifndef NCDATAREADEREA_H
 #define NCDATAREADEREA_H
 
+#if defined(BUILD_SHARED)
+#define DLL_EXPORT __declspec(dllexport)
+#else
 #define DLL_EXPORT
+#endif
 
-char DLL_EXPORT  *ncDataReader2Version();
+char DLL_EXPORT  *ncDataReader2Version(void);
 
 double DLL_EXPORT ncEasyGet1D(const char *fileName, const char *varName, double x);
 
 double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName, double x, double y);
 
-void   DLL_EXPORT ncEasyFree();
+void   DLL_EXPORT ncEasyFree(void);
 
 #define NC_DOUBLE_NOVAL -123456789.0
 #define NC_LONG_NOVAL   -123456789

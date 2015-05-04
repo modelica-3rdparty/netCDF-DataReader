@@ -1,23 +1,30 @@
 within NcDataReader2.Examples;
 
 model FullAPI "Test model for ncDataReader2 using the full API"
+    extends Modelica.Icons.Example;
+    parameter String fileName = Modelica.Utilities.Files.loadResource("modelica://NcDataReader2/Resources/examples/testfilebig.nc") "File where external data is stored"
+      annotation(Dialog(
+        loadSelector(filter="netCDF files (*.nc)",
+        caption="Open file")));
 
     // this model needs FullAPIFunctions.h,
     // if in doubt, copy the file to the working directory
     // where the compiler can find it
 
     function getV1 "get v1 from file"
+        extends Modelica.Icons.Function;
+        input String fileName;
         input Real x;
         output Real y;
-        annotation(Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2","netcdf"});
-        external "C";
+        external "C" y=getV1(fileName, x) annotation(Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2", "netcdf"});
     end getV1;
 
     function getV2 "get v2 from file"
+        extends Modelica.Icons.Function;
+        input String fileName;
         input Real x;
         output Real y;
-        annotation(Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2","netcdf"});
-        external "C";
+        external "C" y=getV2(fileName, x) annotation(Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2", "netcdf"});
     end getV2;
 
     Real x "dummy variable";
@@ -26,8 +33,8 @@ model FullAPI "Test model for ncDataReader2 using the full API"
 
     equation 
     der(x) = T1 + T2;
-    T1 = getV1(time);
-    T2 = getV2(time);
-    annotation(uses(Modelica(version = "3.2.1")), experiment(StartTime = 100, StopTime = 150, Interval = 0.0001));
+    T1 = getV1(fileName, time);
+    T2 = getV2(fileName, time);
+    annotation(experiment(StartTime = 100, StopTime = 150, Interval = 0.0001));
 
 end FullAPI;

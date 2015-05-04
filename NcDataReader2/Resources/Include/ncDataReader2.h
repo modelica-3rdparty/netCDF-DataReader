@@ -26,9 +26,13 @@ extern "C" {
 #include <stdlib.h>
 #include <stdio.h>
 
+#if defined(BUILD_SHARED)
+#define DLL_EXPORT __declspec(dllexport)
+#else
 #define DLL_EXPORT
+#endif
 
-char DLL_EXPORT  *ncDataReader2Version();
+char DLL_EXPORT  *ncDataReader2Version(void);
 
 #ifdef NC_NOCHECK
 #define ncError(S) (S)

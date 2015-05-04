@@ -22,9 +22,7 @@
 #include "netcdf.h"
 #include "ncDataReader2.h"
 #include "config.h"
-#if defined(MODELICA_ERROR_HANDLER)
 #include "ModelicaUtilities.h"
-#endif
 
 /* version string */
 char ncDataReader2_version[] = NCDR_VERSION;
@@ -32,10 +30,11 @@ char ncDataReader2_version[] = NCDR_VERSION;
 /* text of last error */
 char DLL_EXPORT ncLastErrorText[101];
 
-char DLL_EXPORT *ncDataReader2Version() {
-    return ncDataReader2_version;
+char DLL_EXPORT *ncDataReader2Version(void) {
+    char* ret = ModelicaAllocateString(strlen(ncDataReader2_version));
+    strcpy(ret, ncDataReader2_version);
+    return ret;
 }
-
 
 #ifndef NC_NOCHECK
 #include <stdio.h>

@@ -24,6 +24,7 @@
 #include "ncDataReader2.h"
 #include "ncDataReaderEA.h"
 #include "config.h"
+#include "ModelicaUtilities.h"
 #include "StringHashTable.h"
 
 typedef struct {
@@ -36,7 +37,7 @@ static SHT_Table *easyFiles1D = NULL;
 
 /* ************ 1D ************ */
 
-static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName, 
+static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName,
                                 const char *varName) {
     NcDataSet1D *dataSet = NULL;
     NcVar1D     *var = NULL;
@@ -61,7 +62,7 @@ static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName,
 double DLL_EXPORT ncEasyGet1D(const char *fileName, const char *varName, double x) {
     EasyFileData1D *fileData;
     NcVar1D        *var;
-    if (easyFiles1D == NULL) 
+    if (easyFiles1D == NULL)
         easyFiles1D = shtNew(100);
     if (!(fileData = shtGet(easyFiles1D, fileName))) {
         fileData = (EasyFileData1D *)malloc(sizeof(EasyFileData1D));
@@ -98,15 +99,15 @@ static SHT_Table *easyScattered2D = NULL;
 
 
 static void _freeScattered2D(char *name, void *v, void *arg) {
-    ncScattered2DFree(v); 
+    ncScattered2DFree(v);
 }
 
 
-double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName, 
+double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName,
                                        double x, double y) {
     char key[1025];
     NcScattered2D *scattered2D;
-    if (easyScattered2D == NULL) 
+    if (easyScattered2D == NULL)
         easyScattered2D = shtNew(100);
     snprintf(key, 1024, "%s.%s", fileName, varName);
     if (!(scattered2D = shtGet(easyScattered2D, key))) {
@@ -121,7 +122,7 @@ double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName
 
 /* ************ General ************ */
 
-void DLL_EXPORT ncEasyFree() {
+void DLL_EXPORT ncEasyFree(void) {
     shtIterate(easyFiles1D, (SHT_iterfunc)_freeFileData, NULL);
     shtFree(easyFiles1D);
     shtIterate(easyScattered2D, (SHT_iterfunc)_freeScattered2D, NULL);
@@ -130,7 +131,7 @@ void DLL_EXPORT ncEasyFree() {
 }
 
 
-double DLL_EXPORT ncEasyGetAttributeDouble(const char *fileName, const char *varName, 
+double DLL_EXPORT ncEasyGetAttributeDouble(const char *fileName, const char *varName,
                                            const char *attName) {
     int ncF, ncV;
     double d;
@@ -139,7 +140,7 @@ double DLL_EXPORT ncEasyGetAttributeDouble(const char *fileName, const char *var
     if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) return NC_DOUBLE_NOVAL;
     if (strlen(varName) > 0) {
         if (ncError(nc_inq_varid(ncF, varName, &ncV))) return NC_DOUBLE_NOVAL;
-    } else 
+    } else
         ncV = NC_GLOBAL;
     if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) return NC_DOUBLE_NOVAL;
     if (n != 1) return NC_DOUBLE_NOVAL;
@@ -149,7 +150,7 @@ double DLL_EXPORT ncEasyGetAttributeDouble(const char *fileName, const char *var
 }
 
 
-long DLL_EXPORT ncEasyGetAttributeLong(const char *fileName, const char *varName, 
+long DLL_EXPORT ncEasyGetAttributeLong(const char *fileName, const char *varName,
                                        const char *attName) {
     int ncF, ncV;
     long l;
@@ -158,7 +159,7 @@ long DLL_EXPORT ncEasyGetAttributeLong(const char *fileName, const char *varName
     if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) return NC_LONG_NOVAL;
     if (strlen(varName) > 0) {
         if (ncError(nc_inq_varid(ncF, varName, &ncV))) return NC_LONG_NOVAL;
-    } else 
+    } else
         ncV = NC_GLOBAL;
     if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) return NC_LONG_NOVAL;
     if (n != 1) return NC_LONG_NOVAL;
@@ -176,26 +177,25 @@ static INLINE char *cloneStr(char *c) {
 }
 
 
-char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName, 
+char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName,
                                           const char *attName) {
     int ncF, ncV;
     char *c;
     size_t n;
     nc_type t;
-    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) 
-        return cloneStr(NC_STRING_NOVAL);
+    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF)))
+        return NC_STRING_NOVAL;
     if (strlen(varName) > 0) {
-        if (ncError(nc_inq_varid(ncF, varName, &ncV))) 
-            return cloneStr(NC_STRING_NOVAL);
-    } else 
+        if (ncError(nc_inq_varid(ncF, varName, &ncV)))
+            return NC_STRING_NOVAL;
+    } else
         ncV = NC_GLOBAL;
-    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) 
-        return cloneStr(NC_STRING_NOVAL);
-    c = (char *)malloc(n+1);
+    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n)))
+        return NC_STRING_NOVAL;
+    c = ModelicaAllocateStringWithErrorReturn(n);
     if (! c) ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
     if (ncError(nc_get_att_text(ncF, ncV, attName, c))) {
-        free(c);
-        return cloneStr(NC_STRING_NOVAL);
+        return NC_STRING_NOVAL;
     }
     ncError(nc_close(ncF));
     c[n] = '\0';
@@ -229,4 +229,3 @@ int DLL_EXPORT ncEasyDumpStatistics(const char *fileName) {
     fclose(f);
     return 0;
 }
-
