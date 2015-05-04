@@ -14,13 +14,13 @@ For more information and installation instructions please have look at the
 [doc](NcDataReader2/Resources/doc) folder.
 
 The original repository is hosted on [Bitbucket](https://bitbucket.org/jraedler/ncdatareader2)
-by [Jörg Rädler](http://www.j-raedler.de).
+by [Jörg Rädler](http://www.j-raedler.de/projects/ncdatareader2).
 
 ## License
 NcDataReader2 is released under the terms of the LGPL v2.
 
 ## Development and contribution
-* [Jörg Rädler](http://www.j-raedler.de/projects/ncdatareader2)
+* [Jörg Rädler](https://github.com/jraedler)
 * [tbeu](https://github.com/tbeu)
 
 You may report any issues with using the [Issues](../../issues) button.
