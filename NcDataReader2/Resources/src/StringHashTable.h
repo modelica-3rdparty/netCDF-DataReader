@@ -50,12 +50,14 @@ typedef void          *SHT_val;
 #endif /* SHT_EXTERNAL_TYPEDEFS */
 
 typedef struct SHT_Table SHT_Table;
-typedef void(*SHT_iterfunc)(char *key, SHT_val value, const void *arg);
+typedef void(*SHT_iterfunc)(const char *key, SHT_val value, void *arg);
 
 SHT_Table *shtNew(SHT_size capacity);
-void       shtFree(SHT_Table *table);
+void       _shtFree(SHT_Table **table);
+#define    shtFree(table) _shtFree(&(table))
 SHT_val    shtGet(const SHT_Table *table, const char *key);
-bool       shtPut(SHT_Table *table, const char *key, SHT_val value);
+bool       _shtPut(SHT_Table **table, const char *key, SHT_val value);
+#define    shtPut(table, key, value) _shtPut(&(table), (key), (value));
 bool       shtExists(const SHT_Table *table, const char *key);
 SHT_size   shtCount(const SHT_Table *table);
 bool       shtIterate(const SHT_Table *table, SHT_iterfunc iFunc, void *arg);

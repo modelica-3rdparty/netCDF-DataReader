@@ -33,219 +33,86 @@ tcc -Wall -DSTRINGHASHTABLE_TEST -run StringHashTable.c
 #include <string.h>
 #include <stdlib.h>
 #include "StringHashTable.h"
-
-typedef struct Pair {
-    char    *key;
-    SHT_val  value;
-} Pair;
-
-typedef struct PairList {
-    SHT_size  count;
-    Pair     *pairs;
-} PairList;
+#define uthash_fatal(msg) return false
+#include "uthash.h"
 
 struct SHT_Table {
-    SHT_size  count;
-    PairList *pairlist;
+    char *key;
+    SHT_val value;
+    UT_hash_handle hh; /* Hashable structure */
 };
 
+SHT_Table * shtNew(SHT_size capacity) {
+    return NULL;
+}
 
-static Pair *getPair(PairList *plist, const char *key) {
-    SHT_size i, n;
-    Pair *pair;
-    n = plist->count;
-    if (n == 0) {
-        return NULL;
+void _shtFree(SHT_Table **table) {
+    SHT_Table* s;
+    SHT_Table* tmp;
+    HASH_ITER(hh, *table, s, tmp) {
+        free(s->key);
+        HASH_DEL(*table, s);
+        free(s);
     }
-    pair = plist->pairs;
-    i = 0;
-    while (i < n) {
-        if (pair->key != NULL && pair->value != NULL) {
-            if (strcmp(pair->key, key) == 0) {
-                return pair;
-            }
+}
+
+SHT_val shtGet(const SHT_Table *table, const char *key) {
+    if (key) {
+        SHT_Table* s;
+        HASH_FIND_STR(table, key, s);
+        if (s) {
+            return s->value;
         }
-        pair++;
-        i++;
     }
     return NULL;
 }
 
-
-static SHT_size strHash(const char *str) {
-    SHT_size hash = 5381;
-    int c;
-    while ((c = *str++))
-        hash = ((hash << 5) + hash) + c;
-    return hash;
-}
-
-
-SHT_Table * shtNew(SHT_size capacity) {
-    SHT_Table *table;
-    
-    table = malloc(sizeof(SHT_Table));
-    if (table == NULL) {
-        return NULL;
-    }
-    table->count = capacity;
-    table->pairlist = malloc(table->count * sizeof(PairList));
-    if (table->pairlist == NULL) {
-        free(table);
-        return NULL;
-    }
-    memset(table->pairlist, 0, table->count * sizeof(PairList));
-    return table;
-}
-
-
-void shtFree(SHT_Table *table) {
-    SHT_size i, j, n, m;
-    PairList *plist;
-    Pair *pair;
-    if (table == NULL) return;
-    n = table->count;
-    plist = table->pairlist;
-    i = 0;
-    while (i < n) {
-        m = plist->count;
-        pair = plist->pairs;
-        j = 0;
-        while(j < m) {
-            free(pair->key);
-            pair++;
-            j++;
-        }
-        free(plist->pairs);
-        plist++;
-        i++;
-    }
-    free(table->pairlist);
-    free(table);
-}
-
-
-SHT_val shtGet(const SHT_Table *table, const char *key) {
-    SHT_size index;
-    PairList *plist;
-    Pair *pair;
-    if ((table == NULL) || (key == NULL)) return NULL;
-    index = strHash(key) % table->count;
-    plist = &(table->pairlist[index]);
-    pair = getPair(plist, key);
-    if (pair == NULL) return NULL;
-    return pair->value;
-}
-
 bool shtExists(const SHT_Table *table, const char *key) {
-    SHT_size index;
-    PairList *plist;
-    Pair *pair;
-    if ((table == NULL) || (key == NULL)) return false;
-    index = strHash(key) % table->count;
-    plist = &(table->pairlist[index]);
-    pair = getPair(plist, key);
-    if (pair == NULL) {
+    if (key) {
+        SHT_Table* s;
+        HASH_FIND_STR(table, key, s);
+        if (s) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool _shtPut(SHT_Table **table, const char *key, SHT_val value) {
+    SHT_Table* s;
+    if (key == NULL) {
         return false;
     }
+    s = malloc(sizeof(SHT_Table));
+    if (!s) {
+        return false;
+    }
+    s->key = _strdup(key);
+    s->value = value;
+    HASH_ADD_KEYPTR(hh, *table, s->key, strlen(s->key), s);
     return true;
 }
-
-
-bool shtPut(SHT_Table *table, const char *key, SHT_val value) {
-    SHT_size key_len, index;
-    PairList *plist;
-    Pair *tmp_pairs, *pair;
-    char *new_key;
-    if ((table == NULL) || (key == NULL)) return false;
-    key_len = strlen(key);
-    index = strHash(key) % table->count;
-    plist = &(table->pairlist[index]);
-    if ((pair = getPair(plist, key)) != NULL) {
-        pair->value = value;
-        return true;
-    }
-    new_key = malloc((key_len + 1) * sizeof(char));
-    if (new_key == NULL) return false;
-    if (plist->count == 0) {
-        plist->pairs = malloc(sizeof(Pair));
-        if (plist->pairs == NULL) {
-            free(new_key);
-            return false;
-        }
-        plist->count = 1;
-    }
-    else {
-        tmp_pairs = realloc(plist->pairs, (plist->count + 1) * sizeof(Pair));
-        if (tmp_pairs == NULL) {
-            free(new_key);
-            return false;
-        }
-        plist->pairs = tmp_pairs;
-        plist->count++;
-    }
-    pair = &(plist->pairs[plist->count - 1]);
-    pair->key = new_key;
-    strcpy(pair->key, key);
-    pair->value = value;
-    return true;
-}
-
 
 SHT_size shtCount(const SHT_Table *table) {
-    SHT_size i, j, n, m, count;
-    PairList *plist;
-    Pair *pair;
-    if (table == NULL) return 0;
-    plist = table->pairlist;
-    n = table->count;
-    i = 0;
-    count = 0;
-    while (i < n) {
-        pair = plist->pairs;
-        m = plist->count;
-        j = 0;
-        while (j < m) {
-            count++;
-            pair++;
-            j++;
-        }
-        plist++;
-        i++;
-    }
-    return count;
+    return HASH_COUNT(table);
 }
-
 
 bool shtIterate(const SHT_Table *table, SHT_iterfunc iFunc, void *arg) {
-    SHT_size i, j, n, m;
-    PairList *plist;
-    Pair *pair;
-    if ((table == NULL) || (iFunc == NULL)) return false;
-    plist = table->pairlist;
-    n = table->count;
-    i = 0;
-    while (i < n) {
-        pair = plist->pairs;
-        m = plist->count;
-        j = 0;
-        while (j < m) {
-            iFunc(pair->key, pair->value, arg);
-            pair++;
-            j++;
+    if (table && iFunc) {
+        const SHT_Table* s;
+        for (s = table; s != NULL; s = s->hh.next) {
+            iFunc(s->key, s->value, arg);
         }
-        plist++;
-        i++;
+        return true;
     }
-    return true;
+    return false;
 }
-
 
 #ifdef STRINGHASHTABLE_TEST
 
 #include <stdio.h>
 
-void visit(const char *key, void *value, const void *arg) {
+void visit(const char *key, void *value, void *arg) {
     printf("iter: %s maps to %s\n", key, (char *)value);
 }
 
@@ -255,23 +122,24 @@ int main(void) {
     char *obj1 = "HELLO_01";
     char *obj2 = "HELLO_02";
     char *res;
-    
+
     t = shtNew(1000);
     shtPut(t, "key0", obj0);
     shtPut(t, "key1", obj1);
     shtPut(t, "key2", obj2);
-    
+
     res = shtGet(t, "key0");
     printf("key0 -> %s\n", res);
     res = shtGet(t, "key1");
     printf("key1 -> %s\n", res);
     res = shtGet(t, "key2");
     printf("key2 -> %s\n", res);
-    
+
     shtIterate(t, visit, NULL);
-    
+
+    shtFree(t);
+
     return 0;
 }
 
 #endif /* STRINGHASHTABLE_TEST */
-

@@ -125,9 +125,10 @@ double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName
 void DLL_EXPORT ncEasyFree(void) {
     shtIterate(easyFiles1D, (SHT_iterfunc)_freeFileData, NULL);
     shtFree(easyFiles1D);
+    easyFiles1D = NULL;
     shtIterate(easyScattered2D, (SHT_iterfunc)_freeScattered2D, NULL);
     shtFree(easyScattered2D);
-    easyFiles1D = NULL;
+    easyScattered2D = NULL;
 }
 
 
@@ -202,19 +203,19 @@ char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varN
     return c;
 }
 
-static void dumpDataSet1DStatistics(char *key, SHT_val val, const void *tmp) {
+static void dumpDataSet1DStatistics(const char *key, SHT_val val, const void *tmp) {
     ncDataSet1DDumpStatistics((NcDataSet1D *)val, (FILE *)tmp);
 }
 
-static void dumpVar1DStatistics(char *key, SHT_val val, const void *tmp) {
+static void dumpVar1DStatistics(const char *key, SHT_val val, void *tmp) {
     ncVar1DDumpStatistics((NcVar1D *)val, (FILE *)tmp);
 }
 
-static void dumpFile1DStatistics(char *key, SHT_val val, const void *tmp) {
+static void dumpFile1DStatistics(const char *key, SHT_val val, void *tmp) {
     EasyFileData1D *data = (EasyFileData1D *)val;
     fprintf((FILE *)tmp, ">>> File: %s\n", key);
-    shtIterate(data->dataSets, dumpDataSet1DStatistics, (void *)tmp);
-    shtIterate(data->vars, dumpVar1DStatistics, (void *)tmp);
+    shtIterate(data->dataSets, dumpDataSet1DStatistics, tmp);
+    shtIterate(data->vars, dumpVar1DStatistics, tmp);
 }
 
 int DLL_EXPORT ncEasyDumpStatistics(const char *fileName) {
