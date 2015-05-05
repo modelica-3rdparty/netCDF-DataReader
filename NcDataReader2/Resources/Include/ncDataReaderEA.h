@@ -38,7 +38,7 @@ void   DLL_EXPORT ncEasyFree(void);
 #define NC_STRING_NOVAL ""
 
 double DLL_EXPORT  ncEasyGetAttributeDouble(const char *fileName, const char *varName, const char *attName);
-long   DLL_EXPORT  ncEasyGetAttributeLong  (const char *fileName, const char *varName, const char *attName);
+int    DLL_EXPORT  ncEasyGetAttributeLong  (const char *fileName, const char *varName, const char *attName);
 char   DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName, const char *attName);
 
 int    DLL_EXPORT  ncEasyDumpStatistics(const char *fileName);
