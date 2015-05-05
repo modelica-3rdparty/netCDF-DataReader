@@ -27,13 +27,13 @@
 #include "IpSinSteps.h"
 #include "IpAkima.h"
 #include "IpCosWin.h"
+#include "ModelicaUtilities.h"
 
 struct _valueCacheData {
     bool valid;
     double x, y;
 };
 typedef struct _valueCacheData ValueCacheData;
-
 
 static void *valueCacheItemNew(long i) {
     ValueCacheData *d = (ValueCacheData *)malloc(sizeof(ValueCacheData));
@@ -43,31 +43,25 @@ static void *valueCacheItemNew(long i) {
     return (void *)d;
 }
 
-
 Item *valueCacheNew(int len) {
     return chainNew(len, 1, valueCacheItemNew);
 }
-
 
 static void valueCacheItemFree(void *i) {
     free((ValueCacheData *)i);
 }
 
-
 void valueCacheFree(Item *c) {
     chainFree(c, valueCacheItemFree);
 }
-
 
 static void valueCacheItemReset(Item *i) {
     ((ValueCacheData *)(i->data))->valid = false;
 }
 
-
 void valueCacheReset(Item *c) {
     chainApply(c, valueCacheItemReset);
 }
-
 
 static bool valueCacheSearch(Item *cache, double x, double *y) {
     Item *s = cache, *c = cache;
@@ -85,7 +79,6 @@ static bool valueCacheSearch(Item *cache, double x, double *y) {
     return false;
 }
 
-
 static INLINE void valueCacheSet(Item **cache, double x, double y) {
     ValueCacheData *ac = (ValueCacheData *)((*cache)->data);
     ac->valid = true;
@@ -94,7 +87,6 @@ static INLINE void valueCacheSet(Item **cache, double x, double y) {
     /* rotate cache one step */
     *cache = (*cache)->next;
 }
-
 
 NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interpolation inter, LoadType loadType) {
     NcVar1D *var = NULL;
@@ -205,7 +197,6 @@ NcVar1D DLL_EXPORT *ncVar1DNew(NcDataSet1D *dataSet, const char *varName, Interp
     return var;
 }
 
-
 void DLL_EXPORT ncVar1DFree(NcVar1D *var) {
     assert(var);
     assert(var->dataSet);
@@ -229,7 +220,6 @@ void DLL_EXPORT ncVar1DFree(NcVar1D *var) {
     free(var);
 }
 
-
 double DLL_EXPORT ncVar1DGet(NcVar1D *var, double x) {
     double y;
     if (! valueCacheSearch((Item *)(var->valueCache), x, &y)) {
@@ -237,7 +227,7 @@ double DLL_EXPORT ncVar1DGet(NcVar1D *var, double x) {
         switch (var->inter) {
             case IpDiscrete:
                 y = ncVar1DGetItem(var, ncDataSet1DSearch(var->dataSet, &x)); break;
-            case IpLinear: 
+            case IpLinear:
                 y = ncVar1DGetLinear(var, x); break;
             case IpAkima:
                 y = ncVar1DGetAkima(var, x); break;
@@ -256,7 +246,6 @@ double DLL_EXPORT ncVar1DGet(NcVar1D *var, double x) {
     return y;
 }
 
-
 static void loadChunk(NcVar1D *var, size_t start) {
     size_t d = var->dataSet->dim;
     if (! var->cache) /* allocate memory */
@@ -272,12 +261,11 @@ static void loadChunk(NcVar1D *var, size_t start) {
     var->cacheIndex[1] = start + var->chunkSize - 1;
 }
 
-
 double DLL_EXPORT ncVar1DGetItem(NcVar1D *var, size_t i) {
     double d;
     size_t st;
     assert((i < var->dataSet->dim));
-    if ((var->dataSet->extra == EpPeriodic) && 
+    if ((var->dataSet->extra == EpPeriodic) &&
         ((i == 0) || (i == var->dataSet->dim-1)))
         return var->transition;
     switch (var->loadType) {
@@ -300,7 +288,6 @@ double DLL_EXPORT ncVar1DGetItem(NcVar1D *var, size_t i) {
     }
     return var->scale[0]* d + var->scale[1];
 }
-
 
 int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
     int i, res = 0;
@@ -395,44 +382,46 @@ int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
     return res;
 }
 
+#define ncprintf(f, ...) \
+    if (f) \
+        fprintf(f, __VA_ARGS__); \
+    else \
+        ModelicaFormatMessage(__VA_ARGS__)
 
 void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var, FILE *f) {
     char ctmp[1024];
-    if (f==NULL) f=stdout;
     nc_inq_varname(var->dataSet->fileId, var->varId, ctmp);
-    fprintf(f, "Var1D: %s\n", ctmp);
+    ncprintf(f, "Var1D: %s\n", ctmp);
     nc_inq_varname(var->dataSet->fileId, var->dataSet->varId, ctmp);
-    fprintf(f, "  DataSet:              %s\n", ctmp);
-    fprintf(f, "  LoadType:             ");
+    ncprintf(f, "  DataSet:              %s\n", ctmp);
     switch (var->loadType) {
         case LtFull:
-            fprintf(f, "full (at initialization time)\n");
+            ncprintf(f, "  LoadType:             full (at initialization time)\n");
             break;
         case LtNone:
-            fprintf(f, "none (every value on demand)\n");
+            ncprintf(f, "  LoadType:             none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(f, "chunks ("SIZET_FMT" values on demand)\n", var->chunkSize);
+            ncprintf(f, "  LoadType:             chunks ("SIZET_FMT" values on demand)\n", var->chunkSize);
     }
-    fprintf(f, "  Interpolation:        ");
     switch (var->inter) {
         case IpDiscrete:
-            fprintf(f, "discrete\n");
+            ncprintf(f, "  Interpolation:        discrete\n");
             break;
         case IpLinear:
-            fprintf(f, "linear\n");
+            ncprintf(f, "  Interpolation:        linear\n");
             break;
         case IpSinSteps:
-            fprintf(f, "sinsteps\n");
+            ncprintf(f, "  Interpolation:        sinsteps\n");
             break;
         case IpCosWin:
-            fprintf(f, "coswin\n");
+            ncprintf(f, "  Interpolation:        coswin\n");
             break;
         case IpAkima:
-            fprintf(f, "akima\n");
+            ncprintf(f, "  Interpolation:        akima\n");
             break;
     }
-    fprintf(f, "  LoadCount:            "SIZET_FMT"\n", var->loadCount);
-    fprintf(f, "  ValueCalc./Cache:     "SIZET_FMT"/"SIZET_FMT"\n", var->vCacheStat[1], var->vCacheStat[0]);
-    fprintf(f, "  ParameterCalc./Cache: "SIZET_FMT"/"SIZET_FMT"\n\n", var->pCacheStat[1], var->pCacheStat[0]);
+    ncprintf(f, "  LoadCount:            "SIZET_FMT"\n", var->loadCount);
+    ncprintf(f, "  ValueCalc./Cache:     "SIZET_FMT"/"SIZET_FMT"\n", var->vCacheStat[1], var->vCacheStat[0]);
+    ncprintf(f, "  ParameterCalc./Cache: "SIZET_FMT"/"SIZET_FMT"\n\n", var->pCacheStat[1], var->pCacheStat[0]);
 }

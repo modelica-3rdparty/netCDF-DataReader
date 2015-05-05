@@ -25,7 +25,7 @@
 #include "ncDataReader2.h"
 #include "config.h"
 #include "Lookup.h"
-
+#include "ModelicaUtilities.h"
 
 NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName, Extrapolation extra, LoadType loadType, int lookupCacheSize) {
     int ncF, ncV, ncD;
@@ -43,7 +43,7 @@ NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName
     dataSet->refCount = 0;
     dataSet->scale[0] = ncGetAttributeDoubleDefault(ncF, ncV, NCATT_SCALE_FACTOR, 1.0);
     dataSet->scale[1] = ncGetAttributeDoubleDefault(ncF, ncV, NCATT_ADD_OFFSET, 0.0);
-    
+
     nc_inq_vardimid(ncF, ncV, &ncD);
     nc_inq_dimlen(ncF, ncD, &(dataSet->dim));
     if (loadType == LtAuto) {
@@ -93,7 +93,7 @@ NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName
             break;
         default:
             ncdrError(NCDR_EINVAL, NCDR_EINVAL_TXT);
-    }    
+    }
     l = 0;
     nc_get_var1_double(ncF, ncV, &l, &d);
     dataSet->min = dataSet->scale[0]* d + dataSet->scale[1];
@@ -107,10 +107,9 @@ NcDataSet1D DLL_EXPORT *ncDataSet1DNew(const char *fileName, const char *varName
     else
         dataSet->lookupCache = NULL;
     dataSet->lCacheStat[0] = 0; dataSet->lCacheStat[1] = 0;
-    
+
     return dataSet;
 }
-
 
 void DLL_EXPORT ncDataSet1DFree(NcDataSet1D *dataSet) {
     assert(dataSet);
@@ -121,16 +120,13 @@ void DLL_EXPORT ncDataSet1DFree(NcDataSet1D *dataSet) {
     free(dataSet);
 }
 
-
 static INLINE double _adjustPeriodic(double x, double s, double e) {
     return (((x >= s) && (x <= e)) ? x : s + fmod(x-s, e-s) + ((x >= s)? 0.0 : e-s));
 }
 
-
 static INLINE double _adjustRange(double x, double s, double e) {
     return ((x < s) ? s : ((x > e) ? e : x));
 }
-
 
 size_t DLL_EXPORT ncDataSet1DSearch(NcDataSet1D *dataSet, double *x) {
     if (dataSet->extra == EpPeriodic)
@@ -139,7 +135,6 @@ size_t DLL_EXPORT ncDataSet1DSearch(NcDataSet1D *dataSet, double *x) {
         *x = _adjustRange(*x, dataSet->min, dataSet->max);
     return ncDataSet1DLookupValue(dataSet, *x);
 }
-
 
 static void loadChunk(NcDataSet1D *dataSet, size_t start) {
     if (! dataSet->cache) /* allocate memory */
@@ -154,7 +149,6 @@ static void loadChunk(NcDataSet1D *dataSet, size_t start) {
     dataSet->cacheIndex[0] = start;
     dataSet->cacheIndex[1] = start + dataSet->chunkSize - 1;
 }
-
 
 double DLL_EXPORT ncDataSet1DGetItem(NcDataSet1D *dataSet, size_t i) {
     double d;
@@ -181,7 +175,6 @@ double DLL_EXPORT ncDataSet1DGetItem(NcDataSet1D *dataSet, size_t i) {
     return dataSet->scale[0]* d + dataSet->scale[1];
 }
 
-
 int DLL_EXPORT ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, ...) {
     int i, res = 0;
     size_t l;
@@ -191,9 +184,9 @@ int DLL_EXPORT ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, 
     switch (option) {
         case OpDataSetLookupCacheSize:
             i = va_arg(ap, int);
-            if (dataSet->lookupCache) 
+            if (dataSet->lookupCache)
                 lookupCacheFree((Item *)(dataSet->lookupCache));
-            if (i > 0) 
+            if (i > 0)
                 dataSet->lookupCache = lookupCacheNew(i);
             else
                 dataSet->lookupCache = NULL;
@@ -202,7 +195,7 @@ int DLL_EXPORT ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, 
         case OpDataSetScaling:
             dataSet->scale[0] = va_arg(ap, double);
             dataSet->scale[1] = va_arg(ap, double);
-            lookupCacheReset(dataSet->lookupCache);
+            lookupCacheReset((Item *)(dataSet->lookupCache));
             l = 0;
             nc_get_var1_double(dataSet->fileId, dataSet->varId, &l, &d);
             dataSet->min = dataSet->scale[0]* d + dataSet->scale[1];
@@ -226,36 +219,38 @@ int DLL_EXPORT ncDataSet1DSetOption(NcDataSet1D *dataSet, DataSetOption option, 
     return res;
 }
 
+#define ncprintf(f, ...) \
+    if (f) \
+        fprintf(f, __VA_ARGS__); \
+    else \
+        ModelicaFormatMessage(__VA_ARGS__)
 
 void DLL_EXPORT ncDataSet1DDumpStatistics(NcDataSet1D *dataSet, FILE *f) {
     char ctmp[1024];
-    if (f == NULL) f=stdout;
     nc_inq_varname(dataSet->fileId, dataSet->varId, ctmp);
-    fprintf(f, "DataSet1D: %s\n", ctmp);
-    fprintf(f, "  Size:          "SIZET_FMT"\n", dataSet->dim);
-    fprintf(f, "  LoadType:      ");
+    ncprintf(f, "DataSet1D: %s\n", ctmp);
+    ncprintf(f, "  Size:          "SIZET_FMT"\n", dataSet->dim);
     switch (dataSet->loadType) {
         case LtFull:
-            fprintf(f, "full (at initialization time)\n");
+            ncprintf(f, "  LoadType:      full (at initialization time)\n");
             break;
         case LtNone:
-            fprintf(f, "none (every value on demand)\n");
+            ncprintf(f, "  LoadType:      none (every value on demand)\n");
             break;
         case LtChunk:
-            fprintf(f, "chunks ("SIZET_FMT" values on demand)\n", dataSet->chunkSize);
+            ncprintf(f, "  LoadType:      chunks ("SIZET_FMT" values on demand)\n", dataSet->chunkSize);
     }
-    fprintf(f, "  Extrapolation: ");
     switch (dataSet->extra) {
         case EpPeriodic:
-            fprintf(f, "periodic\n");
+            ncprintf(f, "  Extrapolation: periodic\n");
             break;
         case EpConstant:
-            fprintf(f, "constant\n");
+            ncprintf(f, "  Extrapolation: constant\n");
             break;
         case EpDefault:
-            fprintf(f, "default (depends on interpolation)\n");
+            ncprintf(f, "  Extrapolation: default (depends on interpolation)\n");
             break;
     }
-    fprintf(f, "  LoadCount:     "SIZET_FMT"\n", dataSet->loadCount);
-    fprintf(f, "  Lookups/Cache: "SIZET_FMT"/"SIZET_FMT"\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
+    ncprintf(f, "  LoadCount:     "SIZET_FMT"\n", dataSet->loadCount);
+    ncprintf(f, "  Lookups/Cache: "SIZET_FMT"/"SIZET_FMT"\n\n", dataSet->lCacheStat[1], dataSet->lCacheStat[0]);
 }
