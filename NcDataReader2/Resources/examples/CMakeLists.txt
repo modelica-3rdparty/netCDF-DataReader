@@ -4,7 +4,7 @@ set (EXAMPLES GenerateFile GenerateBigFile CacheTests PrintVersion Read1D
     Read1DChunk Read1DEasyAPI Read2D Read2DEasyApi)
 
 foreach (EX ${EXAMPLES})
-    add_executable (${EX} ${EX}.c)
+    add_executable (${EX} ${EX}.c ModelicaUtilities.c)
     target_link_libraries (${EX} ${LIBS})
     if(UNIX)
         install(FILES ${EX}.c DESTINATION share/doc/${NCDR_PACKAGE_NAME}/examples)
