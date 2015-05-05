@@ -26,6 +26,7 @@
 #include "config.h"
 #include "ModelicaUtilities.h"
 #include "StringHashTable.h"
+#include "gconstructor.h"
 
 typedef struct {
     SHT_Table *dataSets;
@@ -116,6 +117,14 @@ double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName
 }
 
 /* ************ General ************ */
+
+#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(_ncEasyFree)
+#endif
+G_DEFINE_DESTRUCTOR(_ncEasyFree)
+static void _ncEasyFree(void) {
+    ncEasyFree();
+}
 
 void DLL_EXPORT ncEasyFree(void) {
     shtIterate(easyFiles1D, (SHT_iterfunc)_freeFileData, NULL);

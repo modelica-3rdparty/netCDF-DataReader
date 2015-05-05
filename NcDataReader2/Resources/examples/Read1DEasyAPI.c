@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     printf("                 doc: %s\n", ncEasyGetAttributeString(ncFileName, "", "doc"));
     printf("             version: %s\n", ncEasyGetAttributeString(ncFileName, "", "version"));
     printf("                 foo: %g\n", ncEasyGetAttributeDouble(ncFileName, "", "foo"));
-    printf("                 bar: %ld\n", ncEasyGetAttributeLong(ncFileName, "", "bar"));
+    printf("                 bar: %d\n", ncEasyGetAttributeLong(ncFileName, "", "bar"));
     printf("  time|extrapolation: %s\n", ncEasyGetAttributeString(ncFileName, "time", "extrapolation"));
     printf("   time|scale_factor: %g\n", ncEasyGetAttributeDouble(ncFileName, "time", "scale_factor"));
     printf("     time|add_offset: %g\n", ncEasyGetAttributeDouble(ncFileName, "time", "add_offset"));
