@@ -43,9 +43,15 @@ static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName,
     NcVar1D     *var = NULL;
     int ncF, ncV, ncD;
     char dimName[NC_MAX_NAME+1];
-    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) return var;
-    if (ncError(nc_inq_varid(ncF, varName, &ncV))) return var;
-    if (ncError(nc_inq_varndims(ncF, ncV, &ncD))) return var;
+    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) {
+        return var;
+    }
+    if (ncError(nc_inq_varid(ncF, varName, &ncV))) {
+        return var;
+    }
+    if (ncError(nc_inq_varndims(ncF, ncV, &ncD))) {
+        return var;
+    }
     assert(ncD == 1);
     nc_inq_vardimid(ncF, ncV, &ncD);
     nc_inq_dimname(ncF, ncD, dimName);
@@ -61,11 +67,14 @@ static NcVar1D *createEasyVar1D(EasyFileData1D *fileData, const char *fileName,
 double DLL_EXPORT ncEasyGet1D(const char *fileName, const char *varName, double x) {
     EasyFileData1D *fileData;
     NcVar1D        *var;
-    if (easyFiles1D == NULL)
+    if (easyFiles1D == NULL) {
         easyFiles1D = shtNew(100);
+    }
     if (!(fileData = (EasyFileData1D*)shtGet(easyFiles1D, fileName))) {
         fileData = (EasyFileData1D *)malloc(sizeof(EasyFileData1D));
-        if (! fileData) ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
+        if (! fileData) {
+            ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
+        }
         fileData->dataSets = shtNew(100);
         fileData->vars     = shtNew(1000);
         shtPut(easyFiles1D, fileName, fileData);
@@ -105,8 +114,9 @@ double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName
                                        double x, double y) {
     char key[1025];
     NcScattered2D *scattered2D;
-    if (easyScattered2D == NULL)
+    if (easyScattered2D == NULL) {
         easyScattered2D = shtNew(100);
+    }
     snprintf(key, 1024, "%s.%s", fileName, varName);
     if (!(scattered2D = (NcScattered2D*)shtGet(easyScattered2D, key))) {
         scattered2D = ncScattered2DNew(fileName, varName);
@@ -138,19 +148,31 @@ void DLL_EXPORT ncEasyFree(void) {
 }
 
 double DLL_EXPORT ncEasyGetAttributeDouble(const char *fileName, const char *varName,
-                                           const char *attName) {
+        const char *attName) {
     int ncF, ncV;
     double d;
     size_t n;
     nc_type t;
-    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) return NC_DOUBLE_NOVAL;
+    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) {
+        return NC_DOUBLE_NOVAL;
+    }
     if (strlen(varName) > 0) {
-        if (ncError(nc_inq_varid(ncF, varName, &ncV))) return NC_DOUBLE_NOVAL;
-    } else
+        if (ncError(nc_inq_varid(ncF, varName, &ncV))) {
+            return NC_DOUBLE_NOVAL;
+        }
+    }
+    else {
         ncV = NC_GLOBAL;
-    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) return NC_DOUBLE_NOVAL;
-    if (n != 1) return NC_DOUBLE_NOVAL;
-    if (ncError(nc_get_att_double(ncF, ncV, attName, &d))) return NC_DOUBLE_NOVAL;
+    }
+    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) {
+        return NC_DOUBLE_NOVAL;
+    }
+    if (n != 1) {
+        return NC_DOUBLE_NOVAL;
+    }
+    if (ncError(nc_get_att_double(ncF, ncV, attName, &d))) {
+        return NC_DOUBLE_NOVAL;
+    }
     ncError(nc_close(ncF));
     return d;
 }
@@ -161,42 +183,63 @@ int DLL_EXPORT ncEasyGetAttributeLong(const char *fileName, const char *varName,
     long l;
     size_t n;
     nc_type t;
-    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) return NC_LONG_NOVAL;
+    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) {
+        return NC_LONG_NOVAL;
+    }
     if (strlen(varName) > 0) {
-        if (ncError(nc_inq_varid(ncF, varName, &ncV))) return NC_LONG_NOVAL;
-    } else
+        if (ncError(nc_inq_varid(ncF, varName, &ncV))) {
+            return NC_LONG_NOVAL;
+        }
+    }
+    else {
         ncV = NC_GLOBAL;
-    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) return NC_LONG_NOVAL;
-    if (n != 1) return NC_LONG_NOVAL;
-    if (ncError(nc_get_att_long(ncF, ncV, attName, &l))) return NC_LONG_NOVAL;
+    }
+    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) {
+        return NC_LONG_NOVAL;
+    }
+    if (n != 1) {
+        return NC_LONG_NOVAL;
+    }
+    if (ncError(nc_get_att_long(ncF, ncV, attName, &l))) {
+        return NC_LONG_NOVAL;
+    }
     ncError(nc_close(ncF));
     return (int)l;
 }
 
 static INLINE char *cloneStr(char *c) {
     char *n = (char*)malloc(strlen(c)+1);
-    if (! n) ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
+    if (! n) {
+        ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
+    }
     strcpy(n, c);
     return n;
 }
 
 char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName,
-                                          const char *attName) {
+        const char *attName) {
     int ncF, ncV;
     char *c;
     size_t n;
     nc_type t;
-    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF)))
+    if (ncError(nc_open(fileName, NC_NOWRITE, &ncF))) {
         return NC_STRING_NOVAL;
+    }
     if (strlen(varName) > 0) {
-        if (ncError(nc_inq_varid(ncF, varName, &ncV)))
+        if (ncError(nc_inq_varid(ncF, varName, &ncV))) {
             return NC_STRING_NOVAL;
-    } else
+        }
+    }
+    else {
         ncV = NC_GLOBAL;
-    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n)))
+    }
+    if (ncError(nc_inq_att(ncF, ncV, attName, &t, &n))) {
         return NC_STRING_NOVAL;
+    }
     c = ModelicaAllocateStringWithErrorReturn(n);
-    if (! c) ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
+    if (! c) {
+        ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
+    }
     if (ncError(nc_get_att_text(ncF, ncV, attName, c))) {
         return NC_STRING_NOVAL;
     }
