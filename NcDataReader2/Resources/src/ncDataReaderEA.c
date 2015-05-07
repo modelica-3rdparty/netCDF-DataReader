@@ -118,6 +118,7 @@ double DLL_EXPORT ncEasyGetScattered2D(const char *fileName, const char *varName
 
 /* ************ General ************ */
 
+#if defined(G_HAS_CONSTRUCTORS)
 #ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(_ncEasyFree)
 #endif
@@ -125,6 +126,7 @@ G_DEFINE_DESTRUCTOR(_ncEasyFree)
 static void _ncEasyFree(void) {
     ncEasyFree();
 }
+#endif
 
 void DLL_EXPORT ncEasyFree(void) {
     shtIterate(easyFiles1D, (SHT_iterfunc)_freeFileData, NULL);
