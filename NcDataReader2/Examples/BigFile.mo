@@ -7,7 +7,10 @@ model BigFile "Test model for NcDataReader2 with large data sets"
       annotation(Dialog(
         loadSelector(filter="netCDF files (*.nc)",
         caption="Open file")));
-    parameter String logFile  = "ncdr.log";
+    parameter String logFile = "ncdr.log" "Logfile (empty string is the terminal)"
+      annotation(Dialog(
+        saveSelector(filter="Logfiles (*.log)",
+        caption="Save logfile")));
     Real y "dummy variable to integrate";
     Real x "dummy variable";
     Real T1 "temperature 1";
