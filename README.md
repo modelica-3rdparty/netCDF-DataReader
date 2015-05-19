@@ -1,5 +1,5 @@
 # NcDataReader2
-Modelica library for interfacing [netCDF](http://www.unidata.ucar.edu/software/netcdf)
+Modelica library for interfacing [netCDF](https://github.com/Unidata/netcdf-c)
 files using different interpolation and extrapolation methods.
 
 ## Library description
