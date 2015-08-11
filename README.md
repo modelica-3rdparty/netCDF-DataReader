@@ -2,6 +2,9 @@
 Modelica library for interfacing [netCDF](https://github.com/Unidata/netcdf-c)
 files using different interpolation and extrapolation methods.
 
+## Build status
+[![Build Status](https://drone.io/github.com/tbeu/netCDF-DataReader/status.png)](https://drone.io/github.com/tbeu/netCDF-DataReader/latest)
+
 ## Library description
 NcDataReader2 is a library of C functions to access data stored in netCDF files
 using different interpolation and extrapolation methods. The aim of this library
