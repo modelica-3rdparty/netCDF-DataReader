@@ -30,6 +30,10 @@ You may use the following command to test this file if tcc is installed:
 tcc -Wall -DSTRINGHASHTABLE_TEST -run StringHashTable.c
 */
 
+#if !defined(_MSC_VER)
+#define _strdup strdup
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include "StringHashTable.h"
