@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(ncDataReader2)
+project(ncDataReader2 C)
 
 set(NCDR_VERSION_MAJOR "2")
 set(NCDR_VERSION_MINOR "3")
