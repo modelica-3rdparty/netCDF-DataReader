@@ -32,15 +32,15 @@ extern "C" {
 #define DLL_EXPORT
 #endif
 
-char DLL_EXPORT  *ncDataReader2Version(void);
+char DLL_EXPORT *ncDataReader2Version(void);
+
+/* type of a function to handle errors */
+typedef void (*NcErrorHandler)(int , char *);
 
 #ifdef NC_NOCHECK
 #define ncError(S) (S)
 #define ncdrError(S, M) (S)
 #else
-/* type of a function to handle errors */
-typedef void (* NcErrorHandler)(int , char *);
-
 /* get/set/change handler function */
 NcErrorHandler DLL_EXPORT ncSetErrorHandler(NcErrorHandler newHandler);
 
