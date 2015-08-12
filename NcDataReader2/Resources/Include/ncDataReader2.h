@@ -47,19 +47,18 @@ NcErrorHandler DLL_EXPORT ncSetErrorHandler(NcErrorHandler newHandler);
 /* handle possible netcdf errors */
 int DLL_EXPORT ncError(int status);
 
-/* internal errors of this library */
-#define NCDR_ENOMEM 10
-#define NCDR_ENOMEM_TXT   "could not allocate memory"
-#define NCDR_EINVAL 11
-#define NCDR_EINVAL_TXT "invalid value specified"
-#define NCDR_EFILEW 12
-#define NCDR_EFILEW_TXT "could not open file for writing"
-
 /* handle internal errors of this library */
 int DLL_EXPORT ncdrError(int status, char *msg);
 
 #endif /* NC_NOCHECK */
 
+/* internal errors of this library */
+#define NCDR_ENOMEM 10
+#define NCDR_ENOMEM_TXT "could not allocate memory"
+#define NCDR_EINVAL 11
+#define NCDR_EINVAL_TXT "invalid value specified"
+#define NCDR_EFILEW 12
+#define NCDR_EFILEW_TXT "could not open file for writing"
 
 /* length of an array called 'large', longer 
    arrays are not fully loaded with LtAuto */
