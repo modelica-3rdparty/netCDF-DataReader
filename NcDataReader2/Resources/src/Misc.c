@@ -82,8 +82,6 @@ int DLL_EXPORT ncError(int status) {
     }
     return 1; /* got some error -> true */
 }
-#endif /* not NC_NOCHECK */
-
 
 /* handle internal errors of this library */
 int ncdrError(int status, char *msg) {
@@ -94,7 +92,7 @@ int ncdrError(int status, char *msg) {
     }
     return 1;
 }
-
+#endif /* not NC_NOCHECK */
 
 double DLL_EXPORT ncGetAttributeDoubleDefault(int ncF, int ncV, const char *name, double def) {
     nc_type t;
@@ -106,7 +104,6 @@ double DLL_EXPORT ncGetAttributeDoubleDefault(int ncF, int ncV, const char *name
     return d;
 }
 
-
 long DLL_EXPORT ncGetAttributeLongDefault(int ncF, int ncV, const char *name, long def) {
     nc_type t;
     size_t n;
@@ -117,14 +114,12 @@ long DLL_EXPORT ncGetAttributeLongDefault(int ncF, int ncV, const char *name, lo
     return l;
 }
 
-
 static INLINE char *cloneStr(const char *c) {
     char *n = malloc(strlen(c)+1);
     if (! n) ncdrError(NCDR_ENOMEM, NCDR_ENOMEM_TXT);
     strcpy(n, c);
     return n;
 }
-
 
 char DLL_EXPORT *ncGetAttributeTextDefault(int ncF, int ncV, const char *name, const char *def) {
     nc_type t;
@@ -140,16 +135,13 @@ char DLL_EXPORT *ncGetAttributeTextDefault(int ncF, int ncV, const char *name, c
     return c;
 }
 
-
 void DLL_EXPORT ncSetAttributeDouble(int ncF, int ncV, const char *att, double val) {
     ncError(nc_put_att_double(ncF, ncV, att, NC_DOUBLE, 1, &val));
 }
 
-
 void DLL_EXPORT ncSetAttributeLong(int ncF, int ncV, const char *att, long val) {
     ncError(nc_put_att_long(ncF, ncV, att, NC_LONG, 1, &val));
 }
-
 
 void DLL_EXPORT ncSetAttributeText(int ncF, int ncV, const char *att, const char *val) {
     char c[101];
