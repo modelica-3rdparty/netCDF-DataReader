@@ -25,7 +25,7 @@
 #define DLL_EXPORT
 #endif
 
-char DLL_EXPORT  *ncDataReader2Version(void);
+const char DLL_EXPORT  *ncDataReader2Version(void);
 
 double DLL_EXPORT ncEasyGet1D(const char *fileName, const char *varName, double x);
 
@@ -39,7 +39,7 @@ void   DLL_EXPORT ncEasyFree(void);
 
 double DLL_EXPORT  ncEasyGetAttributeDouble(const char *fileName, const char *varName, const char *attName);
 int    DLL_EXPORT  ncEasyGetAttributeLong  (const char *fileName, const char *varName, const char *attName);
-char   DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName, const char *attName);
+const char   DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName, const char *attName);
 
 int    DLL_EXPORT  ncEasyDumpStatistics(const char *fileName);
 

@@ -30,15 +30,18 @@ char ncDataReader2_version[] = NCDR_VERSION;
 /* text of last error */
 char DLL_EXPORT ncLastErrorText[101];
 
-char DLL_EXPORT *ncDataReader2Version(void) {
+const char DLL_EXPORT *ncDataReader2Version(void) {
     char* ret = ModelicaAllocateString(strlen(ncDataReader2_version));
     strcpy(ret, ncDataReader2_version);
-    return ret;
+    return (const char*)ret;
 }
 
 #ifndef NC_NOCHECK
 #include <stdio.h>
 #ifdef WIN32_MSGBOX
+#if !defined(WIN32_LEAN_AND_MEAN)
+#define WIN32_LEAN_AND_MEAN
+#endif
 #include <Windows.h>
 #endif /* WIN32_MSGBOX */
 

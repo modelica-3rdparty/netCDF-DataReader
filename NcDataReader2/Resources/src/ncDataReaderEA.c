@@ -216,8 +216,8 @@ static INLINE char *cloneStr(char *c) {
     return n;
 }
 
-char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName,
-        const char *attName) {
+const char DLL_EXPORT *ncEasyGetAttributeString(const char *fileName, const char *varName,
+    const char *attName) {
     int ncF, ncV;
     char *c;
     size_t n;
