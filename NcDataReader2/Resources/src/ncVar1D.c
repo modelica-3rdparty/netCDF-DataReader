@@ -29,11 +29,10 @@
 #include "IpCosWin.h"
 #include "ModelicaUtilities.h"
 
-struct _valueCacheData {
+typedef struct ValueCacheData {
     bool valid;
     double x, y;
-};
-typedef struct _valueCacheData ValueCacheData;
+} ValueCacheData;
 
 static void *valueCacheItemNew(long i) {
     ValueCacheData *d = (ValueCacheData *)malloc(sizeof(ValueCacheData));
@@ -222,6 +221,7 @@ void DLL_EXPORT ncVar1DFree(NcVar1D *var) {
 
 double DLL_EXPORT ncVar1DGet(NcVar1D *var, double x) {
     double y;
+    assert(var);
     if (! valueCacheSearch((Item *)(var->valueCache), x, &y)) {
         var->vCacheStat[1]++;
         switch (var->inter) {
@@ -264,6 +264,7 @@ static void loadChunk(NcVar1D *var, size_t start) {
 double DLL_EXPORT ncVar1DGetItem(NcVar1D *var, size_t i) {
     double d;
     size_t st;
+    assert(var);
     assert((i < var->dataSet->dim));
     if ((var->dataSet->extra == EpPeriodic) &&
         ((i == 0) || (i == var->dataSet->dim-1)))
@@ -292,6 +293,7 @@ double DLL_EXPORT ncVar1DGetItem(NcVar1D *var, size_t i) {
 int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
     int i, res = 0;
     va_list ap;
+    assert(var);
     va_start(ap, option);
     switch (option) {
         case OpVarParameterCacheSize:
@@ -390,6 +392,7 @@ int DLL_EXPORT ncVar1DSetOption(NcVar1D *var, VarOption option, ...) {
 
 void DLL_EXPORT ncVar1DDumpStatistics(NcVar1D *var, FILE *f) {
     char ctmp[1024];
+    assert(var);
     nc_inq_varname(var->dataSet->fileId, var->varId, ctmp);
     ncprintf(f, "Var1D: %s\n", ctmp);
     nc_inq_varname(var->dataSet->fileId, var->dataSet->varId, ctmp);
