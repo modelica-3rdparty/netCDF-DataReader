@@ -7,7 +7,7 @@ if sys.version_info < (2, 7, 0):
 
 import argparse, csv
 
-epilog = "Please read the ncDataReader2 manula for additional information."
+epilog = "Please read the ncDataReader2 manual for additional information."
 arg = argparse.ArgumentParser(description='Generate a ncDataReader2-compatible netCDF file', epilog=epilog)
 arg.add_argument('-n', '--info', action='store_true', help='show some information on the file')
 arg.add_argument('-o', '--outfile', nargs=1, help='write exported data to this file')
