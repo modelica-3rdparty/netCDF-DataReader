@@ -34,13 +34,13 @@ double ncVar1DGetSinSteps(NcVar1D *var, double x) {
     }
     else {
         if (x < xi+var->smoothing) {
-            j = i; 
+            j = i;
             if (i == 0)
                 i = ((var->dataSet->extra == EpPeriodic) ? var->dataSet->dim-2 : j);
             else
                 i = i-1;
             xj = xi;
-            xi = ncDataSet1DGetItem(var->dataSet, i);
+            /* xi = ncDataSet1DGetItem(var->dataSet, i); */
         }
         yi = ncVar1DGetItem(var, i);
         yj = ncVar1DGetItem(var, j);

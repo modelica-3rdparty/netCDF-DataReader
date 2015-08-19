@@ -63,15 +63,14 @@ size_t ncDataSet1DLookupValue(NcDataSet1D *dataSet, double x) {
     if (x >= dataSet->max) return dataSet->dim-1;
     if (dataSet->lookupCache) {
         /* search in cache - search backwards */
-        LookupCacheData *lc;
         Item *s, *c = (Item *)(dataSet->lookupCache);
         s = c;
         while(c->prev != s) {
-            lc = (LookupCacheData *)(c->data);
+            LookupCacheData *lc = (LookupCacheData *)(c->data);
             if (lc->valid)
                 if ((lc->min <= x) && (lc->max > x)) {
                     dataSet->lCacheStat[0]++;
-                    return lc->i; 
+                    return lc->i;
                 }
             c = c->prev;
         }
