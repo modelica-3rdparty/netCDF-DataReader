@@ -146,10 +146,8 @@ void akimaCalc(AkimaData *a) {
 
 
 double ncVar1DGetAkima(NcVar1D *var, double x) {
-    size_t i, d, k;
+    size_t i;
     NcDataSet1D *dataSet;
-    int j;
-    long int li;
     double par[5], tmp;
     if (! AD) {
         AD = malloc(sizeof(AkimaData));
@@ -163,6 +161,9 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
     dataSet = var->dataSet;
     i = ncDataSet1DSearch(dataSet, &x);
     if (! akimaCacheSearch((Item *)(var->parameterCache), i, par)) {
+        size_t d, k;
+        int j;
+        long int li;
         var->pCacheStat[1]++;
         d = dataSet->dim;
         if ((dataSet->extra == EpPeriodic) || ((i >= 2) && (i+4 <= d))) {
@@ -189,7 +190,7 @@ double ncVar1DGetAkima(NcVar1D *var, double x) {
                 AD->Y[j] = ncVar1DGetItem(var, li);
             }
             k = i;
-        } else if (i+4 > d) {
+        } else /* if (i+4 > d) */ {
             for (j = 0; j < 6; j++) {
                 li = d - 6 + j;
                 AD->X[j] = ncDataSet1DGetItem(dataSet, li);
