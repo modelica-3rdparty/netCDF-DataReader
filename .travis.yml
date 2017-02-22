@@ -1,0 +1,63 @@
+language: c
+
+git:
+  depth: 5
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8-multilib
+      - linux-libc-dev
+
+env:
+  global:
+    - DEPLOY_LIBS="libncDataReader2.a"
+    # BBPASS
+    - secure: "iWQYTbjwYUiO6i4W56KVGcFfUS6RkHbCWRKfhPHVd23vUYtzlincJAQuPxLAigOnCfPfoCNgYwjQEiI/7KA7IEC5+Ft9UHGNOGEw6ll4YZF1bdV2pLbNCFOJMHpvhKhv8+x8PdGmkVUh5G2b8FDX0lHncjl9TmzL7EeACQmo8/FDlrHVuwtCH4HdcevB7LEKOs3+RFzpbk29oZEyiNK65k5bFMSHwdlFt5kgnysygyMq8bl8sUgBm5I8t13/ee+Pm8jzWHatUwjAZ7NEkkA7Zr8c0ZihLZChNPiEbD0b2jpMt46c15wPL+d/KfYoA26TNUcV3m8uR0LPi/IDlzJSqZBXVUGCc9KG8KxSHWK5mNPVQ++HoqEw3Yb4PHLe2++XIch3WQcIC4CaPN7P5Am9dQ787h3JmiEo02ObYU/dtmKQl6UKCbGaxmYDMo7sLGwSY8n3zIYFMQemAFqIBS2k4tkVO3c92FwuwhuiDSE5ufC87mW1mUY4M2HapLzSJIgz7UNt4U/3EA3BzbNuPpIdE1kZE7gdy9gmyWh+COvoryISHMJs3CbDJZWIfDL+z+3dF7JLy9cebFqpizOr5fHzkTSYN7K7k+vUf+tkvoNbjWldL8CsuweVXKemRNJc+wf9QP6Q/4aleTWYt3cj/g3ysQXV/WwMNrletLjFBVF553Y="
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc-4.8
+      env:
+        - PLATFORM=32
+    - os: linux
+      compiler: gcc-4.8
+      env:
+        - PLATFORM=64
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - curl https://bitbucket.org/Swyter/bitbucket-curl-upload-to-repo-downloads/raw/default/upload-to-bitbucket.sh -O -J && chmod +x ./upload-to-bitbucket.sh
+
+script:
+  - sudo apt-get install -qq libnetcdf-dev
+  - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get purge libnetcdf-dev; fi
+  - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get autoremove; fi
+  - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get install -qq libc6-dev-i386; fi
+  - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get install -qq libnetcdf6:i386; fi
+  - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get install -qq libnetcdf-dev:i386; fi
+  - if [[ "$PLATFORM" == "32" ]]; then sudo ln -s /usr/include/asm-generic /usr/include/asm; fi
+  - cd NcDataReader2/Resources
+  - if [[ "$PLATFORM" == "64" ]]; then cmake -DMODELICA_ERROR_HANDLER:BOOL=ON -DNC_NOCHECK:BOOL=ON ./; fi
+  - if [[ "$PLATFORM" == "32" ]]; then cmake -DMODELICA_ERROR_HANDLER:BOOL=ON -DNC_NOCHECK:BOOL=ON -DCMAKE_C_FLAGS="-m32" ./; fi
+  - make
+  - ./examples/PrintVersion
+  - ./examples/GenerateFile
+  - ./examples/Read1D
+  - ./examples/Read1DEasyAPI
+  - ./examples/Read2D
+  - ./examples/Read2DEasyAPI
+  - if [[ "$PLATFORM" == "64" ]]; then cmake -DMODELICA_ERROR_HANDLER:BOOL=ON -DNC_NOCHECK:BOOL=OFF -DCMAKE_C_FLAGS="-O3 -DNDEBUG -fPIC" ./; fi
+  - if [[ "$PLATFORM" == "32" ]]; then cmake -DMODELICA_ERROR_HANDLER:BOOL=ON -DNC_NOCHECK:BOOL=OFF -DCMAKE_C_FLAGS="-O3 -msse2 -DNDEBUG -m32 -fPIC" ./; fi
+  - make
+  - cd src
+  - tar cJf NcDataReader2_linux$PLATFORM.tar.xz $DEPLOY_LIBS
+  - sh ../../../upload-to-bitbucket.sh tbeu $BBPASS /tbeu/downloads/downloads NcDataReader2_linux$PLATFORM.tar.xz
+
+notifications:
+  email: false
+
+sudo: true
