@@ -19,6 +19,8 @@
 #ifndef NCDATAREADEREA_H
 #define NCDATAREADEREA_H
 
+#include "msvc_compatibility.h"
+
 #if defined(BUILD_SHARED)
 #define DLL_EXPORT __declspec(dllexport)
 #else

@@ -25,6 +25,7 @@ extern "C" {
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "msvc_compatibility.h"
 
 #if defined(BUILD_SHARED)
 #define DLL_EXPORT __declspec(dllexport)
