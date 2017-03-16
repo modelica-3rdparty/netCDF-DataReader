@@ -27,7 +27,7 @@ model FullAPI "Test model for NcDataReader2 using the full API"
         external "C" y=getV2(fileName, x) annotation(__iti_dll = "ITI_ncDataReader2.dll", __iti_dllNoExport = true, Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2", "netcdf"});
     end getV2;
 
-    Real x "dummy variable";
+    Real x(start=0.0, fixed=true) "dummy variable";
     Real T1 "temperature 1";
     Real T2 "temperature 2";
 
