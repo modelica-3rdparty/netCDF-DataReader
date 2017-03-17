@@ -33,7 +33,7 @@ extern "C" {
 #define DLL_EXPORT
 #endif
 
-char DLL_EXPORT *ncDataReader2Version(void);
+const char DLL_EXPORT *ncDataReader2Version(void);
 
 /* type of a function to handle errors */
 typedef void (*NcErrorHandler)(int , char *);
