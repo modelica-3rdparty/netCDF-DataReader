@@ -31,10 +31,9 @@ model FullAPI "Test model for NcDataReader2 using the full API"
     Real T1 "temperature 1";
     Real T2 "temperature 2";
 
-    equation 
+equation
     der(x) = T1 + T2;
     T1 = getV1(fileName, time);
     T2 = getV2(fileName, time);
     annotation(experiment(StartTime = 100, StopTime = 150, Interval = 0.0001));
-
 end FullAPI;
