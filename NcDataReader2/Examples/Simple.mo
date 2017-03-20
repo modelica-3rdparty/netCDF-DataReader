@@ -11,8 +11,8 @@ model Simple "Simple test model for NcDataReader2"
     Real a = nc.ncEasyGetAttributeDouble(fileName, "", "foo") "dummy";
     Real y "dummy variable";
     Real T "temperature";
-    
-    equation
+
+equation
     y = x * a;
     der(x) = T;
     T = nc.ncEasyGet1D(fileName, "test1D", time / 1000);

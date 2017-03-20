@@ -16,12 +16,12 @@ model BigFile "Test model for NcDataReader2 with large data sets"
     Real T1 "temperature 1";
     Real T2 "temperature 2";
 
-    algorithm
+algorithm
     when terminal() then
         nc.ncEasyDumpStatistics(logFile);
     end when;
-    
-    equation 
+
+equation
     y = x;
     der(x) = T1 + T2;
     T1 = nc.ncEasyGet1D(dataFile, "big_var_00", time);
