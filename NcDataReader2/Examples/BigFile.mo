@@ -11,10 +11,10 @@ model BigFile "Test model for NcDataReader2 with large data sets"
       annotation(Dialog(
         saveSelector(filter="Logfiles (*.log)",
         caption="Save logfile")));
-    Real y "dummy variable to integrate";
-    Real x(start=0.0, fixed=true) "dummy variable";
-    Real T1 "temperature 1";
-    Real T2 "temperature 2";
+    Real y "Dummy variable to integrate";
+    Real x(start=0.0, fixed=true) "Dummy variable";
+    Real T1 "Temperature 1";
+    Real T2 "Temperature 2";
 
 algorithm
     when terminal() then

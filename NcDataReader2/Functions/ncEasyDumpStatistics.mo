@@ -1,6 +1,6 @@
 within NcDataReader2.Functions;
 
-function ncEasyDumpStatistics "dumps statistics on data loading and caches"
+function ncEasyDumpStatistics "Dump statistics on data loading and caches"
     input String fileName;
     output Integer res;
     external "C" res=ncEasyDumpStatistics(fileName) annotation(__iti_dll = "ITI_ncDataReader2.dll", __iti_dllNoExport = true, Include = "#include <ncDataReaderEA.h>", Library = {"ncDataReader2", "netcdf"});

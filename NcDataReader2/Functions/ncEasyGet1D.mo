@@ -1,6 +1,6 @@
 within NcDataReader2.Functions;
 
-function ncEasyGet1D "get an interpolated value from a netCDF file"
+function ncEasyGet1D "Get an interpolated value from a netCDF file"
     input String fileName;
     input String varName;
     input Real x;

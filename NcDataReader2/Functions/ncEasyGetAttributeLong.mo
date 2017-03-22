@@ -1,6 +1,6 @@
 within NcDataReader2.Functions;
 
-function ncEasyGetAttributeLong "get an attribute from a netCDF file as Integer"
+function ncEasyGetAttributeLong "Get an attribute from a netCDF file as Integer"
     input String fileName;
     input String varName;
     input String attName;
