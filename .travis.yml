@@ -37,7 +37,6 @@ script:
   - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get purge libnetcdf-dev; fi
   - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get autoremove; fi
   - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get install -qq libc6-dev-i386; fi
-  - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get install -qq libnetcdf6:i386; fi
   - if [[ "$PLATFORM" == "32" ]]; then sudo apt-get install -qq libnetcdf-dev:i386; fi
   - if [[ "$PLATFORM" == "32" ]]; then sudo ln -s /usr/include/asm-generic /usr/include/asm; fi
   - cd NcDataReader2/Resources
