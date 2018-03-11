@@ -5,7 +5,7 @@
 version 2.4.0
 -------------
 
-.. Note: this text is written in the using the "reStructuredText" format. You
+.. Note: this text is written in the "reStructuredText" format. You
    may read this raw text or the PDF or HTML version generated from it.
    (http://docutils.sourceforge.net/rst.html)
 .. contents::
@@ -102,7 +102,7 @@ Another very simple example::
         printf("The value of y for time=42.0 is %g.\n", ncVar1DGet(y, 42.0));
     }
 
-This will open the independent variable ``time`` and the dependant variable
+This will open the independent variable ``time`` and the dependent variable
 ``y`` in a file ``data.nc``, calculate the interpolated value of ``y``
 for ``time=42.0``. The variable ``time`` will be used periodic, ``y`` will be
 interpolated by the Akima method. All data will be fully loaded.
@@ -114,11 +114,11 @@ Concept
 A one dimensional data set (NcDataSet1D) is the representation of one
 independent variable in a netCDF file. This data can be equally spaced, but it
 doesn't need to. A one dimensional variable (NcVar1D) is the representation of a
-dependant variable that has a dependency to exactly one NcDataSet1D. The value
+dependent variable that has a dependency to exactly one NcDataSet1D. The value
 of a NcVar1D at a certain point can be evaluated (usually interpolated). A
 NcDataSet1D can be referenced by more than one NcVar1D.
 
-Example: a file contains weathr data as time rows (e.g. hourly values). One
+Example: a file contains weather data as time rows (e.g. hourly values). One
 variable (time) contains the time values at which other quantities were
 measured. The other time rows (temperature, humidity, radiation) contain the
 measured values. With ncDataReader2 we would reference 'time' as a NcDataSet1D.
@@ -137,7 +137,7 @@ Discrete
 ~~~~~~~~
 This is the simplest but fastest method. The value of a variable is the value of
 the last data point where the value of the independent variable is smaller or
-exactly equal to the demanded point. This will lead to steps at the intervall
+exactly equal to the demanded point. This will lead to steps at the interval
 boundaries. Neither the function nor the derivatives are continuous.
 
 Linear
@@ -151,7 +151,7 @@ Akima interpolation is a cubic spline interpolation method. The calculation is
 not fast, but the result is a very smooth function (continuous curve and
 derivative). The continuity of the second derivative was abandoned to get only
 local dependencies of the parameters. This is a big advantage in comparison to
-normal cubic splines wheree all values of a data set have to be taken into
+normal cubic splines where all values of a data set have to be taken into
 account to calculate a single value.
 
 By using Akima interpolation with ncDataReader2 you can get a smooth
@@ -161,11 +161,11 @@ required range from the file.
 Sine Steps (SinSteps)
 ~~~~~~~~~~~~~~~~~~~~~
 This is a variation of the discrete method where the steps are smoothed by
-inserting parts of the sine function. In the middle of an intervall the values
-are still constant (step-like behaviour) but at the intervall boundaries a
+inserting parts of the sine function. In the middle of an interval the values
+are still constant (step-like behavior) but at the interval boundaries a
 smooth transition is ensured. The amount of smoothing can be configured by
 defined by an influence radius around the points. The resulting curve is
-continous and has a continuous first derivative. Strictly speaking, this is not
+continuous and has a continuous first derivative. Strictly speaking, this is not
 an interpolation method since the data points are usually not met.
 
 .. image:: Interpolation.png
@@ -179,7 +179,7 @@ inside a window. The weighting function is cos(x) (scaled and shifted).
 
 The result is continuous and has a continuous first derivative. For small
 windows the curve will follow the linear interpolation with some smoothing
-around the points. Large windows lead to more smoothing of the dats set. The
+around the points. Large windows lead to more smoothing of the data set. The
 window size should be much smaller than the data range of the abscissa.
 
 .. image:: CosWin.png
@@ -201,7 +201,7 @@ As variables in netCDF files can be very large different methods of loading are
 supported. Small variables (few values) can be loaded completely into memory
 to get the fastest access. The other extreme is to load every single value only
 on demand. This is significant slower but still fast because of the very
-efficient netCDF file acces. A third possibility is to load chunks of data on
+efficient netCDF file access. A third possibility is to load chunks of data on
 demand.
 
 Optimization
@@ -224,17 +224,17 @@ calculations in this case.
 Lookup Cache
 ~~~~~~~~~~~~
 When the value of a NcVar1D is requested the first action is to search the
-corresponding intervall of the NcDataSet1D with a nested search over the whole
+corresponding interval of the NcDataSet1D with a nested search over the whole
 data set. For large data sets this may need a lot of time. The lookup cache
-stores the last used intervalls and their boundaries. If the next requested
+stores the last used intervals and their boundaries. If the next requested
 value is in the same interval as the last one(s), this may speed up the search.
 
 Parameter Cache
 ~~~~~~~~~~~~~~~
 Linear and Akima interpolation methods need to calculate the parameters of a
-linear or a cubic function for one intervall. These parameters can be stored
+linear or a cubic function for one interval. These parameters can be stored
 in a cache. If the next requested value is in the same interval as the last
-one(s), this may speed up the caclulation (in particular for the Akima method).
+one(s), this may speed up the calculation (in particular for the Akima method).
 
 
 Scattered Points (2D)
@@ -254,7 +254,7 @@ File annotations / netCDF Attributes
 All the parameters like interpolation and extrapolation methods,
 transformations, cache sizes and other can be explicitly set or can be read
 from the data file. netCDF files may contain generic attributes (global and and
-variable specific). Some attributes with special names are honoured by
+variable specific). Some attributes with special names are honored by
 ncDataReader2. Parameters set with explicit functions always have precedence
 over annotations. The following attributes are supported for netCDF variables:
 
@@ -299,14 +299,14 @@ NcDataSet1D
 NcDataSet1D is a struct object which holds all information on a data set. A new
 NcDataSet1D will be created with the following function::
 
-  NcDataSet1D *ncDataSet1DNew(char *fileName,
-                              char *varName,
+  NcDataSet1D *ncDataSet1DNew(const char *fileName,
+                              const char *varName,
                               Extrapolation extra,
                               LoadType loadType,
                               size_t lookupCacheSize);
 
 ``fileName`` is the name of the file, ``varName`` is the name of the independent
-variable. ``extra`` is the method of extrapolation (the behaviour when the
+variable. ``extra`` is the method of extrapolation (the behavior when the
 defined data range is left). The variable ``loadType`` defines the way the data
 is loaded from file to memory. The parameter ``lookupCacheSize`` is the size of
 the lookup cache for this data set. Use ``NC_LOOKUP_CACHE_AUTO`` to read this
@@ -321,7 +321,7 @@ Possible values for the extrapolation method (``Extrapolation``) are:
 
  * ``EpPeriodic`` - adjust values for periodic use. The first and last values
    of the data set must mark the boundaries of the periodic range.
-   Example: time-dependant values for one whole day should start with a value
+   Example: time-dependent values for one whole day should start with a value
    for 0:00 and end with a value for 24:00 to get a daily periodic data set.
    If the first and last values of a NcVar1D are not equal, they will be
    replaced with an average transition value.
@@ -351,7 +351,7 @@ like variables and files.::
 
   void ncDataSet1DFree(NcDataSet1D *dataSet);
 
-Intervall search for a value of the independent variable::
+Interval search for a value of the independent variable::
 
   size_t ncDataSet1DSearch(NcDataSet1D *dataSet, double *x);
 
@@ -381,11 +381,11 @@ NcVar1D is a struct object which holds all information on a variable. For
 existing data set objects new variables can be defined::
 
   NcVar1D *ncVar1DNew(NcDataSet1D *dataSet,
-                      char *varName,
+                      const char *varName,
                       Interpolation inter,
                       LoadType loadType);
 
-``dataSet`` is a ``NcDataSet1D`` object, ``varName`` the name of the dependant
+``dataSet`` is a ``NcDataSet1D`` object, ``varName`` the name of the dependent
 variable in the file. You may choose the interpolation method
 (``Interpolation``) from the following values:
 
@@ -400,7 +400,7 @@ variable in the file. You may choose the interpolation method
 
  * ``IpAkima`` - piecewise cubic interpolation
 
- * ``IpCosWin`` - cossine window approximation. The window size can be defined
+ * ``IpCosWin`` - cosine window approximation. The window size can be defined
    by setting the ``window_size`` option. If not set, a value of 1.0 will be
    used.
 
@@ -462,13 +462,13 @@ NcScattered2D is a struct object which holds all information on a data set of
 scattered points and its spline interpolation. A new NcScattered2D
 object can be defined with::
 
-  NcScattered2D *ncScattered2DNew(char *fileName, char *varName);
+  NcScattered2D *ncScattered2DNew(const char *fileName, const char *varName);
 
 ``fileName`` is the name of the netCDF file and ``varName`` the name of the
 variable that contains the point coordinates. ``varName`` should be a two
 dimensional variable (list of 3D points).
 
-Befor you can request interpolated values you have to initialize the data
+Before you can request interpolated values you have to initialize the data
 (construct the spline surface) by calling::
 
   void ncScattered2DInit(NcScattered2D *data);
@@ -487,7 +487,7 @@ Several options can be set by calling this var-arg function::
                              Scattered2DOption option,
                              ...);
 
-This is call is valid only befor ncScattered2DInit() was called! Possibkle
+This is call is valid only before ncScattered2DInit() was called! Possible
 options are:
 
  * ``OpScattered2DScaling`` - set scaling and offset with the following two
@@ -544,10 +544,10 @@ blocks and local data storage.
 
 The EA is a wrapper around the general API of the library that hides most of its
 details. To use the EA you have to include the header file ``ncDataReaderEA.h``.
-The EA is based on hashtables that store data sets and variables after the first
+The EA is based on hash tables that store data sets and variables after the first
 use. The main function is::
 
-  double ncEasyGet1D(char *fileName, char *varName, double x);
+  double ncEasyGet1D(const char *fileName, const char *varName, double x);
 
 It will return the interpolated value of the variable ``varName`` in the netCDF
 file ``fileName`` at the point ``x``. At the first call the needed NcVar1D and
@@ -557,12 +557,12 @@ sizes and others are read from file annotations or set to default values.
 
 A strict requirement to get this initialization automatically done is to follow
 a naming convention: the independent variable in the file must have the same
-name as the dimension that is used both for the independent and the dependant
+name as the dimension that is used both for the independent and the dependent
 variable.
 
 The functionality for 2D interpolation is also exposed via the EA::
 
-  double ncEasyGetScattered2D(char *fileName, char *varName,
+  double ncEasyGetScattered2D(const char *fileName, const char *varName,
                               double x, double y);
 
 This will return the value of ``z`` for the position defined by ``x`` and ``y``
@@ -584,9 +584,12 @@ the function::
 There are some more functions that return attributes of the netCDF file or of
 variables::
 
-  double ncEasyGetAttributeDouble(char *fileName, char *varName, char *attName);
-  long   ncEasyGetAttributeLong(char *fileName, char *varName, char *attName);
-  char  *ncEasyGetAttributeString(char *fileName, char *varName, char *attName);
+  double ncEasyGetAttributeDouble(const char *fileName, const char *varName,
+                                  const char *attName);
+  int ncEasyGetAttributeLong(const char *fileName, const char *varName,
+                             const char *attName);
+  const char *ncEasyGetAttributeString(const char *fileName, const char *varName,
+                                       const char *attName);
 
 These functions may be used to read additional data like location coordinates
 for weather files. Special values will be returned on errors (like non-existent
@@ -602,7 +605,7 @@ ncdr2Dump1D
 -----------
 This is a command line client that includes most of the functions for 1D
 variables. It will dump interpolated values for a variable in textual form.
-CSV format is the default, but you may choose a gnuplot compatibel output or
+CSV format is the default, but you may choose a gnuplot compatible output or
 provide your own template (for printf()). The usage is as following::
 
     Usage: ncdr2Dump1D [parameter] filename
@@ -633,7 +636,7 @@ provide your own template (for printf()). The usage is as following::
 
 ncdr2ImportCSV1D
 ----------------
-This is a command line client that converst CSV data to netCDF files that are
+This is a command line client that converts CSV data to netCDF files that are
 compatible with ncDataReader2. The special attributes that ncDataReader2
 respects can be added easily. The usage is as following::
 
@@ -700,7 +703,7 @@ Changes
 =======
 
 2.4.0
- * generally worked on an improved Modelica compatibilty
+ * generally worked on an improved Modelica compatibility
  * changed directory structure to improve the Modelica compatibility
  * changed Modelica files to use Modelica 3.2.1
  * removed the hard exit from the default error handler
