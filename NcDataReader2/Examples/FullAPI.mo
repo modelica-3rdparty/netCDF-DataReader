@@ -16,7 +16,7 @@ model FullAPI "Test model for NcDataReader2 using the full API"
         input String fileName;
         input Real x;
         output Real y;
-        external "C" y=getV1(fileName, x) annotation(__iti_dll = "ITI_ncDataReader2.dll", __iti_dllNoExport = true, Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2", "netcdf"});
+        external "C" y=getV1(fileName, x) annotation(__iti_dll = "ITI_ncDataReader2.dll", __iti_dllNoExport = true, Include = "#include \"FullAPIFunctions.h\"", Library = {"ncDataReader2", "netcdf"});
     end getV1;
 
     function getV2 "Get v2 from file"
@@ -24,7 +24,7 @@ model FullAPI "Test model for NcDataReader2 using the full API"
         input String fileName;
         input Real x;
         output Real y;
-        external "C" y=getV2(fileName, x) annotation(__iti_dll = "ITI_ncDataReader2.dll", __iti_dllNoExport = true, Include = "#include <FullAPIFunctions.h>", Library = {"ncDataReader2", "netcdf"});
+        external "C" y=getV2(fileName, x) annotation(__iti_dll = "ITI_ncDataReader2.dll", __iti_dllNoExport = true, Include = "#include \"FullAPIFunctions.h\"", Library = {"ncDataReader2", "netcdf"});
     end getV2;
 
     Real x(start=0.0, fixed=true) "Dummy variable";
