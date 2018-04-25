@@ -42,7 +42,7 @@ Author and License
 ==================
 
 ncDataReader2 was developed by Joerg Raedler (joerg@j-raedler.de). The code is
-released under the terms of the 'GNU Lesser General License'_. The code in the
+released under the terms of the `GNU Lesser General License`_. The code in the
 files ``csa.c``, ``csa.h``, ``csa_config.h``, ``svd.c`` and ``svd.h`` was taken
 from the csa_ library which has its own open source license.
 
@@ -739,4 +739,4 @@ Changes
 .. _MinGW: http://www.mingw.org/
 .. _`Express Edition`: http://www.microsoft.com/express/
 .. _Modelica: http://www.modelica.org/
-.. _'GNU Lesser General License': http://www.gnu.org/licenses/lgpl.html
+.. _`GNU Lesser General License`: http://www.gnu.org/licenses/lgpl.html
