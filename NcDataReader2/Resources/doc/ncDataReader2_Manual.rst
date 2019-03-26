@@ -2,7 +2,7 @@
  ncDataReader2 - User Manual
 =============================
 -------------
-version 2.4.0
+version 2.5.0
 -------------
 
 .. Note: this text is written in the "reStructuredText" format. You
@@ -701,6 +701,9 @@ Tips and Tricks
 
 Changes
 =======
+
+2.5.0
+ * changed Modelica files to use Modelica 3.2.3
 
 2.4.0
  * generally worked on an improved Modelica compatibility
