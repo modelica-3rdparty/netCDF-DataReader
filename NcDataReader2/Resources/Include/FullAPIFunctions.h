@@ -25,18 +25,17 @@ static void myInit(const char* fileName) {
 /* functions to return the interpolated values -
  * myInit() is executed at the first call to one of the functions */
 
-double getV1(const char* fileName, double x){
+double getV1(const char* fileName, double x) {
     if (dset == NULL)
         myInit(fileName);
     return ncVar1DGet(v1, x);
-};
+}
 
-double getV2(const char* fileName, double x){
+double getV2(const char* fileName, double x) {
     if (dset == NULL)
         myInit(fileName);
     return ncVar1DGet(v2, x);
-};
-
+}
 
 /* just a simple main routine to test the functions standalone,
  * not needed for Modelica */
