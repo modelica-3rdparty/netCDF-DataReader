@@ -2,7 +2,7 @@
  ncDataReader2 - User Manual
 =============================
 -------------
-version 2.5.0
+version 2.5.1
 -------------
 
 .. Note: this text is written in the "reStructuredText" format. You
